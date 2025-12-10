@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introduction Chaque OS a une structure et une configuration propre à eux, ils nécessite donc d&rsquo;avoir plusieurs technique d&rsquo;Imaging. Ici nous verrons comment faire une capture d&rsquo;image d&rsquo;un système Linux.\nRésumé des commandes et variables d&rsquo;environnement : set -o history\nActive l’historique dans le shell, permettant d’enregistrer les commandes exécutées.\nshopt -s histappend\nFait en sorte que les nouvelles commandes soient ajoutées au fichier d’historique, au lieu d’écraser le contenu précédent quand le shell se ferme.\n">
+<title>Linux - Imagerie Forensic</title>
+
+<link rel='canonical' href='https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/'>
+
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Linux - Imagerie Forensic">
+<meta property='og:description' content="Introduction Chaque OS a une structure et une configuration propre à eux, ils nécessite donc d&rsquo;avoir plusieurs technique d&rsquo;Imaging. Ici nous verrons comment faire une capture d&rsquo;image d&rsquo;un système Linux.\nRésumé des commandes et variables d&rsquo;environnement : set -o history\nActive l’historique dans le shell, permettant d’enregistrer les commandes exécutées.\nshopt -s histappend\nFait en sorte que les nouvelles commandes soient ajoutées au fichier d’historique, au lieu d’écraser le contenu précédent quand le shell se ferme.\n">
+<meta property='og:url' content='https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/'>
+<meta property='og:site_name' content='KIRÔN'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Linux' /><meta property='article:tag' content='Forensic' /><meta property='article:tag' content='Imagerie' /><meta property='article:published_time' content='2025-12-08T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-08T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Linux - Imagerie Forensic">
+<meta name="twitter:description" content="Introduction Chaque OS a une structure et une configuration propre à eux, ils nécessite donc d&rsquo;avoir plusieurs technique d&rsquo;Imaging. Ici nous verrons comment faire une capture d&rsquo;image d&rsquo;un système Linux.\nRésumé des commandes et variables d&rsquo;environnement : set -o history\nActive l’historique dans le shell, permettant d’enregistrer les commandes exécutées.\nshopt -s histappend\nFait en sorte que les nouvelles commandes soient ajoutées au fichier d’historique, au lieu d’écraser le contenu précédent quand le shell se ferme.\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/enzo-anime_hu_3208ab5a0ff05de9.png" width="300"
+                            height="386" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">KIRÔN</a></h1>
+            <h2 class="site-description">Mes notes en forensic</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/enzo-ribeiro'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.linkedin.com/in/enzo-ribeiro-bb8794209/'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.975,20.667H3.117V9.059H6.975ZM5.072,3.462a2.011,2.011,0,1,0-.051,4.012h.026a2.012,2.012,0,1,0,.025-4.012ZM9.111,20.667h3.858V14.185a2.639,2.639,0,0,1,.127-.941,2.111,2.111,0,0,1,1.98-1.411c1.4,0,1.955,1.064,1.955,2.625v6.209h3.858V14.011c0-3.565-1.9-5.225-4.442-5.225A3.828,3.828,0,0,0,12.97,10.7V9.059H9.111c.051,1.089,0,11.609,0,11.609Z"/></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/" selected>Français</option>
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/zh-cn/" >中文</option>
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Mode sombre</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction">Introduction</a>
+      <ol>
+        <li><a href="#résumé-des-commandes-et-variables-denvironnement-">Résumé des commandes et variables d&rsquo;environnement :</a></li>
+        <li><a href="#système-de-fichiers">Système de fichiers</a>
+          <ol>
+            <li><a href="#voir-les-disques-montés-sur-la-machine">Voir les disques montés sur la machine</a></li>
+          </ol>
+        </li>
+        <li><a href="#question-thm">Question THM</a></li>
+      </ol>
+    </li>
+    <li><a href="#création-de-limage">Création de l&rsquo;image</a>
+      <ol>
+        <li><a href="#résumé-clair-des-outils-dimagerie--récupération-version-courte">Résumé clair des outils d’imagerie / récupération (version courte)</a></li>
+      </ol>
+    </li>
+    <li><a href="#contrôle-de-lintégrité">Contrôle de l&rsquo;intégrité</a></li>
+    <li><a href="#autres-types-dimages">Autres types d&rsquo;images</a></li>
+    <li><a href="#cas-pratique">Cas pratique</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" >
+                Linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/linux-imagerie-forensic/">Linux - Imagerie Forensic</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-12-08T00:00:00Z'>déc. 08, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    6 minutes de lecture
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="introduction">Introduction
+</h2><p>Chaque OS a une structure et une configuration propre à eux, ils nécessite donc d&rsquo;avoir plusieurs technique d&rsquo;<code>Imaging</code>. Ici nous verrons comment faire une capture d&rsquo;image d&rsquo;un système Linux.</p>
+<h3 id="résumé-des-commandes-et-variables-denvironnement-">Résumé des commandes et variables d&rsquo;environnement :
+</h3><ol>
+<li>
+<p><strong><code>set -o history</code></strong><br>
+Active l’historique dans le shell, permettant d’enregistrer les commandes exécutées.</p>
+</li>
+<li>
+<p><strong><code>shopt -s histappend</code></strong><br>
+Fait en sorte que les nouvelles commandes soient ajoutées au fichier d’historique, au lieu d’écraser le contenu précédent quand le shell se ferme.</p>
+</li>
+<li>
+<p><strong><code>export HISTCONTROL=</code></strong><br>
+Supprime tous les filtres qui empêchent certaines commandes d’être sauvegardées. Ainsi, toutes les commandes sont enregistrées.</p>
+</li>
+<li>
+<p><strong><code>export HISTIGNORE=</code></strong><br>
+Désactive l’exclusion de commandes spécifiques (par motif). Aucune commande n’est ignorée.</p>
+</li>
+<li>
+<p><strong><code>export HISTFILE=~/.bash_history</code></strong><br>
+Définit le fichier où est stocké l’historique des commandes.</p>
+</li>
+<li>
+<p><strong><code>export HISTFILESIZE=-1</code></strong><br>
+Supprime la limite du nombre de lignes stockées dans le fichier d’historique.</p>
+</li>
+<li>
+<p><strong><code>export HISTSIZE=-1</code></strong><br>
+Supprime la limite du nombre de commandes retenues en mémoire dans l’historique de la session courante.</p>
+</li>
+<li>
+<p><strong><code>export HISTTIMEFORMAT=&quot;%F %R &quot;</code></strong><br>
+Ajoute un horodatage (AAAA-MM-JJ HH:MM) devant chaque commande sauvegardée dans l’historique</p>
+</li>
+</ol>
+<h3 id="système-de-fichiers">Système de fichiers
+</h3><h4 id="voir-les-disques-montés-sur-la-machine">Voir les disques montés sur la machine
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-zsh" data-lang="zsh"><span class="line"><span class="cl">df
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/linux-imagerie-forensic/Pasted%20image%2020251001094606.png"
+	width="772"
+	height="420"
+	srcset="/p/linux-imagerie-forensic/Pasted%20image%2020251001094606_hu_fdfdd57a8d671406.png 480w, /p/linux-imagerie-forensic/Pasted%20image%2020251001094606_hu_4621f17953c3a64b.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="183"
+		data-flex-basis="441px"
+	
+>
+Les disque physique sont identifié grave au <code>/dev</code>. Le disque pour booté l&rsquo;OS sur cette machine est <code>/dev/root</code>. Ici le disque que nous allons monté n&rsquo;est pas répertorié car c&rsquo;est un disque virtuel attaché à une interface <code>loop</code>. Nous pourrons voir notre disque virtuel avec <code>lsblk -a</code>
+<img src="/p/linux-imagerie-forensic/Pasted%20image%2020251001095509.png"
+	width="628"
+	height="346"
+	srcset="/p/linux-imagerie-forensic/Pasted%20image%2020251001095509_hu_950ddedb8acce456.png 480w, /p/linux-imagerie-forensic/Pasted%20image%2020251001095509_hu_b6187f08826c7cb5.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="181"
+		data-flex-basis="435px"
+	
+>
+(IMPORTANT: il est nécessaire de voir la taille du disque que nous allons &ldquo;cloner&rdquo; car il faut avoir la place nécessaire à ce clonnage sur notre machine)</p>
+<p>On peut avoir plus d&rsquo;info sur le disque avec la commande <code>sudo losetup -l /dev/loop11</code>
+<img src="/p/linux-imagerie-forensic/Pasted%20image%2020251001100002.png"
+	width="805"
+	height="60"
+	srcset="/p/linux-imagerie-forensic/Pasted%20image%2020251001100002_hu_d014d11c451f3037.png 480w, /p/linux-imagerie-forensic/Pasted%20image%2020251001100002_hu_8f8c0855caa3d8ac.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="1341"
+		data-flex-basis="3220px"
+	
+>
+Ou encore plus d&rsquo;info comme l&rsquo;UUID avec <code>sudo blkid /dev/loop11</code></p>
+<p><img src="/p/linux-imagerie-forensic/Pasted%20image%2020251001100113.png"
+	width="698"
+	height="41"
+	srcset="/p/linux-imagerie-forensic/Pasted%20image%2020251001100113_hu_cbc1dce0371e829.png 480w, /p/linux-imagerie-forensic/Pasted%20image%2020251001100113_hu_5e583b5cd968db2e.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="1702"
+		data-flex-basis="4085px"
+	
+></p>
+<h3 id="question-thm">Question THM
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Q : What command can be used to list all block devices in Linux OS?
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">A : lsblk
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Q : Which bash command displays all commands executed in a session?
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">A : history
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="création-de-limage">Création de l&rsquo;image
+</h2><p>Dans cet exercice nous allons utiliser l&rsquo;outil <code>dc3dd</code>, une amélioration de la commande <code>dd</code>.</p>
+<h3 id="résumé-clair-des-outils-dimagerie--récupération-version-courte">Résumé clair des outils d’imagerie / récupération (version courte)
+</h3><ul>
+<li>
+<p><strong><code>dd</code></strong><br>
+Utilitaire Unix standard pour copier et convertir des fichiers/flux. Souvent utilisé pour créer des images brutes de disques (<code>raw</code>), cloner des partitions ou écrire des images sur des périphériques. Simple, disponible partout, mais sans protections ni vérifications intégrées.</p>
+</li>
+<li>
+<p><strong><code>dc3dd</code></strong><br>
+Variante améliorée de <code>dd</code> orientée informatique légale : ajoute des fonctions comme le calcul d’hash (MD5/SHA1), enregistrement des métadonnées et options de logging. Utile quand tu veux créer des images tout en gardant des preuves vérifiables.</p>
+</li>
+<li>
+<p><strong><code>ddrescue</code></strong><br>
+Outil spécialisé en récupération de données depuis des supports dégradés. Copie intelligemment en plusieurs passes (priorise les zones lisibles puis tente les secteurs défectueux), garde une trace de l’état (fichier de log) pour reprendre la récupération. Idéal pour sauver un maximum de données sur un disque endommagé.</p>
+</li>
+<li>
+<p><strong>FTK Imager</strong><br>
+Outil graphique (GUI) largement utilisé en criminalistique numérique pour créer des images d’un disque, visualiser le contenu et exporter des fichiers. Pratique pour les utilisateurs qui préfèrent une interface visuelle et pour générer des images et rapports complets.</p>
+</li>
+<li>
+<p><strong>Guymager</strong><br>
+Imagerie médico-légale avec interface graphique, supporte plusieurs formats (raw, E01, etc.) et génère des logs détaillés. Conçu pour être rapide, multi-thread et convivial — bon choix pour examiner/imaginer plusieurs disques depuis une GUI sous Linux.</p>
+</li>
+<li>
+<p><strong>EWF tools (<code>ewfacquire</code>, etc.)</strong><br>
+Ensemble d’outils pour créer/manipuler des images au format Expert Witness Format (E01), le format courant en criminalistique. Permet d’acquérir des images compatibles avec d’autres suites forensiques et de gérer métadonnées et segments d’image.</p>
+</li>
+</ul>
+<p>Commençons la création de l&rsquo;image :
+<code>sudo dc3dd if=/dev/loop11 of=example1.img log=imaging_loop11.txt</code></p>
+<ul>
+<li>if : fichier d&rsquo;entrée</li>
+<li>of : fichier de sortie</li>
+<li>log : enregistre les sorties dans ce fichier</li>
+</ul>
+<p><img src="/p/linux-imagerie-forensic/Pasted%20image%2020251001101509.png"
+	width="892"
+	height="325"
+	srcset="/p/linux-imagerie-forensic/Pasted%20image%2020251001101509_hu_3c8b5539121daa29.png 480w, /p/linux-imagerie-forensic/Pasted%20image%2020251001101509_hu_3dcd8ef28dbd7c20.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="274"
+		data-flex-basis="658px"
+	
+></p>
+<p>Pour vérifier la sortie nous entrons cette commande :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">ls -alh example1.img 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/linux-imagerie-forensic/Pasted%20image%2020251001101729.png"
+	width="541"
+	height="45"
+	srcset="/p/linux-imagerie-forensic/Pasted%20image%2020251001101729_hu_fe0905e6fb1aa66c.png 480w, /p/linux-imagerie-forensic/Pasted%20image%2020251001101729_hu_afdcdf4aa6287948.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="1202"
+		data-flex-basis="2885px"
+	
+>
+Nous pouvons voir que l&rsquo;image fait la même taille que <code>/dev/loop11</code>.</p>
+<h2 id="contrôle-de-lintégrité">Contrôle de l&rsquo;intégrité
+</h2><p>Nous allons comparer le hash md5 pour vérifier l&rsquo;intégrité du fichier.
+pour l&rsquo;image que nous venons de faire : <code>sudo md5sum example1.img</code>
+<img src="/p/linux-imagerie-forensic/Pasted%20image%2020251001102328.png"
+	width="471"
+	height="39"
+	srcset="/p/linux-imagerie-forensic/Pasted%20image%2020251001102328_hu_b04d75682724aa3f.png 480w, /p/linux-imagerie-forensic/Pasted%20image%2020251001102328_hu_8c44ba2ce44b978b.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="1207"
+		data-flex-basis="2898px"
+	
+>
+pour le disque que nous avons &ldquo;cloné&rdquo; : <code>sudo md5sum /dev/loop11</code>
+<img src="/p/linux-imagerie-forensic/Pasted%20image%2020251001102341.png"
+	width="464"
+	height="42"
+	srcset="/p/linux-imagerie-forensic/Pasted%20image%2020251001102341_hu_30f57028e61eb937.png 480w, /p/linux-imagerie-forensic/Pasted%20image%2020251001102341_hu_7b3eb311c8e359b5.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="1104"
+		data-flex-basis="2651px"
+	
+></p>
+<h2 id="autres-types-dimages">Autres types d&rsquo;images
+</h2><ul>
+<li>
+<p><strong>Imagerie à distance</strong><br>
+Acquisition d’une image via le <strong>réseau</strong>, sans accès physique direct à la machine.<br>
+🔹 Utile dans les enquêtes où la machine est éloignée ou doit rester en service.<br>
+🔹 Exemples : récupération sur un serveur distant, forensic à distance via SSH ou outils spécialisés.</p>
+</li>
+<li>
+<p><strong>Images USB</strong><br>
+Création d’une image complète du <strong>contenu d’une clé USB</strong> (ou tout autre périphérique amovible).<br>
+🔹 Permet de conserver une copie exacte (secteur par secteur).<br>
+🔹 Utile pour l’analyse forensique, la sauvegarde ou la duplication d’USB bootables.</p>
+</li>
+<li>
+<p><strong>Images Docker</strong><br>
+Snapshot du <strong>système de fichiers et de la configuration d’un conteneur Docker</strong>.<br>
+🔹 Pas une image disque classique, mais une image logicielle qui capture l’état et les dépendances d’un conteneur.<br>
+🔹 Utile pour figer l’environnement d’exécution d’une application et la partager/rejouer à l’identique.</p>
+</li>
+</ul>
+<p>Pour continuer l&rsquo;exercice nous allons monté notre image <code>example1.img</code> avec la commande <code>mount</code>, pour commencer le montage de cette image nous allons créer un point de montage dans <code>/mnt/</code> avec la commande <code>sudo mkdir -p /mnt/example1</code>.
+<img src="/p/linux-imagerie-forensic/Pasted%20image%2020251001103436.png"
+	width="495"
+	height="59"
+	srcset="/p/linux-imagerie-forensic/Pasted%20image%2020251001103436_hu_7aad579b8f06dc53.png 480w, /p/linux-imagerie-forensic/Pasted%20image%2020251001103436_hu_7c487a88649bbe78.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="838"
+		data-flex-basis="2013px"
+	
+></p>
+<p>Nous pouvons passer au montage :
+<code>sudo mount -o loop example1.img /mnt/example1</code>
+<img src="/p/linux-imagerie-forensic/Pasted%20image%2020251001103610.png"
+	width="769"
+	height="459"
+	srcset="/p/linux-imagerie-forensic/Pasted%20image%2020251001103610_hu_da6266aad7a32df3.png 480w, /p/linux-imagerie-forensic/Pasted%20image%2020251001103610_hu_e17ff3da10be1de2.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="167"
+		data-flex-basis="402px"
+	
+>
+Nous avons monté example1.</p>
+<h2 id="cas-pratique">Cas pratique
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">practical@ip-10-10-82-246:~$ lsblk
+</span></span><span class="line"><span class="cl">NAME    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+</span></span><span class="line"><span class="cl">loop0     7:0    <span class="m">0</span> 28.1M  <span class="m">1</span> loop /snap/amazon-ssm-agent/2012
+</span></span><span class="line"><span class="cl">loop1     7:1    <span class="m">0</span> 70.6M  <span class="m">1</span> loop /snap/lxd/16922
+</span></span><span class="line"><span class="cl">loop2     7:2    <span class="m">0</span> 55.3M  <span class="m">1</span> loop /snap/core18/1885
+</span></span><span class="line"><span class="cl">loop3     7:3    <span class="m">0</span> 97.8M  <span class="m">1</span> loop /snap/core/10185
+</span></span><span class="line"><span class="cl">loop4     7:4    <span class="m">0</span>    1G  <span class="m">0</span> loop 
+</span></span><span class="line"><span class="cl">xvda    202:0    <span class="m">0</span>   40G  <span class="m">0</span> disk 
+</span></span><span class="line"><span class="cl">└─xvda1 202:1    <span class="m">0</span>   40G  <span class="m">0</span> part /
+</span></span><span class="line"><span class="cl">xvdh    202:112  <span class="m">0</span>    1G  <span class="m">0</span> disk 
+</span></span><span class="line"><span class="cl">practical@ip-10-10-82-246:~$ sudo dc3dd <span class="k">if</span><span class="o">=</span>/dev/loop4 <span class="nv">of</span><span class="o">=</span>loop4.img <span class="nv">log</span><span class="o">=</span>imaging_loop4.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">dc3dd 7.2.646 started at 2025-10-01 09:07:30 +0000
+</span></span><span class="line"><span class="cl">compiled options:
+</span></span><span class="line"><span class="cl"><span class="nb">command</span> line: dc3dd <span class="k">if</span><span class="o">=</span>/dev/loop4 <span class="nv">of</span><span class="o">=</span>loop4.img <span class="nv">log</span><span class="o">=</span>imaging_loop4.txt
+</span></span><span class="line"><span class="cl">device size: <span class="m">2097152</span> sectors <span class="o">(</span>probed<span class="o">)</span>,    1,073,741,824 bytes
+</span></span><span class="line"><span class="cl">sector size: <span class="m">512</span> bytes <span class="o">(</span>probed<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  <span class="m">1073741824</span> bytes <span class="o">(</span> <span class="m">1</span> G <span class="o">)</span> copied <span class="o">(</span> 100% <span class="o">)</span>,    <span class="m">5</span> s, <span class="m">208</span> M/s                   
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">input results <span class="k">for</span> device <span class="sb">`</span>/dev/loop4<span class="s1">&#39;:
+</span></span></span><span class="line"><span class="cl"><span class="s1">   2097152 sectors in
+</span></span></span><span class="line"><span class="cl"><span class="s1">   0 bad sectors replaced by zeros
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">output results for file `loop4.img&#39;</span>:
+</span></span><span class="line"><span class="cl">   <span class="m">2097152</span> sectors out
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">dc3dd completed at 2025-10-01 09:07:35 +0000
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">practical@ip-10-10-82-246:~$ ls -lah
+</span></span><span class="line"><span class="cl">total 1.1G
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">3</span> practical practical 4.0K Oct  <span class="m">1</span> 09:07 .
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">4</span> root      root      4.0K Jul <span class="m">15</span>  <span class="m">2024</span> ..
+</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> practical practical    <span class="m">5</span> Jul <span class="m">15</span>  <span class="m">2024</span> .bash_history
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> practical practical  <span class="m">220</span> Jul <span class="m">15</span>  <span class="m">2024</span> .bash_logout
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> practical practical 3.7K Jul <span class="m">15</span>  <span class="m">2024</span> .bashrc
+</span></span><span class="line"><span class="cl">drwx------ <span class="m">2</span> practical practical 4.0K Jul <span class="m">15</span>  <span class="m">2024</span> .cache
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> practical practical  <span class="m">807</span> Jul <span class="m">15</span>  <span class="m">2024</span> .profile
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> practical practical    <span class="m">0</span> Jul <span class="m">15</span>  <span class="m">2024</span> .sudo_as_admin_successful
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root      root       <span class="m">501</span> Oct  <span class="m">1</span> 09:07 imaging_loop4.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root      root      1.0G Oct  <span class="m">1</span> 09:07 loop4.img
+</span></span><span class="line"><span class="cl">practical@ip-10-10-82-246:~$ sudo md5sum loop4.img 
+</span></span><span class="line"><span class="cl">1fab86e499934dda789c9c4aaf27101d  loop4.img
+</span></span><span class="line"><span class="cl">practical@ip-10-10-82-246:~$ sudo mkdir -p /mnt/loop4
+</span></span><span class="line"><span class="cl">practical@ip-10-10-82-246:~$ sudo mount -o loop loop4.img /mnt/loop4
+</span></span><span class="line"><span class="cl">practical@ip-10-10-82-246:~$ ls /mnt/loop4/
+</span></span><span class="line"><span class="cl">flag.txt  lost+found  testpractical01  testpractical02  testpractical03  testpractical04  testpractical05
+</span></span><span class="line"><span class="cl">practical@ip-10-10-82-246:~$ cat /mnt/loop4/flag.txt 
+</span></span><span class="line"><span class="cl">THM<span class="o">{</span>well-done-imaginggggggg<span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/forensic/">Forensic</a>
+        
+            <a href="/tags/imagerie/">Imagerie</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Contenus liés</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/linux-investigation-des-logs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Investigation des Logs</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-surface-dincident/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Surface d&#39;Incident</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-analyse-de-processus/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Analyse de Processus</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Enzo Ribeiro
+    </section>
+    
+    <section class="powerby">
+        Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

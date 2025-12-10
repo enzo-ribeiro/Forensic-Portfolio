@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introduction La surface d&rsquo;incident fait référence aux points d&rsquo;entré du système.\nIl y a une différence entre Surface d&rsquo;Attaque et une Surface d&rsquo;Incident.\nSurface d&rsquo;Attaque :\nPorts ouverts Services de course Exécution de logiciels ou d&rsquo;applications présentant des vulnérabilités Communication réseau Face à la surface d&rsquo;attaque, le but est de la minimiser :\nIdentifier et corriger les vulnérabilités Minimiser l&rsquo;utilisation de services indésirables Vérifiez les interfaces avec lesquelles l&rsquo;utilisateur interagit Minimiser les services, applications, ports, etc. exposés publiquement Surface d&rsquo;Incident désigne elle, tous les domaines de système impliqué dans la détection, la gestion et la réponse à un incident de sécurité.\n">
+<title>Linux - Surface d&#39;Incident</title>
+
+<link rel='canonical' href='https://forensic.enzoribeiro.fr/p/linux-surface-dincident/'>
+
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Linux - Surface d'Incident">
+<meta property='og:description' content="Introduction La surface d&rsquo;incident fait référence aux points d&rsquo;entré du système.\nIl y a une différence entre Surface d&rsquo;Attaque et une Surface d&rsquo;Incident.\nSurface d&rsquo;Attaque :\nPorts ouverts Services de course Exécution de logiciels ou d&rsquo;applications présentant des vulnérabilités Communication réseau Face à la surface d&rsquo;attaque, le but est de la minimiser :\nIdentifier et corriger les vulnérabilités Minimiser l&rsquo;utilisation de services indésirables Vérifiez les interfaces avec lesquelles l&rsquo;utilisateur interagit Minimiser les services, applications, ports, etc. exposés publiquement Surface d&rsquo;Incident désigne elle, tous les domaines de système impliqué dans la détection, la gestion et la réponse à un incident de sécurité.\n">
+<meta property='og:url' content='https://forensic.enzoribeiro.fr/p/linux-surface-dincident/'>
+<meta property='og:site_name' content='KIRÔN'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Linux' /><meta property='article:tag' content='Forensic' /><meta property='article:tag' content='Analyse' /><meta property='article:published_time' content='2025-12-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-09T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Linux - Surface d'Incident">
+<meta name="twitter:description" content="Introduction La surface d&rsquo;incident fait référence aux points d&rsquo;entré du système.\nIl y a une différence entre Surface d&rsquo;Attaque et une Surface d&rsquo;Incident.\nSurface d&rsquo;Attaque :\nPorts ouverts Services de course Exécution de logiciels ou d&rsquo;applications présentant des vulnérabilités Communication réseau Face à la surface d&rsquo;attaque, le but est de la minimiser :\nIdentifier et corriger les vulnérabilités Minimiser l&rsquo;utilisation de services indésirables Vérifiez les interfaces avec lesquelles l&rsquo;utilisateur interagit Minimiser les services, applications, ports, etc. exposés publiquement Surface d&rsquo;Incident désigne elle, tous les domaines de système impliqué dans la détection, la gestion et la réponse à un incident de sécurité.\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/enzo-anime_hu_3208ab5a0ff05de9.png" width="300"
+                            height="386" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">KIRÔN</a></h1>
+            <h2 class="site-description">Mes notes en forensic</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/enzo-ribeiro'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.linkedin.com/in/enzo-ribeiro-bb8794209/'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.975,20.667H3.117V9.059H6.975ZM5.072,3.462a2.011,2.011,0,1,0-.051,4.012h.026a2.012,2.012,0,1,0,.025-4.012ZM9.111,20.667h3.858V14.185a2.639,2.639,0,0,1,.127-.941,2.111,2.111,0,0,1,1.98-1.411c1.4,0,1.955,1.064,1.955,2.625v6.209h3.858V14.011c0-3.565-1.9-5.225-4.442-5.225A3.828,3.828,0,0,0,12.97,10.7V9.059H9.111c.051,1.089,0,11.609,0,11.609Z"/></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/" selected>Français</option>
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/zh-cn/" >中文</option>
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Mode sombre</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#processus-et-communication-réseau">Processus et Communication Réseau</a>
+      <ol>
+        <li><a href="#analyse-dun-processus-simple">Analyse d&rsquo;un processus simple</a></li>
+        <li><a href="#analyse-dun-processus-avec-communication-réseau">Analyse d&rsquo;un processus avec communication réseau</a></li>
+      </ol>
+    </li>
+    <li><a href="#persistance">Persistance</a>
+      <ol>
+        <li><a href="#création-de-compte">Création de compte</a></li>
+        <li><a href="#cron-job">Cron job</a></li>
+        <li><a href="#services">Services</a></li>
+      </ol>
+    </li>
+    <li><a href="#footprint-sur-le-disque">Footprint sur le disque</a>
+      <ol>
+        <li><a href="#enquête-fictive-sur-un-paquet-malveillant">Enquête fictive sur un paquet malveillant</a></li>
+      </ol>
+    </li>
+    <li><a href="#logs-linux">Logs Linux</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" >
+                Linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/linux-surface-dincident/">Linux - Surface d&#39;Incident</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-12-09T00:00:00Z'>déc. 09, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    10 minutes de lecture
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="introduction">Introduction
+</h2><p>La surface d&rsquo;incident fait référence aux points d&rsquo;entré du système.</p>
+<p>Il y a une différence entre Surface d&rsquo;Attaque et une Surface d&rsquo;Incident.</p>
+<p>Surface d&rsquo;Attaque :</p>
+<ul>
+<li>Ports ouverts</li>
+<li>Services de course</li>
+<li>Exécution de logiciels ou d&rsquo;applications présentant des vulnérabilités</li>
+<li>Communication réseau</li>
+</ul>
+<p>Face à la surface d&rsquo;attaque, le but est de la minimiser :</p>
+<ul>
+<li>Identifier et corriger les vulnérabilités</li>
+<li>Minimiser l&rsquo;utilisation de services indésirables</li>
+<li>Vérifiez les interfaces avec lesquelles l&rsquo;utilisateur interagit</li>
+<li>Minimiser les services, applications, ports, etc. exposés publiquement</li>
+</ul>
+<p>Surface d&rsquo;Incident désigne elle, tous les domaines de système impliqué dans la détection, la gestion et la réponse à un incident de sécurité.</p>
+<p>Exemple de Surface d&rsquo;Incident :</p>
+<ul>
+<li>Journaux système</li>
+<li>auth.log, syslog, krnl.log, etc</li>
+<li>Trafic réseau</li>
+<li>Processus en cours d&rsquo;exécution</li>
+<li>Services de course</li>
+<li>L&rsquo;intégrité des fichiers et des processus</li>
+</ul>
+<p>Comprendre la surface de l’incident est essentiel pour répondre efficacement à une attaque en cours, atténuer les dommages, récupérer les systèmes affectés et appliquer les leçons apprises pour prévenir de futurs incidents.</p>
+<h2 id="processus-et-communication-réseau">Processus et Communication Réseau
+</h2><p>Les processus et la communication réseau sont essentiels à tout système d&rsquo;exploitation lors des enquêtes sur les incidents. La surveillance et l&rsquo;analyse des processus, notamment ceux liés à la communication réseau, peuvent contribuer à identifier et à résoudre les incidents de sécurité. Les processus en cours d&rsquo;exécution sont un élément clé de la surface d&rsquo;incident Linux , car ils peuvent constituer une source potentielle de preuves d&rsquo;une attaque.</p>
+<h3 id="analyse-dun-processus-simple">Analyse d&rsquo;un processus simple
+</h3><p>Pour commencer on compile le processus qui est un simple .c</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">gcc simple.c -o /tmp/simple
+</span></span><span class="line"><span class="cl">/tmp/simple
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Une fois la notre binaire lancé, nous ppouvons ouvrir un nouveau terminal et voir les processus en cours d&rsquo;exécution avec la commande <code>ps aux</code>:
+<img src="/p/linux-surface-dincident/SCR-20251004-lada.png"
+	width="1770"
+	height="802"
+	srcset="/p/linux-surface-dincident/SCR-20251004-lada_hu_85084d1d7c703cb7.png 480w, /p/linux-surface-dincident/SCR-20251004-lada_hu_d48f5a44539c200f.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="220"
+		data-flex-basis="529px"
+	
+></p>
+<ul>
+<li><code>a</code> : Affiche les processus pour tout les utilisateurs</li>
+<li><code>u</code> : Affiche le format orienté utilisateur (inclut l&rsquo;utilisateur et l&rsquo;heure de début)</li>
+<li><code>x</code> : Inclut les processus non attachés à un terminal</li>
+</ul>
+<p>La sortie de cette commande nous donne ces informations :
+Shows ps aux output</p>
+<p>La sortie fournit les informations suivantes :</p>
+<ul>
+<li>UTILISATEUR : L&rsquo;utilisateur qui possède le processus.</li>
+<li>PID : ID du processus.</li>
+<li>%CPU : pourcentage d&rsquo;utilisation du processeur.</li>
+<li>%MEM : Pourcentage d&rsquo;utilisation de la mémoire.</li>
+<li>VSZ : Taille de la mémoire virtuelle.</li>
+<li>RSS : Resident Set Size (mémoire actuellement utilisée).</li>
+<li>TTY : Terminal associé au processus.</li>
+<li>STAT : État du processus (par exemple, R pour exécution, S pour veille, Z pour zombie).</li>
+<li>START : Heure de début du processus.</li>
+<li>COMMANDE : Commande qui a démarré le processus</li>
+</ul>
+<p>Nous pouvons lier cette commande avec un <code>grep</code> pour avoir un résultat précis.
+Avec le <code>PID</code> nous pouvons faire une recherche plus appronfondie, comme les ressources qu&rsquo;utilse notre binaire. Nous allons faire ça avec la commande <code>lsof</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">lsof -p &lt;PID&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/linux-surface-dincident/SCR-20251004-lfdn.png"
+	width="1722"
+	height="440"
+	srcset="/p/linux-surface-dincident/SCR-20251004-lfdn_hu_5ae030f49cfa0fcb.png 480w, /p/linux-surface-dincident/SCR-20251004-lfdn_hu_fe265d328c659f76.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="391"
+		data-flex-basis="939px"
+	
+></p>
+<h3 id="analyse-dun-processus-avec-communication-réseau">Analyse d&rsquo;un processus avec communication réseau
+</h3><p>Dans la plupart des scénarios, les processus communicant avec un IP externe mérites d&rsquo;être examinés. Pour expliquer comment ça se passe nous allons exécuter un processus appelé <code>netcom</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">./netcom
+</span></span><span class="line"><span class="cl">ps aux
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/linux-surface-dincident/Pasted%20image%2020251004125812.png"
+	width="1832"
+	height="254"
+	srcset="/p/linux-surface-dincident/Pasted%20image%2020251004125812_hu_ee3cd97bf5a2fec.png 480w, /p/linux-surface-dincident/Pasted%20image%2020251004125812_hu_37a980506d6950fd.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="721"
+		data-flex-basis="1731px"
+	
+>Donc nous voyons bien la ligne concernant notre binaire.
+Il possède le PID 2130, mais nous allons d&rsquo;abord voir si une connexion vers l&rsquo;extérieur à lieu avec la commande suivante :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">lsof -i -P -n 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/linux-surface-dincident/Pasted%20image%2020251004130148.png"
+	width="1878"
+	height="226"
+	srcset="/p/linux-surface-dincident/Pasted%20image%2020251004130148_hu_252aa4eb2a35b79d.png 480w, /p/linux-surface-dincident/Pasted%20image%2020251004130148_hu_9aff8b7f1d992efd.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="830"
+		data-flex-basis="1994px"
+	
+></p>
+<ul>
+<li><code>lsof</code> : List Open Files, affiche les infos sur les fichiers ouvert par les processus</li>
+<li><code>i</code> : affiche les infos sur les connexions réseau, y compris les sockets</li>
+<li><code>P</code> : affiche les ports utilisés</li>
+<li><code>n</code> : transforme les nom DNS en IP</li>
+</ul>
+<p>Maintenant que nous savons qu&rsquo;il y a une connexion suspecte, nous allons utiliser l&rsquo;outil <code>osqueryi</code> :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">sudo osqueryi
+</span></span><span class="line"><span class="cl">SELECT pid, fd, socket, local_address, remote_address FROM process_open_sockets WHERE <span class="nv">pid</span> <span class="o">=</span> &lt;PID&gt;<span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/linux-surface-dincident/Pasted%20image%2020251005130848.png"
+	width="1446"
+	height="254"
+	srcset="/p/linux-surface-dincident/Pasted%20image%2020251005130848_hu_add901bd3022947b.png 480w, /p/linux-surface-dincident/Pasted%20image%2020251005130848_hu_b38d1718c51d73ec.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="569"
+		data-flex-basis="1366px"
+	
+></p>
+<p>Voici quand il est important d&rsquo;investiguer :</p>
+<ul>
+<li>Un processus exécuté à partir d&rsquo;un répertoire tmp (le contexte est important).</li>
+<li>Un processus parent-enfant suspect.</li>
+<li>Processus avec une connexion réseau suspecte.</li>
+<li>Processus orphelin. Tous les processus orphelins ne sont pas suspects, mais ceux qui ne sont associés à aucun processus parent après exécution méritent d&rsquo;être examinés.</li>
+<li>Processus suspects exécutés via une tâche cron .</li>
+<li>Processus ou binaires liés au système exécutés à partir du répertoire tmp ou des répertoires utilisateur.</li>
+</ul>
+<h2 id="persistance">Persistance
+</h2><p>La persistance désigne généralement les techniques utilisées par les adversaires pour maintenir l&rsquo;accès à un système compromis après l&rsquo;exploitation initiale. Pour comprendre comment différents incidents sont identifiés à différents points du poste Linux , nous commencerons par exécuter l&rsquo;attaque, puis examinerons où et comment les empreintes d&rsquo;attaque se reflètent.</p>
+<h3 id="création-de-compte">Création de compte
+</h3><p>Pour avoir une persistance sur un Endpoint Linux généralement les attaquants créer un utilisateur. Voici les commandes que l&rsquo;attaquant va utiliser :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">sudo useradd attacker -G sudo
+</span></span><span class="line"><span class="cl">sudo passwd attacker
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;attacker ALL=(ALL:ALL) ALL&#34;</span> <span class="p">|</span> sudo tee -a /etc/sudoers
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Pour analyser ces traces, nous allons examiner les logs du système. Pour nous rendre compte des différents logs que nous avons à notre disposition, nous pouvons nous rendre dans : <code>/var/log</code> :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nb">cd</span> /var/log/
+</span></span><span class="line"><span class="cl">ls -al
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">total <span class="m">3108</span>
+</span></span><span class="line"><span class="cl">drwxrwxr-x  <span class="m">16</span> root              syslog             <span class="m">4096</span> Sep  <span class="m">5</span> 00:00 .
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">14</span> root              root               <span class="m">4096</span> Feb <span class="m">27</span>  <span class="m">2022</span> ..
+</span></span><span class="line"><span class="cl">-rw-r--r--   <span class="m">1</span> root              root              <span class="m">35148</span> Aug <span class="m">20</span> 07:34 Xorg.0.log
+</span></span><span class="line"><span class="cl">-rw-r--r--   <span class="m">1</span> root              root             <span class="m">116188</span> Feb <span class="m">16</span>  <span class="m">2024</span> Xorg.0.log.old
+</span></span><span class="line"><span class="cl">-rw-r--r--   <span class="m">1</span> root              root                  <span class="m">0</span> Sep  <span class="m">1</span> 00:00 alternatives.log
+</span></span><span class="line"><span class="cl">-rw-r--r--   <span class="m">1</span> root              root               <span class="m">8021</span> Aug <span class="m">22</span> 06:57 alternatives.log.1
+</span></span><span class="line"><span class="cl">-rw-r--r--   <span class="m">1</span> root              root               <span class="m">3001</span> Feb <span class="m">16</span>  <span class="m">2024</span> alternatives.log.2.gz
+</span></span><span class="line"><span class="cl">drwxr--r-x   <span class="m">3</span> root              root               <span class="m">4096</span> Feb <span class="m">27</span>  <span class="m">2022</span> amazon
+</span></span><span class="line"><span class="cl">-rw-r-----   <span class="m">1</span> root              adm                   <span class="m">0</span> Aug <span class="m">20</span> 07:34 apport.log
+</span></span><span class="line"><span class="cl">-rw-r-----   <span class="m">1</span> root              adm                 <span class="m">398</span> Feb <span class="m">16</span>  <span class="m">2024</span> apport.log.1
+</span></span><span class="line"><span class="cl">drwxr-xr-x   <span class="m">2</span> root              root               <span class="m">4096</span> Sep  <span class="m">5</span> 06:52 apt
+</span></span><span class="line"><span class="cl">-rw-r-----   <span class="m">1</span> syslog            adm               <span class="m">46892</span> Sep  <span class="m">5</span> 21:30 auth.log
+</span></span><span class="line"><span class="cl">-rw-r-----   <span class="m">1</span> syslog            adm               <span class="m">72850</span> Aug <span class="m">31</span> 23:30 auth.log.1
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Dans ce cas nous pouvons regarder dans le fichier <code>auth.log</code> :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">sudo cat auth.log <span class="p">|</span> grep useradd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Sep  <span class="m">5</span> 21:18:19 tryhackme sudo:   ubuntu : <span class="nv">TTY</span><span class="o">=</span>pts/0 <span class="p">;</span> <span class="nv">PWD</span><span class="o">=</span>/home <span class="p">;</span> <span class="nv">USER</span><span class="o">=</span>root <span class="p">;</span> <span class="nv">COMMAND</span><span class="o">=</span>/usr/sbin/useradd attacker -G sudo
+</span></span><span class="line"><span class="cl">Sep  <span class="m">5</span> 21:18:19 tryhackme useradd<span class="o">[</span>184928<span class="o">]</span>: new group: <span class="nv">name</span><span class="o">=</span>attacker, <span class="nv">GID</span><span class="o">=</span><span class="m">1001</span>
+</span></span><span class="line"><span class="cl">Sep  <span class="m">5</span> 21:18:19 tryhackme useradd<span class="o">[</span>184928<span class="o">]</span>: new user: <span class="nv">name</span><span class="o">=</span>attacker, <span class="nv">UID</span><span class="o">=</span>1001, <span class="nv">GID</span><span class="o">=</span>1001, <span class="nv">home</span><span class="o">=</span>/home/attacker, <span class="nv">shell</span><span class="o">=</span>/bin/sh, <span class="nv">from</span><span class="o">=</span>/dev/pts/0
+</span></span><span class="line"><span class="cl">Sep  <span class="m">5</span> 21:18:45 tryhackme sudo:   ubuntu : <span class="nv">TTY</span><span class="o">=</span>pts/0 <span class="p">;</span> <span class="nv">PWD</span><span class="o">=</span>/home <span class="p">;</span> <span class="nv">USER</span><span class="o">=</span>root <span class="p">;</span> <span class="nv">COMMAND</span><span class="o">=</span>/usr/sbin/useradd attacker -G sudo
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Dans l&rsquo;output de la commande nous voir la création de l&rsquo;utilisateur en détail.</p>
+<p>Le fichier <code>/etc/passwd</code>peut également nous intéresser, car nous verrons tout les utilisateurs présent sur la machine :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">sudo /etc/passwd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">kernoops:x:113:65534:Kernel Oops Tracking Daemon,,,:/:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">lightdm:x:114:121:Light Display Manager:/var/lib/lightdm:/bin/false
+</span></span><span class="line"><span class="cl">whoopsie:x:115:123::/nonexistent:/bin/false
+</span></span><span class="line"><span class="cl">dnsmasq:x:116:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">avahi-autoipd:x:117:124:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">usbmux:x:118:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">rtkit:x:119:125:RealtimeKit,,,:/proc:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">avahi:x:120:126:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">fwupd-refresh:x:130:136:fwupd-refresh user,,,:/run/systemd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">attacker:x:1001:1001::/home/attacker:/bin/sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Dans cet output, nous pouvons voir ces détail :</p>
+<ul>
+<li>Nom d&rsquo;utilisateur.</li>
+<li>L&rsquo;espace réservé au mot de passe est représenté par x ou *, indiquant que le mot de passe est stocké dans le fichier /etc/shadow.</li>
+<li>ID utilisateur attribué à l&rsquo;utilisateur</li>
+<li>ID de groupe attribué à l&rsquo;utilisateur.</li>
+<li>Répertoire personnel de l&rsquo;utilisateur.</li>
+<li>Chemin vers le shell par défaut de l&rsquo;utilisateur.</li>
+</ul>
+<h3 id="cron-job">Cron job
+</h3><p>Cron est un planificateur de tâches basé sur le temps. Il va nous permettre d&rsquo;effectuer des tâches sans que nous intervenons sur le système (commandes, exécution de script &hellip;).</p>
+<p>La commande <code>crontab -e</code> nous permet d&rsquo;ajouter une tache cron, mais aussi de voir les tâches qui s&rsquo;exécute automatiquement.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">crontab -e
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Edit this file to introduce tasks to be run by cron. </span>
+</span></span><span class="line"><span class="cl"><span class="c1">#  </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Each task to run has to be defined through a single line </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># indicating with different fields when the task will be run </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># and what command to run for the task </span>
+</span></span><span class="line"><span class="cl"><span class="c1">#  </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># To define the time you can provide concrete values for # minute (m), hour (h), day of month (dom), month (mon), # and day of week (dow) or use &#39;*&#39; in these fields (for &#39;any&#39;). </span>
+</span></span><span class="line"><span class="cl"><span class="c1">#  </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Notice that tasks will be started based on the cron&#39;s system </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># daemon&#39;s notion of time and timezones. </span>
+</span></span><span class="line"><span class="cl"><span class="c1">#  </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Output of the crontab jobs (including errors) is sent through </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># email to the user the crontab file belongs to (unless redirected). </span>
+</span></span><span class="line"><span class="cl"><span class="c1">#  </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># For example, you can run a backup of all your user accounts </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># at 5 a.m every week with: # 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/ </span>
+</span></span><span class="line"><span class="cl"><span class="c1">#  </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># For more information see the manual pages of crontab(5) and cron(8) </span>
+</span></span><span class="line"><span class="cl"><span class="c1">#  </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># m h  dom mon dow   command </span>
+</span></span><span class="line"><span class="cl">@reboot /path/to/malicious/script.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ici, à chaque redémarrage, le script <code>script.sh</code> est lancé.
+Nous pouvons voir quel utilisateur à des tâches cron au chemin suivant : <code>/var/spool/cron/crontabs/</code>.</p>
+<h3 id="services">Services
+</h3><p>C&rsquo;est une autre méthode qui permet d&rsquo;assurer la persistance, tout comme la cron task ci dessus, les services vont nous permettent. La tâche s&rsquo;exécutera en arrière plan et à chaque démarrage de la machine.</p>
+<p>Pour analyser un service qui nous paraît suspect nous pouvons nous rendre dans <code>/etc/systemd/system/&lt;service qui nous paraît suspect&gt;</code>.
+<img src="/p/linux-surface-dincident/Pasted%20image%2020251005140053.png"
+	width="2464"
+	height="690"
+	srcset="/p/linux-surface-dincident/Pasted%20image%2020251005140053_hu_f4df8766ef18849e.png 480w, /p/linux-surface-dincident/Pasted%20image%2020251005140053_hu_a59ec42070265fea.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="357"
+		data-flex-basis="857px"
+	
+></p>
+<p>Ici le service benign.service est suspect :
+<img src="/p/linux-surface-dincident/Pasted%20image%2020251005140200.png"
+	width="1036"
+	height="476"
+	srcset="/p/linux-surface-dincident/Pasted%20image%2020251005140200_hu_8001c7e29c10de0a.png 480w, /p/linux-surface-dincident/Pasted%20image%2020251005140200_hu_738848432e0d0a75.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="217"
+		data-flex-basis="522px"
+	
+>
+pas d&rsquo;utilisateur, pas de groupe, lancement dans le /tmp tout paraît suspect.</p>
+<h2 id="footprint-sur-le-disque">Footprint sur le disque
+</h2><p>Des empreintes sur le système seront présentes, les plus évidente seront :</p>
+<ul>
+<li><code>/etc/passwd</code>: ce fichier contiendra des informations sur les comptes utilisateurs</li>
+<li><code>/etc/shadow</code>: il contiendra les mot de passe hachés des comptes</li>
+<li><code>/etc/group</code>: définit les groupes des utilisateurs</li>
+<li><code>/etc/sudoers</code>: configure les autorisations sudo</li>
+</ul>
+<h3 id="enquête-fictive-sur-un-paquet-malveillant">Enquête fictive sur un paquet malveillant
+</h3><ol>
+<li>Création du paquet
+1.1) Création des répertoires
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">mkdir malicious-packages
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> malicious-packages
+</span></span><span class="line"><span class="cl">mkdir DEBIAN
+</span></span></code></pre></td></tr></table>
+</div>
+</div>1.2) Création du fichier de contrôle
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nano control
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Package: malicious-package
+</span></span><span class="line"><span class="cl">Version: 1.0
+</span></span><span class="line"><span class="cl">Section: base
+</span></span><span class="line"><span class="cl">Priority: optional
+</span></span><span class="line"><span class="cl">Architecture: all
+</span></span><span class="line"><span class="cl">Maintainer: attacker@test.com
+</span></span><span class="line"><span class="cl">Description: This is a malicious Package
+</span></span></code></pre></td></tr></table>
+</div>
+</div>1.3) Ajout du script
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">nano postint
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#!/bin/bash</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Malicious post-installation script</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># It will run this script after installation</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Print a suspicious message - for demonstration</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;something suspicious&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>Rendre le script exécutable</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">chmod <span class="m">755</span> malicious-package/DEBIAN/postinst
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>Construire le paquet</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">dpkg-deb --build malicious-package
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>Installation du paquet</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">dpkg -i malicious-package.deb
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>Examen des log d&rsquo;installation</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">grep <span class="s2">&#34; install &#34;</span> /var/log/dpkg.log
+</span></span><span class="line"><span class="cl">2024-06-13 06:47:05 install linux-image-5.15.0-1063-aws:amd64 &lt;none&gt; 5.15.0-1063.69~20.04.1
+</span></span><span class="line"><span class="cl">2024-06-13 06:47:06 install linux-aws-5.15-headers-5.15.0-1063:all &lt;none&gt; 5.15.0-1063.69~20.04.1
+</span></span><span class="line"><span class="cl">2024-06-13 06:47:09 install linux-headers-5.15.0-1063-aws:amd64 &lt;none&gt; 5.15.0-1063.69~20.04.1
+</span></span><span class="line"><span class="cl">2024-06-24 19:17:39 install osquery:amd64 &lt;none&gt; 5.12.1-1.linux
+</span></span><span class="line"><span class="cl">2024-06-26 05:54:38 install sysstat:amd64 &lt;none&gt; 12.2.0-2ubuntu0.3
+</span></span><span class="line"><span class="cl">2024-06-26 14:32:05 install malicious-package:amd64 &lt;none&gt; 1.0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="logs-linux">Logs Linux
+</h2><ul>
+<li>
+<p>Syslog :</p>
+<ul>
+<li>Emplacement: <code>/var/log/syslog</code></li>
+<li>Ceci est utile pour identifier les événements, erreurs et avertissements à l&rsquo;échelle du système. Cela peut fournir des informations sur les problèmes liés aux composants ou services du système.</li>
+<li>Il contient des messages système généraux, notamment des messages du noyau, des services système et des journaux d&rsquo;application.</li>
+<li>Ce fichier journal est utile pour identifier les événements, les erreurs et les avertissements à l’échelle du système.</li>
+<li>Il peut fournir des informations sur les problèmes liés aux composants ou aux services du système.</li>
+</ul>
+</li>
+<li>
+<p>Messages :</p>
+<ul>
+<li>Emplacement: <code>/var/log/messages</code></li>
+<li>Similaire à <code>syslog</code>, ce fichier comprend les messages système et les journaux du noyau.</li>
+<li>Utile pour diagnostiquer les problèmes du système et suivre l&rsquo;activité du système.</li>
+<li>La découverte d’entrées inhabituelles liées à des erreurs matérielles ou de noyau peut signaler une tentative de falsification des composants du système.</li>
+<li>Par exemple, des messages répétés de panique du noyau pourraient indiquer une attaque par déni de service ciblant la stabilité du système.</li>
+</ul>
+</li>
+<li>
+<p>Authentification :</p>
+<ul>
+<li>Emplacement: <code>/var/log/auth.log</code></li>
+<li>Ce fichier enregistre les tentatives d&rsquo;authentification, y compris les tentatives de connexion réussies et échouées.</li>
+<li>Il s&rsquo;agit d&rsquo;un fichier journal important pour détecter les tentatives d&rsquo;accès non autorisées et les attaques par force brute.</li>
+<li>Par exemple, la détection de plusieurs tentatives de connexion infructueuses à partir d&rsquo;une adresse IP inconnue ou d&rsquo;heures de connexion inhabituelles peut indiquer une attaque par force brute ou une tentative d&rsquo;accès non autorisé.</li>
+</ul>
+</li>
+</ul>
+<p>Voici quelques exemples clés d’événements pouvant être classés comme incidents :</p>
+<ul>
+<li>Tentatives de connexion échouées.</li>
+<li>Tentative de connexion réussie mais à un moment inhabituel (après les heures de bureau ou le week-end -&gt; selon le contexte de l&rsquo;entreprise).</li>
+<li>Communication réseau suspecte.</li>
+<li>Erreurs système.</li>
+<li>Création de compte utilisateur sur le serveur sensible.</li>
+<li>Le trafic sortant est initié à partir du serveur Web.</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/forensic/">Forensic</a>
+        
+            <a href="/tags/analyse/">Analyse</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Contenus liés</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/linux-investigation-des-logs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Investigation des Logs</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-imagerie-forensic/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Imagerie Forensic</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-analyse-de-processus/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Analyse de Processus</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mobile-analyse-android/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Mobile - Analyse Android</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mobile-analyse-ios/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Mobile - Analyse iOS</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Enzo Ribeiro
+    </section>
+    
+    <section class="powerby">
+        Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

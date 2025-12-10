@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Tags on KIRÔN</title>
+        <link>https://forensic.enzoribeiro.fr/tags/</link>
+        <description>Recent content in Tags on KIRÔN</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>fr</language>
+        <copyright>Enzo Ribeiro</copyright>
+        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://forensic.enzoribeiro.fr/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Acquisition</title>
+        <link>https://forensic.enzoribeiro.fr/tags/acquisition/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/tags/acquisition/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Analyse</title>
+        <link>https://forensic.enzoribeiro.fr/tags/analyse/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/tags/analyse/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Android</title>
+        <link>https://forensic.enzoribeiro.fr/tags/android/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/tags/android/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Forensic</title>
+        <link>https://forensic.enzoribeiro.fr/tags/forensic/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/tags/forensic/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>IOS</title>
+        <link>https://forensic.enzoribeiro.fr/tags/ios/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/tags/ios/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Linux</title>
+        <link>https://forensic.enzoribeiro.fr/tags/linux/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/tags/linux/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Log</title>
+        <link>https://forensic.enzoribeiro.fr/tags/log/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/tags/log/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Mobile</title>
+        <link>https://forensic.enzoribeiro.fr/tags/mobile/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/tags/mobile/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Imagerie</title>
+        <link>https://forensic.enzoribeiro.fr/tags/imagerie/</link>
+        <pubDate>Mon, 08 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/tags/imagerie/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Processus</title>
+        <link>https://forensic.enzoribeiro.fr/tags/processus/</link>
+        <pubDate>Sun, 07 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/tags/processus/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>

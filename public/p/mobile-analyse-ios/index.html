@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introduction Depuis 2018, Apple impose un certificat de confiance, ce qui restreint l&rsquo;accès des appareils vers les iPhone. Cette fonctionnalité permet de désactivé/activé l&rsquo;entré/la sortie des données de l&rsquo;iPhone.\nUne fois le certificat validé par les deux appareils, nous pouvons le trouver (sur Windows dans le chemin ci-dessous) : C:\\ProgramData\\Apple\\Lockdow Info à savoir Ce certificat est valable pendant 30 jours. Il contient des identifiants unique du téléphone. Il est stocké sur l&rsquo;iPhone et sur le PC.\n">
+<title>Mobile - Analyse iOS</title>
+
+<link rel='canonical' href='https://forensic.enzoribeiro.fr/p/mobile-analyse-ios/'>
+
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Mobile - Analyse iOS">
+<meta property='og:description' content="Introduction Depuis 2018, Apple impose un certificat de confiance, ce qui restreint l&rsquo;accès des appareils vers les iPhone. Cette fonctionnalité permet de désactivé/activé l&rsquo;entré/la sortie des données de l&rsquo;iPhone.\nUne fois le certificat validé par les deux appareils, nous pouvons le trouver (sur Windows dans le chemin ci-dessous) : C:\\ProgramData\\Apple\\Lockdow Info à savoir Ce certificat est valable pendant 30 jours. Il contient des identifiants unique du téléphone. Il est stocké sur l&rsquo;iPhone et sur le PC.\n">
+<meta property='og:url' content='https://forensic.enzoribeiro.fr/p/mobile-analyse-ios/'>
+<meta property='og:site_name' content='KIRÔN'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='iOS' /><meta property='article:tag' content='Mobile' /><meta property='article:tag' content='Forensic' /><meta property='article:tag' content='Analyse' /><meta property='article:published_time' content='2025-12-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-09T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Mobile - Analyse iOS">
+<meta name="twitter:description" content="Introduction Depuis 2018, Apple impose un certificat de confiance, ce qui restreint l&rsquo;accès des appareils vers les iPhone. Cette fonctionnalité permet de désactivé/activé l&rsquo;entré/la sortie des données de l&rsquo;iPhone.\nUne fois le certificat validé par les deux appareils, nous pouvons le trouver (sur Windows dans le chemin ci-dessous) : C:\\ProgramData\\Apple\\Lockdow Info à savoir Ce certificat est valable pendant 30 jours. Il contient des identifiants unique du téléphone. Il est stocké sur l&rsquo;iPhone et sur le PC.\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/enzo-anime_hu_3208ab5a0ff05de9.png" width="300"
+                            height="386" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">KIRÔN</a></h1>
+            <h2 class="site-description">Mes notes en forensic</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/enzo-ribeiro'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.linkedin.com/in/enzo-ribeiro-bb8794209/'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.975,20.667H3.117V9.059H6.975ZM5.072,3.462a2.011,2.011,0,1,0-.051,4.012h.026a2.012,2.012,0,1,0,.025-4.012ZM9.111,20.667h3.858V14.185a2.639,2.639,0,0,1,.127-.941,2.111,2.111,0,0,1,1.98-1.411c1.4,0,1.955,1.064,1.955,2.625v6.209h3.858V14.011c0-3.565-1.9-5.225-4.442-5.225A3.828,3.828,0,0,0,12.97,10.7V9.059H9.111c.051,1.089,0,11.609,0,11.609Z"/></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/" selected>Français</option>
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/zh-cn/" >中文</option>
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Mode sombre</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction">Introduction</a>
+      <ol>
+        <li><a href="#info-à-savoir">Info à savoir</a></li>
+        <li><a href="#bloqué--débloqué">Bloqué &amp; Débloqué</a></li>
+        <li><a href="#classes-de-protection-des-données">Classes de protection des données</a></li>
+      </ol>
+    </li>
+    <li><a href="#préservation-des-preuve">Préservation des preuve</a></li>
+    <li><a href="#système-de-fichier">Système de fichier</a>
+      <ol>
+        <li><a href="#répertoire">Répertoire</a></li>
+        <li><a href="#type-de-fichiers">Type de fichiers</a></li>
+      </ol>
+    </li>
+    <li><a href="#artefacts">Artefacts</a>
+      <ol>
+        <li><a href="#répertoire-1">Répertoire</a></li>
+      </ol>
+    </li>
+    <li><a href="#analyse">Analyse</a></li>
+    <li><a href="#pratique">Pratique</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/mobile/" >
+                Mobile
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/mobile-analyse-ios/">Mobile - Analyse iOS</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-12-09T00:00:00Z'>déc. 09, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    8 minutes de lecture
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="introduction">Introduction
+</h2><p>Depuis 2018, Apple impose un certificat de confiance, ce qui restreint l&rsquo;accès des appareils vers les iPhone. Cette fonctionnalité permet de désactivé/activé l&rsquo;entré/la sortie des données de l&rsquo;iPhone.</p>
+<p>Une fois le certificat validé par les deux appareils, nous pouvons le trouver (sur Windows dans le chemin ci-dessous) :
+<code>C:\ProgramData\Apple\Lockdow</code>
+<img src="/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945.png"
+	width="888"
+	height="644"
+	srcset="/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945_hu_4af36508e5dd8b6f.png 480w, /p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945_hu_85cf5f70334bfb74.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="137"
+		data-flex-basis="330px"
+	
+></p>
+<h3 id="info-à-savoir">Info à savoir
+</h3><p>Ce certificat est valable pendant 30 jours.
+Il contient des identifiants unique du téléphone.
+Il est stocké sur l&rsquo;iPhone et sur le PC.</p>
+<h3 id="bloqué--débloqué">Bloqué &amp; Débloqué
+</h3><p>Lorsqu’un iPhone est protégé par un mécanisme d’authentification (Face ID, Touch ID ou code d’accès), l’appareil active automatiquement les protections associées à l’état <strong>« verrouillé »</strong>.<br>
+Ces méthodes d’authentification ne se limitent pas à empêcher un tiers d’accéder à l’appareil : elles renforcent également la sécurité en arrière-plan grâce à plusieurs mécanismes supplémentaires.</p>
+<p>Le tableau ci-dessous présente un aperçu des protections disponibles lorsque l’iPhone est dans cet état.</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>Protection</strong></th>
+          <th><strong>Explication</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Chiffrement du fichier</td>
+          <td>Tous les fichiers sur l&rsquo;iPhone sont cryptés au repos. L&rsquo;authentification doit pouvoir lire les données dans les fichiers.</td>
+      </tr>
+      <tr>
+          <td>Accessibilité des fichiers</td>
+          <td>Fichiers avec le <code>NSFileProtectionComplete</code>la classe de protection des données et les autres sont inaccessibles. Seuls les fichiers marqués de la <code>NSFileProtectionNone</code>sont accessibles dans cet état.</td>
+      </tr>
+      <tr>
+          <td>Accès matériel</td>
+          <td>Par défaut, l&rsquo;accès à des composants matériels &ldquo;sensibles&rdquo; tels que le microphone, la caméra, etc., les nouveaux appariements Bluetooth sont refusés.</td>
+      </tr>
+      <tr>
+          <td>Accès aux applications</td>
+          <td>Les fonctions d&rsquo;application qui s&rsquo;exécutent en arrière-plan (i.e. La musique, les cartes &ldquo;témoillaire&rdquo;, etc.) ne sont autorisées à circuler que dans cet état.</td>
+      </tr>
+      <tr>
+          <td>Accès à la chaîne de clés</td>
+          <td>Le porte-clés iOS (c&rsquo;est-à-dire les mots de passe stockés) n&rsquo;est accessible qu&rsquo;après que l&rsquo;appareil est entré dans l&rsquo;état &ldquo;Débloqué&rdquo;.</td>
+      </tr>
+      <tr>
+          <td>Confiance et appariement</td>
+          <td>La mise en place de l&rsquo;iPhone dans des appareils pour lesquels il n&rsquo;existe pas de certificat de confiance nécessite l&rsquo;authentification de l&rsquo;utilisateur.</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="classes-de-protection-des-données">Classes de protection des données
+</h3><p>iOS fait une étape supplémentaire en matière de sécurité en introduisant des Classes de Protection des Données. Ces classes sont des politiques appliquées aux dossiers qui déterminent:</p>
+<ul>
+<li>Lorsque le fichier peut être lu ou écrit</li>
+<li>Lorsque la clé de chiffrement devient disponible pour déverrouiller le fichier</li>
+</ul>
+<p>Le tableau ci-dessous résume les quatre classes primaires de protection des données.</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>Classe de protection des données</strong></th>
+          <th><strong>Exemple</strong></th>
+          <th><strong>État requis</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>NSFileProtectionNone</td>
+          <td>Cache.</td>
+          <td>Aucune - toujours accessible.</td>
+      </tr>
+      <tr>
+          <td>NSFileProtectionComplète UnlessOpen</td>
+          <td>Des applications qui jouent de l&rsquo;audio et de la vidéo, permettant aux médias de diffuser en continu lorsque l&rsquo;appareil est verrouillé.</td>
+          <td>Exige que le fichier soit ouvert en déverrouillé, mais reste accessible après verrouillage de l&rsquo;appareil.</td>
+      </tr>
+      <tr>
+          <td>NSFileProtectionCompleteUntilFirstAuthentication</td>
+          <td>Lecture et écriture des données en arrière-plan (par exemple, nombre d&rsquo;étapes, notifications).</td>
+          <td>Le dispositif doit être déverrouillé une fois après le démarrage, mais le fichier reste accessible même après qu&rsquo;il soit verrouillé ultérieurement.</td>
+      </tr>
+      <tr>
+          <td>NSFileProtectionComplete</td>
+          <td>Domimtiques, messages, données sanitaires.</td>
+          <td>Exige que l&rsquo;appareil soit déverrouillé.</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="préservation-des-preuve">Préservation des preuve
+</h2><p>Sur un iPhone il y a plusieurs manières de supprimer des preuves à distance (comme la fonctionnalité supprimer cet appareil dans l&rsquo;application <code>Find My</code>. Ces méthodes sont présente pour ne pas donné d&rsquo;information personnel en cas de vol.</p>
+<p>Pour ce protéger de la suppression d&rsquo;un appareil à distance nous pouvons le placer dans une cage de faraday (ou un sac de faraday).</p>
+<h2 id="système-de-fichier">Système de fichier
+</h2><p>Sur un iPhone disposant d&rsquo;un système ultérieur à 10.3 (2017), le système de fichier sera APFS. Si le système est antérieur à 10.3, le système de fichier sera HFS.</p>
+<p>A savoir sur HFS :</p>
+<ul>
+<li>n&rsquo;est pas chiffré</li>
+<li>n&rsquo;a pas de checksum</li>
+</ul>
+<p>A savoir sur APFS :</p>
+<ul>
+<li>Chiffrement complet du disque</li>
+<li>Une gestion plus intelligente des données</li>
+<li>Utilise la structure de partition GPT</li>
+<li>A un checksum</li>
+<li>Et de nombreux mécanismes de protection contre les accidents (tels que la protection des métadonnées)</li>
+</ul>
+<p>Pour information, les applications installé sur un iPhone n&rsquo;as pas un accès direct au système de fichier. Elles s&rsquo;exécutent dans une sandbox avec un système de fichier &ldquo;virtuel&rdquo; que seul l&rsquo;app peut voir.</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>Domaine</strong></th>
+          <th><strong>Description</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Données</td>
+          <td>Stocke les données d&rsquo;application, les paramètres et les fichiers d&rsquo;utilisateurs.</td>
+      </tr>
+      <tr>
+          <td>Cache</td>
+          <td>Stocke des fichiers temporaires tels que des fichiers mis en cache à partir du navigateur web.</td>
+      </tr>
+      <tr>
+          <td>Système</td>
+          <td>Ce domaine stocke des fichiers essentiels liés au système d&rsquo;exploitation. Normalement, il est en lecture seule pour protéger la sécurité du système d&rsquo;exploitation.</td>
+      </tr>
+      <tr>
+          <td>Partage</td>
+          <td>Ce domaine permet de partager les données provenant d&rsquo;applications réalisées par le même développeur (groupe d&rsquo;applications).</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="répertoire">Répertoire
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Répertoire</th>
+          <th>Contexte</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>/System/Bibliothèque/</td>
+          <td>Système</td>
+          <td>Les données qui sont essentielles pour le système d&rsquo;exploitation iOS (telles que les polices, les cadres système, les composants d&rsquo;interfaces utilisateur, etc.) sont stockées ici.</td>
+      </tr>
+      <tr>
+          <td>/tmp/</td>
+          <td>Système</td>
+          <td>Les fichiers temporaires relatifs au fonctionnement normal de l&rsquo;iPhone sont stockés ici. Il s&rsquo;agit notamment des téléchargements en cours, des journaux, des vidanges de crash, des caches, etc.</td>
+      </tr>
+      <tr>
+          <td>/System/Applications/</td>
+          <td>Système</td>
+          <td>Ce répertoire est l&rsquo;endroit où sont stockées les données pour des applications système pré-installées telles que Weather, Clock, Wallet, etc.</td>
+      </tr>
+      <tr>
+          <td>/Conteneurs/Données/Application/</td>
+          <td>Utilisateur</td>
+          <td>Des applications non par défaut telles que celles de l&rsquo;App Store sont stockées ici. Il est important de noter que, en raison du bac à sable, les applications ne peuvent pas accéder aux données d&rsquo;une autre application. Le bac à sable est expliqué plus loin.</td>
+      </tr>
+      <tr>
+          <td>/Médies/</td>
+          <td>Utilisateur</td>
+          <td>Des médias tels que des photos et des vidéos du rouleau de la caméra (y compris des métadonnées), ainsi que des enregistrements audio et des livres électroniques sont stockés ici.</td>
+      </tr>
+      <tr>
+          <td>/Bibliothèque/</td>
+          <td>Utilisateur</td>
+          <td>Les données d&rsquo;application telles que le carnet d&rsquo;adresses, le calendrier, les SMS, le téléphone, les préférences, le safari, etc., sont stockées ici.</td>
+      </tr>
+      <tr>
+          <td>/Documents/</td>
+          <td>Utilisateur</td>
+          <td>Les fichiers téléchargés ou les fichiers créés par l&rsquo;utilisateur sont stockés ici. Par exemple, les fichiers PDF, MP4/MP3, les téléchargements de Safari, etc.</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="type-de-fichiers">Type de fichiers
+</h3><p>La majorité des fichiers que nous trouverons serions au format Plists, XML et SQLites.</p>
+<h2 id="artefacts">Artefacts
+</h2><p>Nous allons voir où se trouve les différentes information importante :</p>
+<ul>
+<li>Contacts : <code>/HomeDomain/Library/AddressBook</code> SQLite</li>
+<li>Photos : <code>/CameraRollDomain/Media/DCIM</code> (HEIC)</li>
+<li>Calendrier : <code>/HomeDomain/Library/Calendar</code> SQLite</li>
+<li>WiFi : <code>/SystemPreferencesDomain</code> (Plists)</li>
+<li>Navigateur : <code>/HomeDomain/Library/Safari</code></li>
+</ul>
+<h3 id="répertoire-1">Répertoire
+</h3><ul>
+<li><code>/var/mobile</code> :</li>
+</ul>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>Données</strong></th>
+          <th><strong>Description</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Documents</td>
+          <td>Fichiers créés soit par l&rsquo;utilisateur, soit par l&rsquo;application (sauvegarder des fichiers, fichiers PDF sauvegardés, etc.).</td>
+      </tr>
+      <tr>
+          <td>Bibliothèque</td>
+          <td>Configuration et fichiers cache pour l&rsquo;OS.</td>
+      </tr>
+      <tr>
+          <td>Tmp</td>
+          <td>Dossiers temporaires habituellement utilisés par les demandes.</td>
+      </tr>
+      <tr>
+          <td>Données de l&rsquo;utilisateur</td>
+          <td>Téléchargements d&rsquo;utilisateurs ainsi que photos, vidéos et autres médias.</td>
+      </tr>
+  </tbody>
+</table></div>
+<ul>
+<li><code>/var/keychains</code> :</li>
+</ul>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>Données</strong></th>
+          <th><strong>Description</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Mots de passe</td>
+          <td>Ce répertoire stocke des informations d&rsquo;identification sauvegardées (pour les sites web, etc.) connues sous le nom d&rsquo;Apple.</td>
+      </tr>
+      <tr>
+          <td>Certificats</td>
+          <td>Cet annuaire stocke des certificats SSL/TLS pour des applications web, des VPN, etc.</td>
+      </tr>
+      <tr>
+          <td>Clés de cryptage et jetons</td>
+          <td>Cet annuaire stocke diverses clés publiques ainsi que des jetons OAuth et autres.</td>
+      </tr>
+  </tbody>
+</table></div>
+<ul>
+<li><code>/var/logs</code> :</li>
+</ul>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>Données</strong></th>
+          <th><strong>Description</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Logements de réseau</td>
+          <td>Ces types de logs se rapportent aux performances et aux événements du système, ainsi qu&rsquo;à un enregistrement des événements déclenchés par le noyau.</td>
+      </tr>
+      <tr>
+          <td>Loges d&rsquo;application</td>
+          <td>Les applications stockent leurs journaux dans ce répertoire. Il peut s&rsquo;agir de traces de cheminées et d&rsquo;informations de débogage en cas d&rsquo;accident d&rsquo;application.</td>
+      </tr>
+      <tr>
+          <td>Débogage</td>
+          <td>Ces types de journaux conservent des informations sur les événements du système qui peuvent être utilisés dans le débogage, tels que l&rsquo;activité réseau, les applications en cours d&rsquo;exécution et une chronologie des événements.</td>
+      </tr>
+      <tr>
+          <td>Actualisation des journaux</td>
+          <td>Ces journaux contiennent des informations spécifiquement pour les mises à jour, c&rsquo;est-à-dire la vérification des mises à jour et le stockage des informations lors de la mise à jour de l&rsquo;iPhone.</td>
+      </tr>
+  </tbody>
+</table></div>
+<ul>
+<li><code>/var/db</code> :</li>
+</ul>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>Données</strong></th>
+          <th><strong>Description</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Bases de données de systèmes</td>
+          <td>Des informations telles que les contacts, les messages et les entrées de calendrier sont stockées dans ces bases de données.</td>
+      </tr>
+      <tr>
+          <td>Bases de données d&rsquo;application</td>
+          <td>Les applications stockent leurs données dans ces bases de données, telles que la progression du jeu, une liste de contacts, de boîtes aux lettres, etc.</td>
+      </tr>
+      <tr>
+          <td>Métadonnées</td>
+          <td>Les informations relatives aux métadonnées pour les médias (photos, vidéos) sont stockées ici, telles que le temps nécessaire, l&rsquo;emplacement, etc.</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="analyse">Analyse
+</h2><p>Pour l&rsquo;analyse nous avons plusieurs outils. La librairie <code>libimobiledevice</code>, outil en CLI qui s&rsquo;utilise comme montré ci-dessous :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">&gt; ideviceinfo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ActivationState: Activated
+</span></span><span class="line"><span class="cl">ActivationStateAcknowledged: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">ChipSerialNo: 00EAaUAXXXXXXX
+</span></span><span class="line"><span class="cl">DeviceClass: iPhone
+</span></span><span class="line"><span class="cl">DeviceColor: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">DeviceName: iPhone
+</span></span><span class="line"><span class="cl">PasswordProtected: <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">PhoneNumber: +44 REDACTED
+</span></span><span class="line"><span class="cl">PkHash: Hz9b38WSRXREDACTED
+</span></span><span class="line"><span class="cl">ProductName: iPhone OS
+</span></span><span class="line"><span class="cl">ProductType: iPhone10,5
+</span></span><span class="line"><span class="cl">ProductVersion: 14.6
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>La sauvegarde se fait avec la commande suivante :
+`</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">idevicebackup2 backup --full ./backup
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Nous pouvons utiliser un outil en GUI, 3uTools.</p>
+<p>Pour l&rsquo;analyse existe un outil du nom de iLEAPP (la version apple de a LEAPP).</p>
+<h2 id="pratique">Pratique
+</h2><p>J&rsquo;ai un dump d&rsquo;un téléphone. On me demande de trouver sur quel réseau Wi-Fi il est connecté :
+Sur la machine que nous possédons, nous avons un .exe qui se nomme strings64.exe pour nous aider à trouver les flags nécessaire.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">strings64</span><span class="o">.</span><span class="n">exe</span> <span class="n">com</span><span class="o">.</span><span class="n">apple</span><span class="o">.</span><span class="n">wifi</span><span class="o">.</span><span class="n">known</span><span class="o">-</span><span class="n">networks</span><span class="o">.</span><span class="n">plist</span>
+</span></span><span class="line"><span class="cl"><span class="n">bplist00</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;Sm_</span>
+</span></span><span class="line"><span class="cl"><span class="n">wifi</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">ssid</span><span class="o">.</span><span class="n">Wifi</span> <span class="n">Extra_</span>
+</span></span><span class="line"><span class="cl"><span class="n">wifi</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">ssid</span><span class="o">.</span><span class="n">OneMinuteStaff_</span>
+</span></span><span class="line"><span class="cl"><span class="n">wifi</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">ssid</span><span class="o">.</span> <span class="n">Wifi</span> <span class="n">Extra_</span>
+</span></span><span class="line"><span class="cl"><span class="n">wifi</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">ssid</span><span class="o">.</span><span class="n">Wifi</span><span class="o">+</span>
+</span></span><span class="line"><span class="cl"> <span class="o">!</span><span class="n">YAddReasonVHiddenZEAPProfile_</span>
+</span></span><span class="line"><span class="cl"><span class="n">PasspointSPRoamingEnabledYUpdatedAtTSSIDWAddedAt</span><span class="o">^</span><span class="n">__OSSpecific___</span>
+</span></span><span class="line"><span class="cl"><span class="n">SupportedSecurityTypes</span><span class="p">[</span><span class="n">PayloadUUID</span><span class="o">^</span><span class="n">Carrier</span> <span class="n">Bundle</span>
+</span></span><span class="line"><span class="cl"><span class="o">^</span><span class="n">AcceptEAPTypes</span>
+</span></span><span class="line"><span class="cl"><span class="n">JWifi</span> <span class="n">Extra3A</span>
+</span></span><span class="line"><span class="cl"><span class="n">WAP_MODE_</span>
+</span></span><span class="line"><span class="cl"><span class="o">%</span><span class="n">DisableWiFiAutoJoinUntilFirstUserJoin</span>
+</span></span><span class="line"><span class="cl"><span class="n">WPA</span><span class="o">/</span><span class="n">WPA2</span> <span class="n">Enterprise_</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">BBDC8872</span><span class="o">-</span><span class="mi">781</span><span class="n">A</span><span class="o">-</span><span class="mi">4</span><span class="n">DF4</span><span class="o">-</span><span class="n">AAB8</span><span class="o">-</span><span class="n">E8C91F549B7B</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#$%&amp;&#39;()*+,-</span>
+</span></span><span class="line"><span class="cl"><span class="mi">012</span><span class="n">MNORYAddReasonVHidden</span><span class="p">[</span><span class="n">LowDataModeTSSIDWAddedAt</span><span class="o">^</span><span class="n">__OSSpecific__</span><span class="o">^</span><span class="n">JoinedByUserAt_</span>
+</span></span><span class="line"><span class="cl"><span class="n">SupportedSecurityTypes</span><span class="o">^</span><span class="n">CaptiveProfileYUpdatedAt</span><span class="p">]</span><span class="n">WiFi</span> <span class="n">Settings</span>
+</span></span><span class="line"><span class="cl"><span class="n">KBens</span> <span class="n">Iphone3A</span>
+</span></span><span class="line"><span class="cl"><span class="mi">3456789</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">@</span><span class="n">C</span>
+</span></span><span class="line"><span class="cl"><span class="n">WiFiNetworkAttributeIsMoving_</span>
+</span></span><span class="line"><span class="cl"> <span class="n">BEACON_PROBE_INFO_PER_BSSID_LISTUBSSID_</span>
+</span></span><span class="line"><span class="cl"><span class="n">networkKnownBSSListKey_</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">WiFiNetworkAttributeProminentDisplayWCHANNEL_</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#WiFiNetworkPasswordModificationDateWAP_MODE</span>
+</span></span><span class="line"><span class="cl"><span class="mi">5</span><span class="o">&gt;</span><span class="err">?@</span>
+</span></span><span class="line"><span class="cl"><span class="n">OTA_SYSTEM_INFO_SENT_</span>
+</span></span><span class="line"><span class="cl"> <span class="n">OTA_SYSTEM_INFO_BEACON_ONLY_SENT_</span>
+</span></span><span class="line"><span class="cl"><span class="n">e2</span><span class="p">:</span><span class="mi">89</span><span class="p">:</span><span class="n">ce</span><span class="p">:</span><span class="mi">37</span><span class="p">:</span><span class="n">cf</span><span class="p">:</span><span class="n">a6</span>
+</span></span><span class="line"><span class="cl"><span class="n">EF85GHIJ</span><span class="p">]</span><span class="n">CHANNEL_FLAGSZlastRoamed</span>
+</span></span><span class="line"><span class="cl"><span class="n">e2</span><span class="p">:</span><span class="mi">89</span><span class="p">:</span><span class="n">ce</span><span class="p">:</span><span class="mi">37</span><span class="p">:</span><span class="n">cf</span><span class="p">:</span><span class="n">a6</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span><span class="n">WPA2</span> <span class="n">Personal</span>
+</span></span><span class="line"><span class="cl"><span class="o">^</span><span class="n">CaptiveNetwork</span>
+</span></span><span class="line"><span class="cl"><span class="n">TUVWXYZ</span><span class="p">[</span>\<span class="p">]</span><span class="o">^</span>
+</span></span><span class="line"><span class="cl"><span class="n">defgklYAddReasonVHiddenZEAPProfile_</span>
+</span></span><span class="line"><span class="cl"><span class="n">PasspointSPRoamingEnabledYUpdatedAtTSSIDWAddedAt</span><span class="o">^</span><span class="n">__OSSpecific___</span>
+</span></span><span class="line"><span class="cl"><span class="n">SupportedSecurityTypes</span><span class="p">[</span><span class="n">PayloadUUID</span><span class="o">^</span><span class="n">Carrier</span> <span class="n">Bundle</span>
+</span></span><span class="line"><span class="cl"><span class="n">ab</span><span class="o">^</span><span class="n">AcceptEAPTypes</span>
+</span></span><span class="line"><span class="cl"><span class="n">K</span> <span class="n">Wifi</span> <span class="n">Extra3A</span>
+</span></span><span class="line"><span class="cl"><span class="n">WAP_MODE_</span>
+</span></span><span class="line"><span class="cl"><span class="o">%</span><span class="n">DisableWiFiAutoJoinUntilFirstUserJoin</span>
+</span></span><span class="line"><span class="cl"><span class="n">WPA</span><span class="o">/</span><span class="n">WPA2</span> <span class="n">Enterprise_</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="mi">9</span><span class="n">F1520B9</span><span class="o">-</span><span class="mi">4397</span><span class="o">-</span><span class="mf">4E78</span><span class="o">-</span><span class="mi">86</span><span class="n">BB</span><span class="o">-</span><span class="mi">5</span><span class="n">FA33CD958EC</span>
+</span></span><span class="line"><span class="cl"><span class="n">nopqrstuvwx</span>
+</span></span><span class="line"><span class="cl"><span class="n">YAddReasonVHiddenZEAPProfile_</span>
+</span></span><span class="line"><span class="cl"><span class="n">PasspointSPRoamingEnabledYUpdatedAtTSSIDWAddedAt</span><span class="o">^</span><span class="n">__OSSpecific___</span>
+</span></span><span class="line"><span class="cl"><span class="n">SupportedSecurityTypes</span><span class="p">[</span><span class="n">PayloadUUID</span><span class="o">^</span><span class="n">Carrier</span> <span class="n">Bundle</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="o">|^</span><span class="n">AcceptEAPTypes</span>
+</span></span><span class="line"><span class="cl"><span class="n">EWifi</span><span class="o">+</span><span class="mi">3</span><span class="n">A</span>
+</span></span><span class="line"><span class="cl"><span class="n">WAP_MODE_</span>
+</span></span><span class="line"><span class="cl"><span class="o">%</span><span class="n">DisableWiFiAutoJoinUntilFirstUserJoin</span>
+</span></span><span class="line"><span class="cl"><span class="n">WPA</span><span class="o">/</span><span class="n">WPA2</span> <span class="n">Enterprise_</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">AB504232</span><span class="o">-</span><span class="mi">98</span><span class="n">FF</span><span class="o">-</span><span class="mi">4</span><span class="n">BDC</span><span class="o">-</span><span class="n">B68D</span><span class="o">-</span><span class="mi">8203</span><span class="n">C4358A6E</span>
+</span></span><span class="line"><span class="cl"><span class="mi">0</span><span class="n">Pp</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ici 4 SSID ressortes grâce au préfixe <code>wifi.network.ssid.</code>. Celui qui nous intéresse est <code>OneMinuteStaff</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Q : What is the name (SSID) of the Wi-Fi network the iPhone connected to?
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">A : OneMinuteStaff
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ensuite, on nous demande de qui est notre principal concurrent enregistré dans nos contacts.
+On se rend dans l&rsquo;AdressBook Grâce à SQLite. et on voir qu&rsquo;une seule personne qui travaille dans la même société que nous <code>Wayne Garcey</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">Q : What are the saved contact details for the competitor? 
+</span></span><span class="line"><span class="cl">Answer format: Firstname,Lastname
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">A : Wayne,Garcey
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Pour finir on nous demande de retrouver la date de l&rsquo;échange.
+Dans la base Calendar.sqlite.db nous avons une table CalendarItem, si on va dessus et que nous cherchons dans ma colonne id <code>1</code> nous pouvons tomber sur la date du <code>30/03/2024</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">Q : On what day was the exchange of information to take place?
+</span></span><span class="line"><span class="cl">Answer format: DD/MM/YYYY
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">A : 30/03/2024
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/ios/">IOS</a>
+        
+            <a href="/tags/mobile/">Mobile</a>
+        
+            <a href="/tags/forensic/">Forensic</a>
+        
+            <a href="/tags/analyse/">Analyse</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Contenus liés</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/mobile-analyse-android/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Mobile - Analyse Android</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mobile-acquisition/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Mobile - Acquisition</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-investigation-des-logs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Investigation des Logs</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-surface-dincident/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Surface d&#39;Incident</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Enzo Ribeiro
+    </section>
+    
+    <section class="powerby">
+        Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

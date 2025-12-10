@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Log on KIRÔN</title>
+        <link>https://forensic.enzoribeiro.fr/tags/log/</link>
+        <description>Recent content in Log on KIRÔN</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>fr</language>
+        <copyright>Enzo Ribeiro</copyright>
+        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://forensic.enzoribeiro.fr/tags/log/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Linux - Investigation des Logs</title>
+        <link>https://forensic.enzoribeiro.fr/p/linux-investigation-des-logs/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/p/linux-investigation-des-logs/</guid>
+        <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
+&lt;/h2&gt;&lt;p&gt;Dans le monde Linux comprendre les logs revient à comprendre comment le système fonctionne. Les logs nous permettent de remonter les historiques d&amp;rsquo;activités, les erreurs et les événements système.&lt;/p&gt;
+&lt;h3 id=&#34;les-types-de-logs&#34;&gt;Les types de logs
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Kernel : Offrent un accès direct au fonctionnement interne de votre système, donnent des informations au niveau du matériel, des drivers et des erreurs système&lt;/li&gt;
+&lt;li&gt;Utilisateur : enregistrent les interactions entre les utilisateurs, les applications et le système d&amp;rsquo;exploitation, inclus les connexions, les exécution de commandes &amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;niveaux-de-log&#34;&gt;Niveaux de log
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Niveau&lt;/th&gt;
+          &lt;th&gt;Description&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;EMERGENCY&lt;/td&gt;
+          &lt;td&gt;Niveau le plus élevé, apparait quand le système est inutilisable ou crash&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ALERT&lt;/td&gt;
+          &lt;td&gt;Fournit des informations là où l&amp;rsquo;attention de l&amp;rsquo;utilisateur est requise immédiatement&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;CRITICAL&lt;/td&gt;
+          &lt;td&gt;Fournit des informations sur les erreus critiques&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ERROR&lt;/td&gt;
+          &lt;td&gt;Avertit les utilisateur des erreurs non critique&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;WARNING&lt;/td&gt;
+          &lt;td&gt;Affiche les avertissements d&amp;rsquo;erreur non imminentes&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;NOTICE&lt;/td&gt;
+          &lt;td&gt;Avertit des événements qui mérite d&amp;rsquo;être examiné&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;INFO&lt;/td&gt;
+          &lt;td&gt;Fournit des informations sur les actions et les opérations du système&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;DEBUG&lt;/td&gt;
+          &lt;td&gt;Information détaillé pour le débogage&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;log-kernel&#34;&gt;Log Kernel
+&lt;/h3&gt;&lt;p&gt;Le kernel est le coeur du système, il orchestre les interactions matérielles, la gestion des processus et l&amp;rsquo;allocation des ressources. Ces logs nous offres un accès direct au fonctionnement du système.&lt;/p&gt;
+&lt;p&gt;Nous pouvons examiner ces logs avec la commande &lt;code&gt;dmesg&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;repertoire-varlog&#34;&gt;Repertoire &lt;code&gt;/var/log&lt;/code&gt;
+&lt;/h2&gt;&lt;p&gt;Ces logs sont indispensables dans une investigation, car il renferme des informations sur les activités, les événements du système, des enregistrements de processus, des activités utilisateurs, des connexions réseaux et bien plus encore.&lt;/p&gt;
+&lt;h3 id=&#34;kernlog--dmesg&#34;&gt;&lt;code&gt;Kern.log&lt;/code&gt; &amp;amp; &lt;code&gt;dmesg&lt;/code&gt;
+&lt;/h3&gt;&lt;p&gt;Le fichier &lt;code&gt;Kern.log&lt;/code&gt; est dédié à l&amp;rsquo;enregistrement des messages du noyau. Il est essentiel pour diagnostiquer les pannes matérielles.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ tail -f /var/log/kern.log
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 10:54:13 tryhackme kernel: raid6: sse2x1   gen&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;4131&lt;/span&gt; MB/s
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 10:54:13 tryhackme kernel: raid6: sse2x1   xor&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;3083&lt;/span&gt; MB/s
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 10:54:13 tryhackme kernel: raid6: using algorithm avx2x1 gen&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;9658&lt;/span&gt; MB/s
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 10:54:13 tryhackme kernel: raid6: .... xor&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;4742&lt;/span&gt; MB/s, rmw enabled
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 10:54:13 tryhackme kernel: raid6: using avx2x2 recovery algorithm
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 10:54:13 tryhackme kernel: xor: automatically using best checksumming &lt;span class=&#34;k&#34;&gt;function&lt;/span&gt;   avx       
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 10:54:13 tryhackme kernel: Btrfs loaded, &lt;span class=&#34;nv&#34;&gt;crc32c&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;crc32c-intel, &lt;span class=&#34;nv&#34;&gt;zoned&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;yes, &lt;span class=&#34;nv&#34;&gt;fsverity&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;yes
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 12:11:02 tryhackme kernel: custom_kernel: loading out-of-tree module taints kernel.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 12:11:02 tryhackme kernel: custom_kernel: module verification failed: signature and/or required key missing - tainting kernel
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 12:11:02 tryhackme kernel: Custom Kernel Module Loaded: Simulating Kernel Exploit
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Le fichier &lt;code&gt;dmesg&lt;/code&gt; est nous permet de détecter des messages inhabituels au démarrage, pouvant nous indiquer une altération ou un problème matériel. Il est très compliquer de suivre efficacement ce format de log&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ tail /var/log/dmesg
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;   30.719880&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; kernel: audit: &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1400&lt;/span&gt; audit&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;1719484416.292:4&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;nv&#34;&gt;apparmor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;STATUS&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;operation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;profile_load&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;profile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;unconfined&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/usr/lib/NetworkManager/nm-dhcp-client.action&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;352&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;comm&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;apparmor_parser&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;   30.719886&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; kernel: audit: &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1400&lt;/span&gt; audit&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;1719484416.292:5&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;nv&#34;&gt;apparmor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;STATUS&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;operation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;profile_load&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;profile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;unconfined&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/usr/lib/NetworkManager/nm-dhcp-helper&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;352&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;comm&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;apparmor_parser&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;   30.719888&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; kernel: audit: &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1400&lt;/span&gt; audit&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;1719484416.292:6&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;nv&#34;&gt;apparmor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;STATUS&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;operation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;profile_load&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;profile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;unconfined&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/usr/lib/connman/scripts/dhclient-script&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;352&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;comm&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;apparmor_parser&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;   30.719891&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; kernel: audit: &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1400&lt;/span&gt; audit&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;1719484416.292:7&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;nv&#34;&gt;apparmor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;STATUS&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;operation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;profile_load&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;profile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;unconfined&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/{,usr/}sbin/dhclient&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;352&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;comm&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;apparmor_parser&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;   30.829947&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; kernel: audit: &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1400&lt;/span&gt; audit&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;1719484416.400:8&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;nv&#34;&gt;apparmor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;STATUS&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;operation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;profile_load&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;profile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;unconfined&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/usr/lib/cups/backend/cups-pdf&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;360&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;comm&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;apparmor_parser&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;   30.829954&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; kernel: audit: &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1400&lt;/span&gt; audit&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;1719484416.400:9&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;nv&#34;&gt;apparmor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;STATUS&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;operation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;profile_load&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;profile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;unconfined&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/usr/sbin/cupsd&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;360&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;comm&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;apparmor_parser&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;   30.829957&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; kernel: audit: &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1400&lt;/span&gt; audit&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;1719484416.400:10&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;nv&#34;&gt;apparmor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;STATUS&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;operation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;profile_load&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;profile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;unconfined&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/usr/sbin/cupsd//third_party&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;360&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;comm&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;apparmor_parser&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;   30.836788&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; kernel: audit: &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1400&lt;/span&gt; audit&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;1719484416.408:11&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;nv&#34;&gt;apparmor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;STATUS&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;operation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;profile_load&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;profile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;unconfined&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/usr/bin/man&amp;#34;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;pid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;364&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;comm&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;apparmor_parser&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;   49.317142&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; kernel: EXT4-fs &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;xvda1&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: resizing filesystem from &lt;span class=&#34;m&#34;&gt;10485499&lt;/span&gt; to &lt;span class=&#34;m&#34;&gt;15728379&lt;/span&gt; blocks
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;   49.568767&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; kernel: EXT4-fs &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;xvda1&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: resized filesystem to &lt;span class=&#34;m&#34;&gt;15728379&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;authlog&#34;&gt;&lt;code&gt;Auth.log&lt;/code&gt;
+&lt;/h3&gt;&lt;p&gt;Comme son nom l&amp;rsquo;indique il permet de regrouper tous les événements liées à une authentification. Quelle soit réussie ou échouée la tentative est enregistré dans ce fichier.&lt;/p&gt;
+&lt;p&gt;Simulation d&amp;rsquo;une connexion SSH sur une machine :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ ssh root@localhost -p &lt;span class=&#34;m&#34;&gt;22&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;The authenticity of host &lt;span class=&#34;s1&#34;&gt;&amp;#39;localhost (127.0.0.1)&amp;#39;&lt;/span&gt; can&lt;span class=&#34;s1&#34;&gt;&amp;#39;t be established.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s1&#34;&gt;ECDSA key fingerprint is ------
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s1&#34;&gt;Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s1&#34;&gt;Warning: Permanently added &amp;#39;&lt;/span&gt;localhost&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;ECDSA&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; to the list of known hosts.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;root@localhost: Permission denied &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;publickey&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Voici le retour dans le fichier &lt;code&gt;auth.log&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ tail -f /var/log/auth.log
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 08:55:45 tryhackme sshd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;70808&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Connection closed by authenticating user root 127.0.0.1 port &lt;span class=&#34;m&#34;&gt;43086&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;preauth&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 08:56:10 tryhackme sudo:   ubuntu : &lt;span class=&#34;nv&#34;&gt;TTY&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;pts/0 &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;PWD&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/home/ubuntu &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;USER&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;root &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;COMMAND&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/usr/bin/tail -f /var/log/auth.log
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 08:56:10 tryhackme sudo: pam_unix&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;sudo:session&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: session opened &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; user root by ubuntu&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;uid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Nous pouvons filtrer l&amp;rsquo;output de la commande avec grep :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ grep &lt;span class=&#34;s1&#34;&gt;&amp;#39;Accepted password&amp;#39;&lt;/span&gt; /var/log/auth.log
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;May &lt;span class=&#34;m&#34;&gt;31&lt;/span&gt; 11:17:00 server sshd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;2009&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Accepted password &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; root from 192.168.1.50 port &lt;span class=&#34;m&#34;&gt;22&lt;/span&gt; ssh2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&amp;lsquo;Accepted password&amp;rsquo; peut être remplacé par &amp;lsquo;sudo&amp;rsquo;, &amp;lsquo;session opened&amp;rsquo; ou autre chose.&lt;/p&gt;
+&lt;p&gt;Filtrage par jour/heure :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;/2024-06-04 15:30:00/,/2024-06-05 15:29:59/&amp;#39;&lt;/span&gt; /var/log/auth.log
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;syslog&#34;&gt;&lt;code&gt;syslog&lt;/code&gt;
+&lt;/h3&gt;&lt;p&gt;Ce fichier nous permet de collecter divers messages système, ce qui en fait un point central pour comprendre les événements système. Ce journal capture tout, des exécutions de tâches cron aux activités du noyau, offrant une vue complète de l&amp;rsquo;état et des activités de votre système.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ grep &lt;span class=&#34;s1&#34;&gt;&amp;#39;CRON&amp;#39;&lt;/span&gt; /var/log/syslog
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;18&lt;/span&gt; 00:09:01 tryhackme CRON&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;18304&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; CMD &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; -x /usr/lib/php/sessionclean &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; ! -d /run/systemd/system &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt; /usr/lib/php/sessionclean&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;18&lt;/span&gt; 00:09:01 tryhackme CRON&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;18305&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; CMD &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;   &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt; -x /etc/cron.daily/popularity-contest &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; /etc/cron.daily/popularity-contest --crond&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;18&lt;/span&gt; 00:17:01 tryhackme CRON&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;18358&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; CMD &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;   &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; / &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; run-parts --report /etc/cron.hourly&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;18&lt;/span&gt; 00:39:01 tryhackme CRON&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;18367&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; CMD &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; -x /usr/lib/php/sessionclean &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; ! -d /run/systemd/system &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt; /usr/lib/php/sessionclean&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;18&lt;/span&gt; 01:09:01 tryhackme CRON&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;18424&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; CMD &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; -x /usr/lib/php/sessionclean &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; ! -d /run/systemd/system &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt; /usr/lib/php/sessionclean&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;18&lt;/span&gt; 01:17:01 tryhackme CRON&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;18476&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; CMD &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;   &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; / &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; run-parts --report /etc/cron.hourly&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;18&lt;/span&gt; 01:39:01 tryhackme CRON&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;18486&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; CMD &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; -x /usr/lib/php/sessionclean &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; ! -d /run/systemd/system &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt; /usr/lib/php/sessionclean&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;btmp--wtmp&#34;&gt;&lt;code&gt;btmp&lt;/code&gt; &amp;amp; &lt;code&gt;wtmp&lt;/code&gt;
+&lt;/h3&gt;&lt;p&gt;Le &lt;code&gt;/var/log/btmp&lt;/code&gt;le fichier enregistre les tentatives de connexion échouées, tandis que le &lt;code&gt;/var/log/wtmp&lt;/code&gt;enregistre chaque connexion et déconnexion.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ last -f /var/log/wtmp
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ubuntu   pts/3        10.110.7.185      Thu Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 11:50 - 15:04  &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;03:13&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ubuntu   pts/2        10.110.7.185      Thu Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 11:50 - 15:05  &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;03:15&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ubuntu   pts/1        10.110.7.185      Thu Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 10:36 - 13:28  &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;02:52&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ubuntu   pts/0        10.110.7.185      Thu Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 10:34 - 13:28  &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;02:53&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;reboot   system boot  5.15.0-1053-aws  Thu Jun &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 10:33   still running
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;reboot   system boot  5.15.0-1053-aws  Sun Jun &lt;span class=&#34;m&#34;&gt;23&lt;/span&gt; 16:34   still running
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;log-utilisateurs-avec-syslog&#34;&gt;Log utilisateurs avec &lt;code&gt;syslog&lt;/code&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;présentation&#34;&gt;Présentation
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;Syslog&lt;/code&gt; a évolué avec le temps avec déiférentes versions :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;syslogd : démon d&amp;rsquo;origine&lt;/li&gt;
+&lt;li&gt;syslog-ng : version amélioré avec d&amp;rsquo;avantages de fonctionnalités basé sur le contenu, le transport TCP &amp;hellip;&lt;/li&gt;
+&lt;li&gt;rsyslog : démon le plus récents avec des performances élevées, prise ne cahrge du TLS, du stockage de BDD et de la modification des messages&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Syslog se présente sous trois composants principaux :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le démon : &lt;code&gt;rsyslog&lt;/code&gt; ou &lt;code&gt;syslogd&lt;/code&gt; gères la journalisation&lt;/li&gt;
+&lt;li&gt;Fichier de configuration : &lt;code&gt;/etc/rsyslog&lt;/code&gt; ou &lt;code&gt;/etc/syslog.conf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Fichier de journaux : &lt;code&gt;/var/log&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;niveaux-de-gravité-des-logs&#34;&gt;Niveaux de gravité des logs
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Valeur&lt;/th&gt;
+          &lt;th&gt;Gravité&lt;/th&gt;
+          &lt;th&gt;Mot-clé&lt;/th&gt;
+          &lt;th&gt;Description&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;0&lt;/td&gt;
+          &lt;td&gt;Emergency&lt;/td&gt;
+          &lt;td&gt;emerg&lt;/td&gt;
+          &lt;td&gt;Le système est inutilisable&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;1&lt;/td&gt;
+          &lt;td&gt;Alert&lt;/td&gt;
+          &lt;td&gt;alert&lt;/td&gt;
+          &lt;td&gt;Une action immédiate est nécessaire&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;2&lt;/td&gt;
+          &lt;td&gt;Critical&lt;/td&gt;
+          &lt;td&gt;crit&lt;/td&gt;
+          &lt;td&gt;Conditions critiques&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;3&lt;/td&gt;
+          &lt;td&gt;Error&lt;/td&gt;
+          &lt;td&gt;err&lt;/td&gt;
+          &lt;td&gt;Conditions critiques&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;4&lt;/td&gt;
+          &lt;td&gt;Warning&lt;/td&gt;
+          &lt;td&gt;warning&lt;/td&gt;
+          &lt;td&gt;Conditions d&amp;rsquo;avertissement&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;5&lt;/td&gt;
+          &lt;td&gt;Notice&lt;/td&gt;
+          &lt;td&gt;notice&lt;/td&gt;
+          &lt;td&gt;Normal mais significatif&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;6&lt;/td&gt;
+          &lt;td&gt;Informational&lt;/td&gt;
+          &lt;td&gt;info&lt;/td&gt;
+          &lt;td&gt;Messages d&amp;rsquo;information&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;7&lt;/td&gt;
+          &lt;td&gt;Debug&lt;/td&gt;
+          &lt;td&gt;debug&lt;/td&gt;
+          &lt;td&gt;Messages de niveau de débogage&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;installations-syslog&#34;&gt;Installations Syslog
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Code numérique&lt;/th&gt;
+          &lt;th&gt;Mot-clé&lt;/th&gt;
+          &lt;th&gt;Nom d&amp;rsquo;installation&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;0&lt;/td&gt;
+          &lt;td&gt;kern&lt;/td&gt;
+          &lt;td&gt;Messages du noyau&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;1&lt;/td&gt;
+          &lt;td&gt;user&lt;/td&gt;
+          &lt;td&gt;Messages au niveau de l&amp;rsquo;utilisateur&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;2&lt;/td&gt;
+          &lt;td&gt;mail&lt;/td&gt;
+          &lt;td&gt;Messages au niveau de l&amp;rsquo;utilisateur&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;3&lt;/td&gt;
+          &lt;td&gt;daemon&lt;/td&gt;
+          &lt;td&gt;Démons système&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;4&lt;/td&gt;
+          &lt;td&gt;auth&lt;/td&gt;
+          &lt;td&gt;Messages de sécurité/d&amp;rsquo;authentification&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;5&lt;/td&gt;
+          &lt;td&gt;syslog&lt;/td&gt;
+          &lt;td&gt;Messages syslog internes&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;6&lt;/td&gt;
+          &lt;td&gt;lpr&lt;/td&gt;
+          &lt;td&gt;Sous-système d&amp;rsquo;imprimante en ligne&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;7&lt;/td&gt;
+          &lt;td&gt;news&lt;/td&gt;
+          &lt;td&gt;Sous-système d&amp;rsquo;informations du réseau&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;8&lt;/td&gt;
+          &lt;td&gt;uucp&lt;/td&gt;
+          &lt;td&gt;Sous-système UUCP&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;9&lt;/td&gt;
+          &lt;td&gt;cron&lt;/td&gt;
+          &lt;td&gt;Sous-systèmes Cron&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;10&lt;/td&gt;
+          &lt;td&gt;authpriv&lt;/td&gt;
+          &lt;td&gt;Messages de sécurité&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;11&lt;/td&gt;
+          &lt;td&gt;ftp&lt;/td&gt;
+          &lt;td&gt;FTP démon&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;12&lt;/td&gt;
+          &lt;td&gt;ntp&lt;/td&gt;
+          &lt;td&gt;NTP Sous-système&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;13&lt;/td&gt;
+          &lt;td&gt;security&lt;/td&gt;
+          &lt;td&gt;Audit du journal de sécurité&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;14&lt;/td&gt;
+          &lt;td&gt;console&lt;/td&gt;
+          &lt;td&gt;Alertes du journal de la console&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;15&lt;/td&gt;
+          &lt;td&gt;solaris-cron&lt;/td&gt;
+          &lt;td&gt;Journaux de planification&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;16-23&lt;/td&gt;
+          &lt;td&gt;local0 to local7&lt;/td&gt;
+          &lt;td&gt;Installations utilisées localement&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;journalctl&#34;&gt;&lt;code&gt;Journalctl&lt;/code&gt;
+&lt;/h2&gt;&lt;p&gt;Binaire utilisé par les Distributions basés sur systemd.
+C&amp;rsquo;est un outil très puissant, il fournit des logs structurés et indexés, ce qui permet de &amp;ldquo;personnaliser&amp;rdquo; l&amp;rsquo;output (filtrage spécifique).&lt;/p&gt;
+&lt;h3 id=&#34;utilisation-de-la-commande&#34;&gt;Utilisation de la commande
+&lt;/h3&gt;&lt;p&gt;Pour afficher les legs avec &lt;code&gt;journalctl&lt;/code&gt; c&amp;rsquo;est simple :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ journalctl
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-- Logs begin at Wed 2023-09-06 07:57:36 UTC, end at Tue 2024-06-11 08:17:01 UTC. --
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel: Linux version 5.4.0-1029-aws &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;buildd@lcy01-amd64-022&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;gcc version 9.3.0 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Ubuntu 9.3.0-17ubuntu1~20.04&lt;span class=&#34;o&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;#30-Ubuntu SMP Tue Oct 20 10:06:38 UTC 2020 (Ub&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel: Command line: &lt;span class=&#34;nv&#34;&gt;BOOT_IMAGE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/boot/vmlinuz-5.4.0-1029-aws &lt;span class=&#34;nv&#34;&gt;root&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;PARTUUID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;da63a61e-01 ro &lt;span class=&#34;nv&#34;&gt;console&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;tty1 &lt;span class=&#34;nv&#34;&gt;console&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ttyS0 nvme_core.io_timeout&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;4294967295&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;panic&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;-1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel: KERNEL supported cpus:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel:   Intel GenuineIntel
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel:   AMD AuthenticAMD
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel:   Hygon HygonGenuine
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel:   Centaur CentaurHauls
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel:   zhaoxin   Shanghai  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel: x86/fpu: Supporting XSAVE feature 0x001: &lt;span class=&#34;s1&#34;&gt;&amp;#39;x87 floating point registers&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel: x86/fpu: Supporting XSAVE feature 0x002: &lt;span class=&#34;s1&#34;&gt;&amp;#39;SSE registers&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel: x86/fpu: Supporting XSAVE feature 0x004: &lt;span class=&#34;s1&#34;&gt;&amp;#39;AVX registers&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel: x86/fpu: xstate_offset&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;2&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;:  576, xstate_sizes&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;2&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;:  &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sep &lt;span class=&#34;m&#34;&gt;06&lt;/span&gt; 07:57:36 ubuntu kernel: x86/fpu: Enabled xstate features 0x7, context size is &lt;span class=&#34;m&#34;&gt;832&lt;/span&gt; bytes, using &lt;span class=&#34;s1&#34;&gt;&amp;#39;standard&amp;#39;&lt;/span&gt; format.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Voici les arguments possible avec &lt;code&gt;journalctl&lt;/code&gt;&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Argument&lt;/th&gt;
+          &lt;th&gt;Description&lt;/th&gt;
+          &lt;th&gt;Exemple&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;-f&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Suivez le journal et affichez les nouvelles entrées au fur et à mesure qu&amp;rsquo;elles sont ajoutées.&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;journalctl -f&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;-k&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Afficher uniquement les messages du noyau.&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;journalctl -k&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;-b&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Afficher les messages d&amp;rsquo;un démarrage spécifique.&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;journalctl -b -1&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;-u&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Filtrer les messages par une unité spécifique.&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;journalctl -u apache.service&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;-p&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Filtrer les messages par priorité.&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;journalctl -p err&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;-S&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Afficher les messages depuis une heure spécifique.&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;journalctl -S &amp;quot;2021-05-24 14:08:01&amp;quot;&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;-U&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Afficher les messages jusqu&amp;rsquo;à une heure précise.&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;journalctl -U &amp;quot;2021-05-24 15:46:01&amp;quot;&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;-r&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Inversez la sortie, en affichant d&amp;rsquo;abord les entrées les plus récentes.&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;journalctl -r&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;-n&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Limitez le nombre de lignes affichées.&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;journalctl -n 20&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;--no-pager&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;Ne dirigez pas la sortie vers un pager.&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;journalctl --no-pager&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Nous pouvons également, filtré les journaux pour avoir seulement les logs entre telles et telles date :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ journalctl -S &lt;span class=&#34;s2&#34;&gt;&amp;#34;2024-02-06 15:30:00&amp;#34;&lt;/span&gt; -U &lt;span class=&#34;s2&#34;&gt;&amp;#34;2024-02-17 15:29:59&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Filtrage par heures :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ journalctl -S &lt;span class=&#34;s2&#34;&gt;&amp;#34;2 hours ago&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Par criticité :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;journalctl -p crit 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-- Logs begin at Sun 2022-02-27 13:52:14 UTC, end at Tue 2024-06-18 08:16:30 UTC. --
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Feb &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 15:14:15 ip-10-10-238-44 gnome-session-binary&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;38253&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: CRITICAL: We failed, but the fail whale is dead. Sorry....
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-- Reboot --
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;11&lt;/span&gt; 19:20:37 tryhackme sudo&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;77760&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: pam_unix&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;sudo:auth&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: auth could not identify password &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;www-data&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;11&lt;/span&gt; 19:20:37 tryhackme sudo&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;77760&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: www-data : &lt;span class=&#34;nb&#34;&gt;command&lt;/span&gt; not allowed &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;TTY&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;unknown &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;PWD&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/var/www/html &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;USER&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;root &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;COMMAND&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;list
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jun &lt;span class=&#34;m&#34;&gt;11&lt;/span&gt; 19:33:44 tryhackme sudo&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;77794&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: pam_unix&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;sudo:auth&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: auth could not identify password &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;www-data&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;logs-dapplications&#34;&gt;Logs d&amp;rsquo;applications
+&lt;/h2&gt;&lt;p&gt;Prenons l&amp;rsquo;exemple de l&amp;rsquo;application apache2.
+Les logs se trouve dans &lt;code&gt;/var/log/apache2/{access.log,error.log}&lt;/code&gt;, elles sont configurées dans &lt;code&gt;/etc/apache2/apache2.conf&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Pour lire les logs nous pouvons utiliser (comme toutes les autres logs) &lt;code&gt;cat&lt;/code&gt;, &lt;code&gt;less&lt;/code&gt; ou &lt;code&gt;tail&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Nous pouvons également filtrer l&amp;rsquo;output avec &lt;code&gt;grep&lt;/code&gt; :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;10.109.30.250&amp;#34;&lt;/span&gt; /var/log/apache2/access.log*
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Nous pouvons filtrer avec les codes erreurs (404, 403 etc.).&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

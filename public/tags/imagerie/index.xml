@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Imagerie on KIRÔN</title>
+        <link>https://forensic.enzoribeiro.fr/tags/imagerie/</link>
+        <description>Recent content in Imagerie on KIRÔN</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>fr</language>
+        <copyright>Enzo Ribeiro</copyright>
+        <lastBuildDate>Mon, 08 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://forensic.enzoribeiro.fr/tags/imagerie/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Linux - Imagerie Forensic</title>
+        <link>https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/</link>
+        <pubDate>Mon, 08 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/</guid>
+        <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
+&lt;/h2&gt;&lt;p&gt;Chaque OS a une structure et une configuration propre à eux, ils nécessite donc d&amp;rsquo;avoir plusieurs technique d&amp;rsquo;&lt;code&gt;Imaging&lt;/code&gt;. Ici nous verrons comment faire une capture d&amp;rsquo;image d&amp;rsquo;un système Linux.&lt;/p&gt;
+&lt;h3 id=&#34;résumé-des-commandes-et-variables-denvironnement-&#34;&gt;Résumé des commandes et variables d&amp;rsquo;environnement :
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;set -o history&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;
+Active l’historique dans le shell, permettant d’enregistrer les commandes exécutées.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;shopt -s histappend&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;
+Fait en sorte que les nouvelles commandes soient ajoutées au fichier d’historique, au lieu d’écraser le contenu précédent quand le shell se ferme.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;export HISTCONTROL=&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;
+Supprime tous les filtres qui empêchent certaines commandes d’être sauvegardées. Ainsi, toutes les commandes sont enregistrées.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;export HISTIGNORE=&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;
+Désactive l’exclusion de commandes spécifiques (par motif). Aucune commande n’est ignorée.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;export HISTFILE=~/.bash_history&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;
+Définit le fichier où est stocké l’historique des commandes.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;export HISTFILESIZE=-1&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;
+Supprime la limite du nombre de lignes stockées dans le fichier d’historique.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;export HISTSIZE=-1&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;
+Supprime la limite du nombre de commandes retenues en mémoire dans l’historique de la session courante.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;export HISTTIMEFORMAT=&amp;quot;%F %R &amp;quot;&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;
+Ajoute un horodatage (AAAA-MM-JJ HH:MM) devant chaque commande sauvegardée dans l’historique&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;système-de-fichiers&#34;&gt;Système de fichiers
+&lt;/h3&gt;&lt;h4 id=&#34;voir-les-disques-montés-sur-la-machine&#34;&gt;Voir les disques montés sur la machine
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;df
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001094606.png&#34;
+	width=&#34;772&#34;
+	height=&#34;420&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001094606_hu_fdfdd57a8d671406.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001094606_hu_4621f17953c3a64b.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;183&#34;
+		data-flex-basis=&#34;441px&#34;
+	
+&gt;
+Les disque physique sont identifié grave au &lt;code&gt;/dev&lt;/code&gt;. Le disque pour booté l&amp;rsquo;OS sur cette machine est &lt;code&gt;/dev/root&lt;/code&gt;. Ici le disque que nous allons monté n&amp;rsquo;est pas répertorié car c&amp;rsquo;est un disque virtuel attaché à une interface &lt;code&gt;loop&lt;/code&gt;. Nous pourrons voir notre disque virtuel avec &lt;code&gt;lsblk -a&lt;/code&gt;
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001095509.png&#34;
+	width=&#34;628&#34;
+	height=&#34;346&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001095509_hu_950ddedb8acce456.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001095509_hu_b6187f08826c7cb5.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;181&#34;
+		data-flex-basis=&#34;435px&#34;
+	
+&gt;
+(IMPORTANT: il est nécessaire de voir la taille du disque que nous allons &amp;ldquo;cloner&amp;rdquo; car il faut avoir la place nécessaire à ce clonnage sur notre machine)&lt;/p&gt;
+&lt;p&gt;On peut avoir plus d&amp;rsquo;info sur le disque avec la commande &lt;code&gt;sudo losetup -l /dev/loop11&lt;/code&gt;
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100002.png&#34;
+	width=&#34;805&#34;
+	height=&#34;60&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100002_hu_d014d11c451f3037.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100002_hu_8f8c0855caa3d8ac.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1341&#34;
+		data-flex-basis=&#34;3220px&#34;
+	
+&gt;
+Ou encore plus d&amp;rsquo;info comme l&amp;rsquo;UUID avec &lt;code&gt;sudo blkid /dev/loop11&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100113.png&#34;
+	width=&#34;698&#34;
+	height=&#34;41&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100113_hu_cbc1dce0371e829.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100113_hu_5e583b5cd968db2e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1702&#34;
+		data-flex-basis=&#34;4085px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;question-thm&#34;&gt;Question THM
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Q : What command can be used to list all block devices in Linux OS?
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A : lsblk
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Q : Which bash command displays all commands executed in a session?
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A : history
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;création-de-limage&#34;&gt;Création de l&amp;rsquo;image
+&lt;/h2&gt;&lt;p&gt;Dans cet exercice nous allons utiliser l&amp;rsquo;outil &lt;code&gt;dc3dd&lt;/code&gt;, une amélioration de la commande &lt;code&gt;dd&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;résumé-clair-des-outils-dimagerie--récupération-version-courte&#34;&gt;Résumé clair des outils d’imagerie / récupération (version courte)
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;dd&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;
+Utilitaire Unix standard pour copier et convertir des fichiers/flux. Souvent utilisé pour créer des images brutes de disques (&lt;code&gt;raw&lt;/code&gt;), cloner des partitions ou écrire des images sur des périphériques. Simple, disponible partout, mais sans protections ni vérifications intégrées.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;dc3dd&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;
+Variante améliorée de &lt;code&gt;dd&lt;/code&gt; orientée informatique légale : ajoute des fonctions comme le calcul d’hash (MD5/SHA1), enregistrement des métadonnées et options de logging. Utile quand tu veux créer des images tout en gardant des preuves vérifiables.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;ddrescue&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;
+Outil spécialisé en récupération de données depuis des supports dégradés. Copie intelligemment en plusieurs passes (priorise les zones lisibles puis tente les secteurs défectueux), garde une trace de l’état (fichier de log) pour reprendre la récupération. Idéal pour sauver un maximum de données sur un disque endommagé.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;FTK Imager&lt;/strong&gt;&lt;br&gt;
+Outil graphique (GUI) largement utilisé en criminalistique numérique pour créer des images d’un disque, visualiser le contenu et exporter des fichiers. Pratique pour les utilisateurs qui préfèrent une interface visuelle et pour générer des images et rapports complets.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Guymager&lt;/strong&gt;&lt;br&gt;
+Imagerie médico-légale avec interface graphique, supporte plusieurs formats (raw, E01, etc.) et génère des logs détaillés. Conçu pour être rapide, multi-thread et convivial — bon choix pour examiner/imaginer plusieurs disques depuis une GUI sous Linux.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;EWF tools (&lt;code&gt;ewfacquire&lt;/code&gt;, etc.)&lt;/strong&gt;&lt;br&gt;
+Ensemble d’outils pour créer/manipuler des images au format Expert Witness Format (E01), le format courant en criminalistique. Permet d’acquérir des images compatibles avec d’autres suites forensiques et de gérer métadonnées et segments d’image.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Commençons la création de l&amp;rsquo;image :
+&lt;code&gt;sudo dc3dd if=/dev/loop11 of=example1.img log=imaging_loop11.txt&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;if : fichier d&amp;rsquo;entrée&lt;/li&gt;
+&lt;li&gt;of : fichier de sortie&lt;/li&gt;
+&lt;li&gt;log : enregistre les sorties dans ce fichier&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101509.png&#34;
+	width=&#34;892&#34;
+	height=&#34;325&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101509_hu_3c8b5539121daa29.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101509_hu_3dcd8ef28dbd7c20.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;274&#34;
+		data-flex-basis=&#34;658px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Pour vérifier la sortie nous entrons cette commande :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ls -alh example1.img 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101729.png&#34;
+	width=&#34;541&#34;
+	height=&#34;45&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101729_hu_fe0905e6fb1aa66c.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101729_hu_afdcdf4aa6287948.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1202&#34;
+		data-flex-basis=&#34;2885px&#34;
+	
+&gt;
+Nous pouvons voir que l&amp;rsquo;image fait la même taille que &lt;code&gt;/dev/loop11&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;contrôle-de-lintégrité&#34;&gt;Contrôle de l&amp;rsquo;intégrité
+&lt;/h2&gt;&lt;p&gt;Nous allons comparer le hash md5 pour vérifier l&amp;rsquo;intégrité du fichier.
+pour l&amp;rsquo;image que nous venons de faire : &lt;code&gt;sudo md5sum example1.img&lt;/code&gt;
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102328.png&#34;
+	width=&#34;471&#34;
+	height=&#34;39&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102328_hu_b04d75682724aa3f.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102328_hu_8c44ba2ce44b978b.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1207&#34;
+		data-flex-basis=&#34;2898px&#34;
+	
+&gt;
+pour le disque que nous avons &amp;ldquo;cloné&amp;rdquo; : &lt;code&gt;sudo md5sum /dev/loop11&lt;/code&gt;
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102341.png&#34;
+	width=&#34;464&#34;
+	height=&#34;42&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102341_hu_30f57028e61eb937.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102341_hu_7b3eb311c8e359b5.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1104&#34;
+		data-flex-basis=&#34;2651px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;autres-types-dimages&#34;&gt;Autres types d&amp;rsquo;images
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Imagerie à distance&lt;/strong&gt;&lt;br&gt;
+Acquisition d’une image via le &lt;strong&gt;réseau&lt;/strong&gt;, sans accès physique direct à la machine.&lt;br&gt;
+🔹 Utile dans les enquêtes où la machine est éloignée ou doit rester en service.&lt;br&gt;
+🔹 Exemples : récupération sur un serveur distant, forensic à distance via SSH ou outils spécialisés.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Images USB&lt;/strong&gt;&lt;br&gt;
+Création d’une image complète du &lt;strong&gt;contenu d’une clé USB&lt;/strong&gt; (ou tout autre périphérique amovible).&lt;br&gt;
+🔹 Permet de conserver une copie exacte (secteur par secteur).&lt;br&gt;
+🔹 Utile pour l’analyse forensique, la sauvegarde ou la duplication d’USB bootables.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Images Docker&lt;/strong&gt;&lt;br&gt;
+Snapshot du &lt;strong&gt;système de fichiers et de la configuration d’un conteneur Docker&lt;/strong&gt;.&lt;br&gt;
+🔹 Pas une image disque classique, mais une image logicielle qui capture l’état et les dépendances d’un conteneur.&lt;br&gt;
+🔹 Utile pour figer l’environnement d’exécution d’une application et la partager/rejouer à l’identique.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Pour continuer l&amp;rsquo;exercice nous allons monté notre image &lt;code&gt;example1.img&lt;/code&gt; avec la commande &lt;code&gt;mount&lt;/code&gt;, pour commencer le montage de cette image nous allons créer un point de montage dans &lt;code&gt;/mnt/&lt;/code&gt; avec la commande &lt;code&gt;sudo mkdir -p /mnt/example1&lt;/code&gt;.
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103436.png&#34;
+	width=&#34;495&#34;
+	height=&#34;59&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103436_hu_7aad579b8f06dc53.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103436_hu_7c487a88649bbe78.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;838&#34;
+		data-flex-basis=&#34;2013px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Nous pouvons passer au montage :
+&lt;code&gt;sudo mount -o loop example1.img /mnt/example1&lt;/code&gt;
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103610.png&#34;
+	width=&#34;769&#34;
+	height=&#34;459&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103610_hu_da6266aad7a32df3.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103610_hu_e17ff3da10be1de2.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;167&#34;
+		data-flex-basis=&#34;402px&#34;
+	
+&gt;
+Nous avons monté example1.&lt;/p&gt;
+&lt;h2 id=&#34;cas-pratique&#34;&gt;Cas pratique
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;practical@ip-10-10-82-246:~$ lsblk
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;NAME    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;loop0     7:0    &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; 28.1M  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; loop /snap/amazon-ssm-agent/2012
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;loop1     7:1    &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; 70.6M  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; loop /snap/lxd/16922
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;loop2     7:2    &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; 55.3M  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; loop /snap/core18/1885
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;loop3     7:3    &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; 97.8M  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; loop /snap/core/10185
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;loop4     7:4    &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;    1G  &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; loop 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;xvda    202:0    &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;   40G  &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; disk 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─xvda1 202:1    &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;   40G  &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; part /
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;xvdh    202:112  &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;    1G  &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; disk 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;practical@ip-10-10-82-246:~$ sudo dc3dd &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/dev/loop4 &lt;span class=&#34;nv&#34;&gt;of&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;loop4.img &lt;span class=&#34;nv&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;imaging_loop4.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;dc3dd 7.2.646 started at 2025-10-01 09:07:30 +0000
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;compiled options:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;command&lt;/span&gt; line: dc3dd &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/dev/loop4 &lt;span class=&#34;nv&#34;&gt;of&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;loop4.img &lt;span class=&#34;nv&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;imaging_loop4.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;device size: &lt;span class=&#34;m&#34;&gt;2097152&lt;/span&gt; sectors &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;probed&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;,    1,073,741,824 bytes
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sector size: &lt;span class=&#34;m&#34;&gt;512&lt;/span&gt; bytes &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;probed&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;m&#34;&gt;1073741824&lt;/span&gt; bytes &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; G &lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; copied &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; 100% &lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;,    &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt; s, &lt;span class=&#34;m&#34;&gt;208&lt;/span&gt; M/s                   
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;input results &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; device &lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;/dev/loop4&lt;span class=&#34;s1&#34;&gt;&amp;#39;:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s1&#34;&gt;   2097152 sectors in
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s1&#34;&gt;   0 bad sectors replaced by zeros
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s1&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s1&#34;&gt;output results for file `loop4.img&amp;#39;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;m&#34;&gt;2097152&lt;/span&gt; sectors out
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;dc3dd completed at 2025-10-01 09:07:35 +0000
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;practical@ip-10-10-82-246:~$ ls -lah
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;total 1.1G
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;drwxr-xr-x &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; practical practical 4.0K Oct  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; 09:07 .
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;drwxr-xr-x &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; root      root      4.0K Jul &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2024&lt;/span&gt; ..
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-rw------- &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; practical practical    &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt; Jul &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2024&lt;/span&gt; .bash_history
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-rw-r--r-- &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; practical practical  &lt;span class=&#34;m&#34;&gt;220&lt;/span&gt; Jul &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2024&lt;/span&gt; .bash_logout
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-rw-r--r-- &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; practical practical 3.7K Jul &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2024&lt;/span&gt; .bashrc
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;drwx------ &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; practical practical 4.0K Jul &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2024&lt;/span&gt; .cache
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-rw-r--r-- &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; practical practical  &lt;span class=&#34;m&#34;&gt;807&lt;/span&gt; Jul &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2024&lt;/span&gt; .profile
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-rw-r--r-- &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; practical practical    &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; Jul &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2024&lt;/span&gt; .sudo_as_admin_successful
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-rw-r--r-- &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; root      root       &lt;span class=&#34;m&#34;&gt;501&lt;/span&gt; Oct  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; 09:07 imaging_loop4.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-rw-r--r-- &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; root      root      1.0G Oct  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; 09:07 loop4.img
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;practical@ip-10-10-82-246:~$ sudo md5sum loop4.img 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1fab86e499934dda789c9c4aaf27101d  loop4.img
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;practical@ip-10-10-82-246:~$ sudo mkdir -p /mnt/loop4
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;practical@ip-10-10-82-246:~$ sudo mount -o loop loop4.img /mnt/loop4
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;practical@ip-10-10-82-246:~$ ls /mnt/loop4/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;flag.txt  lost+found  testpractical01  testpractical02  testpractical03  testpractical04  testpractical05
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;practical@ip-10-10-82-246:~$ cat /mnt/loop4/flag.txt 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;THM&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;well-done-imaginggggggg&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

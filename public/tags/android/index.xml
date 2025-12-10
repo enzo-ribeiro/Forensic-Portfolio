@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Android on KIRÔN</title>
+        <link>https://forensic.enzoribeiro.fr/tags/android/</link>
+        <description>Recent content in Android on KIRÔN</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>fr</language>
+        <copyright>Enzo Ribeiro</copyright>
+        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://forensic.enzoribeiro.fr/tags/android/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Mobile - Analyse Android</title>
+        <link>https://forensic.enzoribeiro.fr/p/mobile-analyse-android/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/p/mobile-analyse-android/</guid>
+        <description>&lt;h2 id=&#34;architecture-android&#34;&gt;Architecture Android
+&lt;/h2&gt;&lt;p&gt;L&amp;rsquo;architecture d&amp;rsquo;Android est superposée et modulaire, ce qui la rend polyvalente et complexe d&amp;rsquo;un point de vue Forensic.
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/5e8dd9a4a45e18443162feab-1747826237632.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Elle est composé des couche suivantes :&lt;/p&gt;
+&lt;h4 id=&#34;noyau-linux&#34;&gt;Noyau Linux
+&lt;/h4&gt;&lt;p&gt;C&amp;rsquo;est la base du système, elle va fournir des fonctionnalités de base du système. Elle agit comme couche entre l&amp;rsquo;hardware et le software&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Services de base&lt;/li&gt;
+&lt;li&gt;Gestion des processus&lt;/li&gt;
+&lt;li&gt;Gestion de la mémoire&lt;/li&gt;
+&lt;li&gt;Conducteurs de dispositifs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;bibliothèques-native&#34;&gt;Bibliothèques Native
+&lt;/h4&gt;&lt;p&gt;Elles fournissent des fonctionnalités de base du système et aux applications.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Bibliothèques du système&lt;/li&gt;
+&lt;li&gt;Cadres pour les médias&lt;/li&gt;
+&lt;li&gt;Moteur de base de données SQLite&lt;/li&gt;
+&lt;li&gt;Moteur de navigateur WebKit&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;framework-application&#34;&gt;Framework Application
+&lt;/h4&gt;&lt;p&gt;Elle fournit des API pour des niveau plus haut, comme la localisation, la téléphonie &amp;hellip;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;API pour le développement d&amp;rsquo;applications&lt;/li&gt;
+&lt;li&gt;Gestion des ressources&lt;/li&gt;
+&lt;li&gt;Interaction des composants&lt;/li&gt;
+&lt;li&gt;Traitement des services&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;application&#34;&gt;Application
+&lt;/h4&gt;&lt;p&gt;La couche la plus haute de l&amp;rsquo;architecture Android. Elle comprend le système et les applications installé par l&amp;rsquo;utilisateur. C&amp;rsquo;est la principale source de données dans une enquêtes Forensic.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Demandes d&amp;rsquo;utilisation&lt;/li&gt;
+&lt;li&gt;Applications du système&lt;/li&gt;
+&lt;li&gt;Applications de tiers&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;système-de-fichiers-android&#34;&gt;Système de fichiers Android
+&lt;/h3&gt;&lt;p&gt;Android utilise un système de fichier basé sur Linux qui partitionne et met des &amp;ldquo;couches&amp;rdquo; pour gérer les données de manière sécurisée et efficace. La structure est personnalisée en fonction du matériel et de l&amp;rsquo;OS.&lt;br&gt;
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/5e8dd9a4a45e18443162feab-1747796686545-1.png&#34;
+	width=&#34;1140&#34;
+	height=&#34;646&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/5e8dd9a4a45e18443162feab-1747796686545-1_hu_ac297e09cc0f4aeb.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/5e8dd9a4a45e18443162feab-1747796686545-1_hu_afc5172f7d3b6162.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;176&#34;
+		data-flex-basis=&#34;423px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;partitions-du-système-de-fichier&#34;&gt;Partitions du système de fichier
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── system/                  → Android OS system files &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;read-only in user mode&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; │  ├── bin/                     → System binaries 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│   ├── lib/                 → Shared libraries 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│   └── framework/           → Java framework .jar files 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│ 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── data/                    → Main user data partition 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│   ├── app/                 → Installed APKs 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│   ├── data/                → App private data 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│   ├── misc/                → Misc system info &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;e.g., WiFi configs&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│   ├── media/               → Encrypted storage mount point 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│   └── system/              → User accounts, settings 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│ 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── sdcard/ &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;or /storage/emulated/0&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; → User files, photos, downloads 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│ 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── vendor/                 → OEM-specific binaries/libraries 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;│ 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└── dev/, proc/, sys/       → Kernel and device interfaces &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;like Linux&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;analyse-dune-image&#34;&gt;Analyse d&amp;rsquo;une image
+&lt;/h3&gt;&lt;p&gt;Nous avons un fichier &lt;code&gt;.ad1&lt;/code&gt;, nous l&amp;rsquo;importons dans FTK Imager.
+Ensuite nous avons accès à certains fichiers de l&amp;rsquo;appareil suspect :
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251001170204.png&#34;
+	width=&#34;296&#34;
+	height=&#34;241&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251001170204_hu_82aa26a132180bd0.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251001170204_hu_d1d09be5653387f.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;122&#34;
+		data-flex-basis=&#34;294px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Le but de l&amp;rsquo;exercice ici est de trouver le numéro de série qui se trouve dans &lt;code&gt;/system/build.prop&lt;/code&gt;:
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251001170322.png&#34;
+	width=&#34;905&#34;
+	height=&#34;462&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251001170322_hu_97cc46fd7ae85bfb.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251001170322_hu_797483f15ace8047.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;195&#34;
+		data-flex-basis=&#34;470px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;artefacts&#34;&gt;Artefacts
+&lt;/h2&gt;&lt;p&gt;Pour commencer nous allons devoir poser les bases et se demandé quelles information vont être importantes ou non.&lt;/p&gt;
+&lt;p&gt;Voici une liste d&amp;rsquo;artefacts qui peuvent être intéressant selon notre enquête.&lt;/p&gt;
+&lt;h4 id=&#34;sms-et-journaux-dappels&#34;&gt;SMS et Journaux d&amp;rsquo;Appels
+&lt;/h4&gt;&lt;p&gt;Emplacement :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SMS (et MMS) : /data/data/com.android.providers.telephony/databases/mmssms.db&lt;/li&gt;
+&lt;li&gt;Journaux d&amp;rsquo;appel : /data/data/com.android.providers.contacts/databases/calllog.db&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;contacts&#34;&gt;Contacts
+&lt;/h4&gt;&lt;p&gt;Emplacement :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Contacts : /data/services/com.android.providers.contacts/databases/contacts2.db&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;historique-du-navigateur&#34;&gt;Historique du navigateur
+&lt;/h4&gt;&lt;p&gt;Emplacement (Chrome) :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;/data/data/com.android.chrome/app-chrome/par défaut/history&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;données-de-localisation&#34;&gt;Données de localisation
+&lt;/h4&gt;&lt;p&gt;Emplacement :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;/data/data/com.google.android.gms/databases/
+(location.db, networklocations.db ou com.google.android.location)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;mediatech&#34;&gt;Mediatech
+&lt;/h4&gt;&lt;p&gt;Emplacement :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;/sdcard/DCIM/&lt;/li&gt;
+&lt;li&gt;/sdcard/Pictures/&lt;/li&gt;
+&lt;li&gt;/sdcard/WhatsApp/Media/&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;données-dapplications&#34;&gt;Données d&amp;rsquo;applications
+&lt;/h4&gt;&lt;p&gt;Emplacement :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;/data/data/(app.package.name)/&lt;/li&gt;
+&lt;li&gt;Par exemple: /data/data/com.instagram.android/ ou /data/com.snapchat.android/&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;compte-utilisateurs&#34;&gt;Compte utilisateurs
+&lt;/h4&gt;&lt;p&gt;Emplacement :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;/data/system/users/0/accounts.db&lt;/li&gt;
+&lt;li&gt;/data/data/com.google.android.gms/databases&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;information-sur-les-applications-installé&#34;&gt;Information sur les applications installé
+&lt;/h4&gt;&lt;p&gt;Emplacement :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;/system/packages.xml&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;outils-commercial&#34;&gt;Outils commercial
+&lt;/h2&gt;&lt;p&gt;Il y a 3 types d&amp;rsquo;exfiltration de données sur android :&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Type&lt;/th&gt;
+          &lt;th&gt;Description&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Logique&lt;/td&gt;
+          &lt;td&gt;Comme en utilisant une sauvegarde pour obtenir des données au niveau de l&amp;rsquo;utilisateur.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Système de fichiers&lt;/td&gt;
+          &lt;td&gt;Donne l&amp;rsquo;accès aux dossiers et aux fichiers système. Il permet un accès plus profond que l&amp;rsquo;acquisition logique, y compris les répertoires d&amp;rsquo;applications et le stockage interne, ce qui est utile pour examiner les données et les configurations des applications.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Physique&lt;/td&gt;
+          &lt;td&gt;Une copie bit par bit de la mémoire complète de l&amp;rsquo;appareil, y compris des données supprimées, un espace non alloué et des zones du système inaccessibles par des acquisitions de plus haut niveau.&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;les-outils&#34;&gt;Les outils
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Nom&lt;/th&gt;
+          &lt;th&gt;Fonction&lt;/th&gt;
+          &lt;th&gt;Utilisation&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;ALEAPP&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Artifact Parser&lt;/td&gt;
+          &lt;td&gt;Extracts and parses key Android artifacts (e.g., app data, location, usage stats).&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Autopsy + Android Modules&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;GUI Forensics Suite&lt;/td&gt;
+          &lt;td&gt;Examines logical dumps with plugin support for call logs, messages, and app data.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Cellebrite UFED&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Commercial Mobile Forensics Platform&lt;/td&gt;
+          &lt;td&gt;Physical, file system, and logical Android (and iOS) device extraction.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Magnet AXIOM&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Commercial Suite&lt;/td&gt;
+          &lt;td&gt;Ingests Android images and categorizes artifacts using timeline, chats, media, etc.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Oxygen Forensic Detective&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Commercial All-in-One Tool&lt;/td&gt;
+          &lt;td&gt;Recovers deleted data, decrypts apps, and parses communications and cloud data.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;ADB (Android Debug Bridge)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Command-line Interface&lt;/td&gt;
+          &lt;td&gt;Communicates with the Android device, collects logs, and performs manual file extraction (root may be needed).&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;TWRP Recovery&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Custom Recovery Interface&lt;/td&gt;
+          &lt;td&gt;Used to boot into a custom recovery mode for image acquisition or data access.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;LiME (Linux Memory Extractor)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Memory Dumping Tool&lt;/td&gt;
+          &lt;td&gt;It captures volatile memory (RAM) from an Android device and is used for live memory forensics.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Andriller&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Device Analysis + Unlock Tool&lt;/td&gt;
+          &lt;td&gt;Extracts device data, PIN cracking, and report generation from Android backups.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;ADB-Backup Extractors&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Backup Utilities&lt;/td&gt;
+          &lt;td&gt;Converts Android ADB backups (&lt;code&gt;.ab&lt;/code&gt; files) into accessible &lt;code&gt;.tar&lt;/code&gt; archives.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Protobuf Parsers&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Data Format Parser&lt;/td&gt;
+          &lt;td&gt;Parses Android usage stats, app events, and settings stored in Protobuf format.&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;analyse-des-artefacts&#34;&gt;Analyse des artefacts
+&lt;/h2&gt;&lt;h3 id=&#34;sms&#34;&gt;SMS
+&lt;/h3&gt;&lt;p&gt;On se rends dans le fichier nécessaire :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cd C:\Users\Administrator\Desktop\Evidence\suspicious_device\data\data\com.android.providers.telephony\databases
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sqlite3 mmssms.db
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;.tables
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002160557.png&#34;
+	width=&#34;1048&#34;
+	height=&#34;182&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002160557_hu_6bcdb2e5b615b9d0.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002160557_hu_94fdace3a87ad96c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;575&#34;
+		data-flex-basis=&#34;1381px&#34;
+	
+&gt;
+On envoie une requête SQL pour nous afficher TOUT les messages de la base sms :
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002160718.png&#34;
+	width=&#34;945&#34;
+	height=&#34;256&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002160718_hu_e2c03de5c1fe1e53.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002160718_hu_137ec7ba125aad79.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;369&#34;
+		data-flex-basis=&#34;885px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;journal-dappel&#34;&gt;Journal d&amp;rsquo;appel
+&lt;/h3&gt;&lt;p&gt;Comme à l&amp;rsquo;étape précédente, on se rend au chemin nécessaire :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cd C:\Users\Administrator\Desktop\Evidence\suspicious_device\data\data\com.android.providers.contacts\databases
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sqlite3 mmssms.db
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;.tables
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002161210.png&#34;
+	width=&#34;1599&#34;
+	height=&#34;383&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002161210_hu_cbc29a52c1438772.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002161210_hu_49e6a0f5a01f2132.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;417&#34;
+		data-flex-basis=&#34;1001px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Et ainsi de suite pour les différentes base de données.&lt;/p&gt;
+&lt;h2 id=&#34;aleapp&#34;&gt;aLEAPP
+&lt;/h2&gt;&lt;p&gt;Nous venons de faire une analyse d&amp;rsquo;artefact à la main, c&amp;rsquo;est fastidieux de faire ça. Nous pouvons donc utilisé un outil dont nous avons parlé tout à l&amp;rsquo;heure : aLEAPP&lt;/p&gt;
+&lt;h3 id=&#34;analyse-android&#34;&gt;Analyse Android
+&lt;/h3&gt;&lt;p&gt;aLEAPP analyse et fournit un rapport lisible par nous. Il possède 2 interface, une graphique et l&amp;rsquo;autre en ligne de commande.&lt;/p&gt;
+&lt;h4 id=&#34;gui&#34;&gt;GUI
+&lt;/h4&gt;&lt;p&gt;&lt;code&gt;python aleappgui.py&lt;/code&gt;
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002163345.png&#34;
+	width=&#34;889&#34;
+	height=&#34;648&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002163345_hu_1149ee929d0e82d.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002163345_hu_f2d885a29b3605a4.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;137&#34;
+		data-flex-basis=&#34;329px&#34;
+	
+&gt;
+Il prend des fichier .zip/.tar/.gz.&lt;/p&gt;
+&lt;p&gt;Une fois le fichier en .zip donné, un fichier de sortie et lancé l&amp;rsquo;analyse nous pouvons cliquer sur &lt;code&gt;Open Report and Close&lt;/code&gt; Le rapport s&amp;rsquo;ouvrira dans le navigateur.
+&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002163726.png&#34;
+	width=&#34;1255&#34;
+	height=&#34;765&#34;
+	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002163726_hu_cf12aabc94164805.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002163726_hu_eb39be46b11eb8ff.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;164&#34;
+		data-flex-basis=&#34;393px&#34;
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

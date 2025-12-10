@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introduction Pourquoi les appareils mobiles sont des mines d&rsquo;or de données ? Car il contiennent une large gamme de donnée :\nCarnets d&rsquo;appel et de discussion GPS et données de navigation Documents et téléchargements Images et vidéo Historique de navigation Historique WiFi Données spécifiques à l&rsquo;application Forensic Mobile Protection des fabricants Les mobiles modernes possèdent de nombreuses protections de sécurité, comme le chiffrement complet des disques, nécessitant une authentification (Mot de passe, Face ID, Empreinte digital &hellip;).\n">
+<title>Mobile - Acquisition</title>
+
+<link rel='canonical' href='https://forensic.enzoribeiro.fr/p/mobile-acquisition/'>
+
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Mobile - Acquisition">
+<meta property='og:description' content="Introduction Pourquoi les appareils mobiles sont des mines d&rsquo;or de données ? Car il contiennent une large gamme de donnée :\nCarnets d&rsquo;appel et de discussion GPS et données de navigation Documents et téléchargements Images et vidéo Historique de navigation Historique WiFi Données spécifiques à l&rsquo;application Forensic Mobile Protection des fabricants Les mobiles modernes possèdent de nombreuses protections de sécurité, comme le chiffrement complet des disques, nécessitant une authentification (Mot de passe, Face ID, Empreinte digital &hellip;).\n">
+<meta property='og:url' content='https://forensic.enzoribeiro.fr/p/mobile-acquisition/'>
+<meta property='og:site_name' content='KIRÔN'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Mobile' /><meta property='article:tag' content='Forensic' /><meta property='article:tag' content='Acquisition' /><meta property='article:published_time' content='2025-12-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-09T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Mobile - Acquisition">
+<meta name="twitter:description" content="Introduction Pourquoi les appareils mobiles sont des mines d&rsquo;or de données ? Car il contiennent une large gamme de donnée :\nCarnets d&rsquo;appel et de discussion GPS et données de navigation Documents et téléchargements Images et vidéo Historique de navigation Historique WiFi Données spécifiques à l&rsquo;application Forensic Mobile Protection des fabricants Les mobiles modernes possèdent de nombreuses protections de sécurité, comme le chiffrement complet des disques, nécessitant une authentification (Mot de passe, Face ID, Empreinte digital &hellip;).\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/enzo-anime_hu_3208ab5a0ff05de9.png" width="300"
+                            height="386" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">KIRÔN</a></h1>
+            <h2 class="site-description">Mes notes en forensic</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/enzo-ribeiro'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.linkedin.com/in/enzo-ribeiro-bb8794209/'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.975,20.667H3.117V9.059H6.975ZM5.072,3.462a2.011,2.011,0,1,0-.051,4.012h.026a2.012,2.012,0,1,0,.025-4.012ZM9.111,20.667h3.858V14.185a2.639,2.639,0,0,1,.127-.941,2.111,2.111,0,0,1,1.98-1.411c1.4,0,1.955,1.064,1.955,2.625v6.209h3.858V14.011c0-3.565-1.9-5.225-4.442-5.225A3.828,3.828,0,0,0,12.97,10.7V9.059H9.111c.051,1.089,0,11.609,0,11.609Z"/></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/" selected>Français</option>
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/zh-cn/" >中文</option>
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Mode sombre</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#forensic-mobile">Forensic Mobile</a>
+      <ol>
+        <li><a href="#protection-des-fabricants">Protection des fabricants</a></li>
+      </ol>
+    </li>
+    <li><a href="#apt-vs-mobile">APT vs Mobile</a>
+      <ol>
+        <li><a href="#logiciels-espions">Logiciels espions</a></li>
+      </ol>
+    </li>
+    <li><a href="#acquisition">Acquisition</a>
+      <ol>
+        <li><a href="#niveaux-dacquisition">Niveaux d&rsquo;acquisition</a></li>
+        <li><a href="#maintien-daccès">Maintien d&rsquo;accès</a></li>
+        <li><a href="#acquisition-logique">Acquisition logique</a></li>
+        <li><a href="#acquisition-du-système-de-fichiers">Acquisition du système de fichiers</a></li>
+      </ol>
+    </li>
+    <li><a href="#technique-dacquisition-avancé">Technique d&rsquo;acquisition avancé</a>
+      <ol>
+        <li><a href="#utilitaires-spécialisés">Utilitaires spécialisés</a></li>
+        <li><a href="#jailbreaking">Jailbreaking</a></li>
+        <li><a href="#custom-boot-loading">Custom Boot Loading</a></li>
+        <li><a href="#brute-force">Brute Force</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/mobile/" >
+                Mobile
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/mobile-acquisition/">Mobile - Acquisition</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-12-09T00:00:00Z'>déc. 09, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minutes de lecture
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="introduction">Introduction
+</h2><p>Pourquoi les appareils mobiles sont des mines d&rsquo;or de données ? Car il contiennent une large gamme de donnée :</p>
+<ul>
+<li>Carnets d&rsquo;appel et de discussion</li>
+<li>GPS et données de navigation</li>
+<li>Documents et téléchargements</li>
+<li>Images et vidéo</li>
+<li>Historique de navigation</li>
+<li>Historique WiFi</li>
+<li>Données spécifiques à l&rsquo;application</li>
+</ul>
+<h2 id="forensic-mobile">Forensic Mobile
+</h2><h3 id="protection-des-fabricants">Protection des fabricants
+</h3><p>Les mobiles modernes possèdent de nombreuses protections de sécurité, comme le chiffrement complet des disques, nécessitant une authentification (Mot de passe, Face ID, Empreinte digital &hellip;).</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Mécanisme</th>
+          <th>Explication</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Chiffrement complet du disque et cryptage des fichiers</td>
+          <td>Sauf si l’appareil est authentifié ou contourné, les outils médico-légaux ne peuvent pas accéder aux données stockées. Les fichiers individuels peuvent également être chiffrés avec des clés distinctes.</td>
+      </tr>
+      <tr>
+          <td>Clés de chiffrement sécurisées</td>
+          <td>Android et iOS utilisent un composant matériel dédié pour stocker les clés de chiffrement, ce qui les rend extrêmement difficiles à extraire, similaire au module TPM sur les cartes mères.</td>
+      </tr>
+      <tr>
+          <td>Démarrage sécurisé</td>
+          <td>Assure que seul le code approuvé et signé par le fabricant peut s’exécuter, empêchant toute modification non autorisée. Une ancienne technique d’investigation consistait à utiliser un logiciel de démarrage personnalisé pour contourner certains mécanismes de sécurité.</td>
+      </tr>
+      <tr>
+          <td>Isolation des applications (Sandboxing)</td>
+          <td>Les applications fonctionnent dans des environnements séparés et isolés les unes des autres. Ce concept sera approfondi dans le reste du module.</td>
+      </tr>
+      <tr>
+          <td>Effacement automatique après échec d’authentification</td>
+          <td>Les dispositifs peuvent être configurés pour s’effacer après un certain nombre de tentatives d’authentification échouées (ex. PIN incorrects). Cela empêche les attaques par force brute.</td>
+      </tr>
+      <tr>
+          <td>Effacement à distance</td>
+          <td>Grâce à des fonctionnalités comme « Find My », les appareils peuvent être effacés à distance en cas de vol ou de perte.</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="apt-vs-mobile">APT vs Mobile
+</h2><h3 id="logiciels-espions">Logiciels espions
+</h3><p>La découverte de Pegasus, un logiciel malveillant très sophistiqué conçu à des fins de surveillance, ayant souvent accès via l&rsquo;&ldquo;interaction zéro&rdquo;, était capable de choses telles que:</p>
+<ul>
+<li>Lecture des courriels, accès aux photos</li>
+<li>Lire les messages</li>
+<li>Suivi par GPS</li>
+<li>Enregistrement des appels téléphoniques, du microphone et de la caméra sans aucune connaissance de l&rsquo;utilisateur</li>
+<li>Obligation de captation</li>
+<li>Ayant très peu de traces de présence</li>
+</ul>
+<h2 id="acquisition">Acquisition
+</h2><h3 id="niveaux-dacquisition">Niveaux d&rsquo;acquisition
+</h3><p>Quand nous parlons d&rsquo;acquisition on se réfère à la profondeur et à la méthode nécessaire pour extraire les données d&rsquo;appareils. Les méthodes utilisé sont déterminé par différents facteurs :</p>
+<ul>
+<li>Age de l&rsquo;appareil (par exemple version installée du système d&rsquo;exploitation, mises à jour, etc.)</li>
+<li>Mécanismes de sécurité en place</li>
+<li>Accès authentique ou non authentifié (c&rsquo;est-à-dire verrouillé ou déverrouillé)</li>
+<li>Disponibilité d&rsquo;outillage pour l&rsquo;examinateur</li>
+<li>Profondeur des données que nous souhaitons récupérer (c&rsquo;est-à-dire les données supprimées)</li>
+</ul>
+<p>En Forensic Mobile on a 4 niveaux d&rsquo;acquisition :</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Méthode d&rsquo;acquisition</th>
+          <th>Description</th>
+          <th>Cas d&rsquo;utilisation</th>
+          <th>Niveau d&rsquo;accès</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Manuel</strong></td>
+          <td>Collecte d’informations en interagissant directement avec l’appareil (ex. parcourir des messages, photographier l’écran).</td>
+          <td>Utile si l’appareil est déverrouillé, car de nombreux mécanismes de sécurité sont déjà contournés. Soulève toutefois des problèmes d’intégrité et de non-répudiation.</td>
+          <td>Accès limité aux journaux et bases de données système</td>
+      </tr>
+      <tr>
+          <td><strong>Logique</strong></td>
+          <td>Extraction de données via les fonctionnalités du système d’exploitation (API, sauvegardes, etc.).</td>
+          <td>Pertinent quand l’appareil est verrouillé mais peut être authentifié via un autre dispositif de confiance.</td>
+          <td>Accès partiel</td>
+      </tr>
+      <tr>
+          <td><strong>Système de fichiers</strong></td>
+          <td>Copie complète de l’arborescence et des fichiers système/applicatifs.</td>
+          <td>Requiert souvent une vulnérabilité, un MDM, un jailbreak/root ou des outils spécialisés pour obtenir un accès privilégié.</td>
+          <td>Accès effectif</td>
+      </tr>
+      <tr>
+          <td><strong>Physique</strong></td>
+          <td>Image bit-à-bit du stockage, incluant les données supprimées.</td>
+          <td>Très utile en analyse forensique, surtout pour les anciens appareils. Plus difficile sur les modèles récents à cause du chiffrement et des protections matérielles.</td>
+          <td>Accès total (si pas de chiffrement au repos)</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="maintien-daccès">Maintien d&rsquo;accès
+</h3><p>Comme absolument tout appareils il est important de garder le dispositif déverrouillé pour avoir le meilleur des scénario une analyse optimal.</p>
+<p>Une désactivation du verrouillage automatique peut être un moyen efficace pour que l&rsquo;appareil reste déverrouillé pendant l&rsquo;analyse.</p>
+<p>Il peut être également judicieux de mettre le téléphone en mode avion (pour éviter l&rsquo;altération des données à distance, dans le cadre d&rsquo;iCloud par exemple)</p>
+<h3 id="acquisition-logique">Acquisition logique
+</h3><p>Cette méthode est l&rsquo;une des plus sûre pour garder l&rsquo;intégrité des données/preuves, car rien est écrasé ou modifié sur le téléphone.</p>
+<p>Le problème avec cette méthodes c&rsquo;est qu&rsquo;elle ne prend pas les fichiers systèmes par exemple.</p>
+<p>Nous pouvons réaliser ce genre d&rsquo;extraction avec 3uTools, libimobiledevice, adb &hellip;</p>
+<p>Pour un iPhone on peut utiliser <code>idevicebackup2</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">cmnatic@thm-dev$ idevicebackup2 backup --full ./backup  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Started <span class="s2">&#34;com.apple.mobilebackup2&#34;</span> service on port 49174. Negotiated Protocol Version 2.1 Starting backup... Backup will be unencrypted. Requesting backup from device... 
+</span></span><span class="line"><span class="cl">Full backup mode. 
+</span></span><span class="line"><span class="cl"><span class="o">[===========================</span>                       <span class="o">]</span> 55% Finished 
+</span></span><span class="line"><span class="cl">Receiving files 
+</span></span><span class="line"><span class="cl"><span class="o">[==================================================]</span> 100% <span class="o">(</span>12.6 MB/12.5 MB<span class="o">)</span> <span class="o">[==================================================]</span> 100% <span class="o">(</span>12.6 MB/12.5 MB<span class="o">)</span> <span class="o">[==================================================]</span> 100% <span class="o">(</span>12.7 MB/12.5 MB<span class="o">)</span> <span class="o">[==================================================]</span> 100% <span class="o">(</span>12.7 MB/12.5 MB<span class="o">)</span> <span class="o">[==================================================]</span> 100% <span class="o">(</span>12.7 MB/12.5 MB<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Pour un Android <code>ADB</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">cmnatic@thm-dev$ adb backup -apk -shared -all -f backup.ab 
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">Backing up data... Please wait. 
+</span></span><span class="line"><span class="cl">Writing android application package <span class="o">(</span>APK<span class="o">)</span> files...  
+</span></span><span class="line"><span class="cl">Writing shared storage files... 
+</span></span><span class="line"><span class="cl">Backup Complete!
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="acquisition-du-système-de-fichiers">Acquisition du système de fichiers
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">cmnatic@thm-dev$ adb pull /data /mnt/android_backup
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">pull: building file list...
+</span></span><span class="line"><span class="cl">pull: /data/anr/traces.txt -&gt; /mnt/android_backup/anr/traces.txt
+</span></span><span class="line"><span class="cl">pull: /data/system/packages.xml -&gt; /mnt/android_backup/system/packages.xml
+</span></span><span class="line"><span class="cl">pull: /data/system/users/0.xml -&gt; /mnt/android_backup/system/users/0.xml
+</span></span><span class="line"><span class="cl">pull: /data/data/com.android.providers.contacts/databases/contacts2.db -&gt; /mnt/android_backup/data/com.android.providers.contacts/databases/contacts2.db
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl"><span class="o">[</span>100%<span class="o">]</span> /data -&gt; /mnt/android_backup
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="technique-dacquisition-avancé">Technique d&rsquo;acquisition avancé
+</h2><h3 id="utilitaires-spécialisés">Utilitaires spécialisés
+</h3><p>Les Spécialiste logiciel et matériel utilise des suites spécialisé comme Cellebrite UFED, qui est une matérielle et logicielle d&rsquo;exfiltration et d&rsquo;analyse des données. Il est légalement réservé aux organismes gouvernementaux.</p>
+<h3 id="jailbreaking">Jailbreaking
+</h3><p>Le Jailbreak consiste à exploiter une faille connue pour fournir un accès &ldquo;niveau local&rdquo;, ce qui permet un contrôle COMPLET de l&rsquo;appareil. Cette technique permet un accès non filtré mais le modifie de manière permanente, donc les preuves, ne serons pas scientifiquement fondé.</p>
+<h3 id="custom-boot-loading">Custom Boot Loading
+</h3><p>Cette technique consiste à faire démarrer l&rsquo;appareil mobile dans un système d&rsquo;exploitation temporaire et personnalisé qui fournit un accès de bas niveau à l&rsquo;appareil et contourne les mécanismes de sécurité. Il diffère des autres, comme Jailbreaking, car il ne modifie pas de façon permanente l&rsquo;appareil, ce qui le rend scientifiquement rationnel.</p>
+<h3 id="brute-force">Brute Force
+</h3><p>Méthode obsolète car nous avons des temps d&rsquo;attente bien trop long.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/mobile/">Mobile</a>
+        
+            <a href="/tags/forensic/">Forensic</a>
+        
+            <a href="/tags/acquisition/">Acquisition</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Contenus liés</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/mobile-analyse-android/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Mobile - Analyse Android</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mobile-analyse-ios/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Mobile - Analyse iOS</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Enzo Ribeiro
+    </section>
+    
+    <section class="powerby">
+        Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

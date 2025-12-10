@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introduction Dans le monde Linux comprendre les logs revient à comprendre comment le système fonctionne. Les logs nous permettent de remonter les historiques d&rsquo;activités, les erreurs et les événements système.\nLes types de logs Kernel : Offrent un accès direct au fonctionnement interne de votre système, donnent des informations au niveau du matériel, des drivers et des erreurs système Utilisateur : enregistrent les interactions entre les utilisateurs, les applications et le système d&rsquo;exploitation, inclus les connexions, les exécution de commandes &hellip; Niveaux de log Niveau Description EMERGENCY Niveau le plus élevé, apparait quand le système est inutilisable ou crash ALERT Fournit des informations là où l&rsquo;attention de l&rsquo;utilisateur est requise immédiatement CRITICAL Fournit des informations sur les erreus critiques ERROR Avertit les utilisateur des erreurs non critique WARNING Affiche les avertissements d&rsquo;erreur non imminentes NOTICE Avertit des événements qui mérite d&rsquo;être examiné INFO Fournit des informations sur les actions et les opérations du système DEBUG Information détaillé pour le débogage Log Kernel Le kernel est le coeur du système, il orchestre les interactions matérielles, la gestion des processus et l&rsquo;allocation des ressources. Ces logs nous offres un accès direct au fonctionnement du système.\n">
+<title>Linux - Investigation des Logs</title>
+
+<link rel='canonical' href='https://forensic.enzoribeiro.fr/p/linux-investigation-des-logs/'>
+
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Linux - Investigation des Logs">
+<meta property='og:description' content="Introduction Dans le monde Linux comprendre les logs revient à comprendre comment le système fonctionne. Les logs nous permettent de remonter les historiques d&rsquo;activités, les erreurs et les événements système.\nLes types de logs Kernel : Offrent un accès direct au fonctionnement interne de votre système, donnent des informations au niveau du matériel, des drivers et des erreurs système Utilisateur : enregistrent les interactions entre les utilisateurs, les applications et le système d&rsquo;exploitation, inclus les connexions, les exécution de commandes &hellip; Niveaux de log Niveau Description EMERGENCY Niveau le plus élevé, apparait quand le système est inutilisable ou crash ALERT Fournit des informations là où l&rsquo;attention de l&rsquo;utilisateur est requise immédiatement CRITICAL Fournit des informations sur les erreus critiques ERROR Avertit les utilisateur des erreurs non critique WARNING Affiche les avertissements d&rsquo;erreur non imminentes NOTICE Avertit des événements qui mérite d&rsquo;être examiné INFO Fournit des informations sur les actions et les opérations du système DEBUG Information détaillé pour le débogage Log Kernel Le kernel est le coeur du système, il orchestre les interactions matérielles, la gestion des processus et l&rsquo;allocation des ressources. Ces logs nous offres un accès direct au fonctionnement du système.\n">
+<meta property='og:url' content='https://forensic.enzoribeiro.fr/p/linux-investigation-des-logs/'>
+<meta property='og:site_name' content='KIRÔN'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Linux' /><meta property='article:tag' content='Forensic' /><meta property='article:tag' content='Analyse' /><meta property='article:tag' content='Log' /><meta property='article:published_time' content='2025-12-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-09T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Linux - Investigation des Logs">
+<meta name="twitter:description" content="Introduction Dans le monde Linux comprendre les logs revient à comprendre comment le système fonctionne. Les logs nous permettent de remonter les historiques d&rsquo;activités, les erreurs et les événements système.\nLes types de logs Kernel : Offrent un accès direct au fonctionnement interne de votre système, donnent des informations au niveau du matériel, des drivers et des erreurs système Utilisateur : enregistrent les interactions entre les utilisateurs, les applications et le système d&rsquo;exploitation, inclus les connexions, les exécution de commandes &hellip; Niveaux de log Niveau Description EMERGENCY Niveau le plus élevé, apparait quand le système est inutilisable ou crash ALERT Fournit des informations là où l&rsquo;attention de l&rsquo;utilisateur est requise immédiatement CRITICAL Fournit des informations sur les erreus critiques ERROR Avertit les utilisateur des erreurs non critique WARNING Affiche les avertissements d&rsquo;erreur non imminentes NOTICE Avertit des événements qui mérite d&rsquo;être examiné INFO Fournit des informations sur les actions et les opérations du système DEBUG Information détaillé pour le débogage Log Kernel Le kernel est le coeur du système, il orchestre les interactions matérielles, la gestion des processus et l&rsquo;allocation des ressources. Ces logs nous offres un accès direct au fonctionnement du système.\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/enzo-anime_hu_3208ab5a0ff05de9.png" width="300"
+                            height="386" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">KIRÔN</a></h1>
+            <h2 class="site-description">Mes notes en forensic</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/enzo-ribeiro'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.linkedin.com/in/enzo-ribeiro-bb8794209/'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.975,20.667H3.117V9.059H6.975ZM5.072,3.462a2.011,2.011,0,1,0-.051,4.012h.026a2.012,2.012,0,1,0,.025-4.012ZM9.111,20.667h3.858V14.185a2.639,2.639,0,0,1,.127-.941,2.111,2.111,0,0,1,1.98-1.411c1.4,0,1.955,1.064,1.955,2.625v6.209h3.858V14.011c0-3.565-1.9-5.225-4.442-5.225A3.828,3.828,0,0,0,12.97,10.7V9.059H9.111c.051,1.089,0,11.609,0,11.609Z"/></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/" selected>Français</option>
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/zh-cn/" >中文</option>
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Mode sombre</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction">Introduction</a>
+      <ol>
+        <li><a href="#les-types-de-logs">Les types de logs</a></li>
+        <li><a href="#niveaux-de-log">Niveaux de log</a></li>
+        <li><a href="#log-kernel">Log Kernel</a></li>
+      </ol>
+    </li>
+    <li><a href="#repertoire-varlog">Repertoire <code>/var/log</code></a>
+      <ol>
+        <li><a href="#kernlog--dmesg"><code>Kern.log</code> &amp; <code>dmesg</code></a></li>
+        <li><a href="#authlog"><code>Auth.log</code></a></li>
+        <li><a href="#syslog"><code>syslog</code></a></li>
+        <li><a href="#btmp--wtmp"><code>btmp</code> &amp; <code>wtmp</code></a></li>
+      </ol>
+    </li>
+    <li><a href="#log-utilisateurs-avec-syslog">Log utilisateurs avec <code>syslog</code></a>
+      <ol>
+        <li><a href="#présentation">Présentation</a></li>
+        <li><a href="#niveaux-de-gravité-des-logs">Niveaux de gravité des logs</a></li>
+        <li><a href="#installations-syslog">Installations Syslog</a></li>
+      </ol>
+    </li>
+    <li><a href="#journalctl"><code>Journalctl</code></a>
+      <ol>
+        <li><a href="#utilisation-de-la-commande">Utilisation de la commande</a></li>
+      </ol>
+    </li>
+    <li><a href="#logs-dapplications">Logs d&rsquo;applications</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" >
+                Linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/linux-investigation-des-logs/">Linux - Investigation des Logs</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-12-09T00:00:00Z'>déc. 09, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    9 minutes de lecture
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="introduction">Introduction
+</h2><p>Dans le monde Linux comprendre les logs revient à comprendre comment le système fonctionne. Les logs nous permettent de remonter les historiques d&rsquo;activités, les erreurs et les événements système.</p>
+<h3 id="les-types-de-logs">Les types de logs
+</h3><ul>
+<li>Kernel : Offrent un accès direct au fonctionnement interne de votre système, donnent des informations au niveau du matériel, des drivers et des erreurs système</li>
+<li>Utilisateur : enregistrent les interactions entre les utilisateurs, les applications et le système d&rsquo;exploitation, inclus les connexions, les exécution de commandes &hellip;</li>
+</ul>
+<h3 id="niveaux-de-log">Niveaux de log
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Niveau</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>EMERGENCY</td>
+          <td>Niveau le plus élevé, apparait quand le système est inutilisable ou crash</td>
+      </tr>
+      <tr>
+          <td>ALERT</td>
+          <td>Fournit des informations là où l&rsquo;attention de l&rsquo;utilisateur est requise immédiatement</td>
+      </tr>
+      <tr>
+          <td>CRITICAL</td>
+          <td>Fournit des informations sur les erreus critiques</td>
+      </tr>
+      <tr>
+          <td>ERROR</td>
+          <td>Avertit les utilisateur des erreurs non critique</td>
+      </tr>
+      <tr>
+          <td>WARNING</td>
+          <td>Affiche les avertissements d&rsquo;erreur non imminentes</td>
+      </tr>
+      <tr>
+          <td>NOTICE</td>
+          <td>Avertit des événements qui mérite d&rsquo;être examiné</td>
+      </tr>
+      <tr>
+          <td>INFO</td>
+          <td>Fournit des informations sur les actions et les opérations du système</td>
+      </tr>
+      <tr>
+          <td>DEBUG</td>
+          <td>Information détaillé pour le débogage</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="log-kernel">Log Kernel
+</h3><p>Le kernel est le coeur du système, il orchestre les interactions matérielles, la gestion des processus et l&rsquo;allocation des ressources. Ces logs nous offres un accès direct au fonctionnement du système.</p>
+<p>Nous pouvons examiner ces logs avec la commande <code>dmesg</code>.</p>
+<h2 id="repertoire-varlog">Repertoire <code>/var/log</code>
+</h2><p>Ces logs sont indispensables dans une investigation, car il renferme des informations sur les activités, les événements du système, des enregistrements de processus, des activités utilisateurs, des connexions réseaux et bien plus encore.</p>
+<h3 id="kernlog--dmesg"><code>Kern.log</code> &amp; <code>dmesg</code>
+</h3><p>Le fichier <code>Kern.log</code> est dédié à l&rsquo;enregistrement des messages du noyau. Il est essentiel pour diagnostiquer les pannes matérielles.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">$ tail -f /var/log/kern.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 10:54:13 tryhackme kernel: raid6: sse2x1   gen<span class="o">()</span>  <span class="m">4131</span> MB/s
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 10:54:13 tryhackme kernel: raid6: sse2x1   xor<span class="o">()</span>  <span class="m">3083</span> MB/s
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 10:54:13 tryhackme kernel: raid6: using algorithm avx2x1 gen<span class="o">()</span> <span class="m">9658</span> MB/s
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 10:54:13 tryhackme kernel: raid6: .... xor<span class="o">()</span> <span class="m">4742</span> MB/s, rmw enabled
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 10:54:13 tryhackme kernel: raid6: using avx2x2 recovery algorithm
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 10:54:13 tryhackme kernel: xor: automatically using best checksumming <span class="k">function</span>   avx       
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 10:54:13 tryhackme kernel: Btrfs loaded, <span class="nv">crc32c</span><span class="o">=</span>crc32c-intel, <span class="nv">zoned</span><span class="o">=</span>yes, <span class="nv">fsverity</span><span class="o">=</span>yes
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 12:11:02 tryhackme kernel: custom_kernel: loading out-of-tree module taints kernel.
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 12:11:02 tryhackme kernel: custom_kernel: module verification failed: signature and/or required key missing - tainting kernel
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 12:11:02 tryhackme kernel: Custom Kernel Module Loaded: Simulating Kernel Exploit
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Le fichier <code>dmesg</code> est nous permet de détecter des messages inhabituels au démarrage, pouvant nous indiquer une altération ou un problème matériel. Il est très compliquer de suivre efficacement ce format de log</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">$ tail /var/log/dmesg
+</span></span><span class="line"><span class="cl"><span class="o">[</span>   30.719880<span class="o">]</span> kernel: audit: <span class="nv">type</span><span class="o">=</span><span class="m">1400</span> audit<span class="o">(</span>1719484416.292:4<span class="o">)</span>: <span class="nv">apparmor</span><span class="o">=</span><span class="s2">&#34;STATUS&#34;</span> <span class="nv">operation</span><span class="o">=</span><span class="s2">&#34;profile_load&#34;</span> <span class="nv">profile</span><span class="o">=</span><span class="s2">&#34;unconfined&#34;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;/usr/lib/NetworkManager/nm-dhcp-client.action&#34;</span> <span class="nv">pid</span><span class="o">=</span><span class="m">352</span> <span class="nv">comm</span><span class="o">=</span><span class="s2">&#34;apparmor_parser&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>   30.719886<span class="o">]</span> kernel: audit: <span class="nv">type</span><span class="o">=</span><span class="m">1400</span> audit<span class="o">(</span>1719484416.292:5<span class="o">)</span>: <span class="nv">apparmor</span><span class="o">=</span><span class="s2">&#34;STATUS&#34;</span> <span class="nv">operation</span><span class="o">=</span><span class="s2">&#34;profile_load&#34;</span> <span class="nv">profile</span><span class="o">=</span><span class="s2">&#34;unconfined&#34;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;/usr/lib/NetworkManager/nm-dhcp-helper&#34;</span> <span class="nv">pid</span><span class="o">=</span><span class="m">352</span> <span class="nv">comm</span><span class="o">=</span><span class="s2">&#34;apparmor_parser&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>   30.719888<span class="o">]</span> kernel: audit: <span class="nv">type</span><span class="o">=</span><span class="m">1400</span> audit<span class="o">(</span>1719484416.292:6<span class="o">)</span>: <span class="nv">apparmor</span><span class="o">=</span><span class="s2">&#34;STATUS&#34;</span> <span class="nv">operation</span><span class="o">=</span><span class="s2">&#34;profile_load&#34;</span> <span class="nv">profile</span><span class="o">=</span><span class="s2">&#34;unconfined&#34;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;/usr/lib/connman/scripts/dhclient-script&#34;</span> <span class="nv">pid</span><span class="o">=</span><span class="m">352</span> <span class="nv">comm</span><span class="o">=</span><span class="s2">&#34;apparmor_parser&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>   30.719891<span class="o">]</span> kernel: audit: <span class="nv">type</span><span class="o">=</span><span class="m">1400</span> audit<span class="o">(</span>1719484416.292:7<span class="o">)</span>: <span class="nv">apparmor</span><span class="o">=</span><span class="s2">&#34;STATUS&#34;</span> <span class="nv">operation</span><span class="o">=</span><span class="s2">&#34;profile_load&#34;</span> <span class="nv">profile</span><span class="o">=</span><span class="s2">&#34;unconfined&#34;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;/{,usr/}sbin/dhclient&#34;</span> <span class="nv">pid</span><span class="o">=</span><span class="m">352</span> <span class="nv">comm</span><span class="o">=</span><span class="s2">&#34;apparmor_parser&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>   30.829947<span class="o">]</span> kernel: audit: <span class="nv">type</span><span class="o">=</span><span class="m">1400</span> audit<span class="o">(</span>1719484416.400:8<span class="o">)</span>: <span class="nv">apparmor</span><span class="o">=</span><span class="s2">&#34;STATUS&#34;</span> <span class="nv">operation</span><span class="o">=</span><span class="s2">&#34;profile_load&#34;</span> <span class="nv">profile</span><span class="o">=</span><span class="s2">&#34;unconfined&#34;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;/usr/lib/cups/backend/cups-pdf&#34;</span> <span class="nv">pid</span><span class="o">=</span><span class="m">360</span> <span class="nv">comm</span><span class="o">=</span><span class="s2">&#34;apparmor_parser&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>   30.829954<span class="o">]</span> kernel: audit: <span class="nv">type</span><span class="o">=</span><span class="m">1400</span> audit<span class="o">(</span>1719484416.400:9<span class="o">)</span>: <span class="nv">apparmor</span><span class="o">=</span><span class="s2">&#34;STATUS&#34;</span> <span class="nv">operation</span><span class="o">=</span><span class="s2">&#34;profile_load&#34;</span> <span class="nv">profile</span><span class="o">=</span><span class="s2">&#34;unconfined&#34;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;/usr/sbin/cupsd&#34;</span> <span class="nv">pid</span><span class="o">=</span><span class="m">360</span> <span class="nv">comm</span><span class="o">=</span><span class="s2">&#34;apparmor_parser&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>   30.829957<span class="o">]</span> kernel: audit: <span class="nv">type</span><span class="o">=</span><span class="m">1400</span> audit<span class="o">(</span>1719484416.400:10<span class="o">)</span>: <span class="nv">apparmor</span><span class="o">=</span><span class="s2">&#34;STATUS&#34;</span> <span class="nv">operation</span><span class="o">=</span><span class="s2">&#34;profile_load&#34;</span> <span class="nv">profile</span><span class="o">=</span><span class="s2">&#34;unconfined&#34;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;/usr/sbin/cupsd//third_party&#34;</span> <span class="nv">pid</span><span class="o">=</span><span class="m">360</span> <span class="nv">comm</span><span class="o">=</span><span class="s2">&#34;apparmor_parser&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>   30.836788<span class="o">]</span> kernel: audit: <span class="nv">type</span><span class="o">=</span><span class="m">1400</span> audit<span class="o">(</span>1719484416.408:11<span class="o">)</span>: <span class="nv">apparmor</span><span class="o">=</span><span class="s2">&#34;STATUS&#34;</span> <span class="nv">operation</span><span class="o">=</span><span class="s2">&#34;profile_load&#34;</span> <span class="nv">profile</span><span class="o">=</span><span class="s2">&#34;unconfined&#34;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;/usr/bin/man&#34;</span> <span class="nv">pid</span><span class="o">=</span><span class="m">364</span> <span class="nv">comm</span><span class="o">=</span><span class="s2">&#34;apparmor_parser&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>   49.317142<span class="o">]</span> kernel: EXT4-fs <span class="o">(</span>xvda1<span class="o">)</span>: resizing filesystem from <span class="m">10485499</span> to <span class="m">15728379</span> blocks
+</span></span><span class="line"><span class="cl"><span class="o">[</span>   49.568767<span class="o">]</span> kernel: EXT4-fs <span class="o">(</span>xvda1<span class="o">)</span>: resized filesystem to <span class="m">15728379</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="authlog"><code>Auth.log</code>
+</h3><p>Comme son nom l&rsquo;indique il permet de regrouper tous les événements liées à une authentification. Quelle soit réussie ou échouée la tentative est enregistré dans ce fichier.</p>
+<p>Simulation d&rsquo;une connexion SSH sur une machine :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">$ ssh root@localhost -p <span class="m">22</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">The authenticity of host <span class="s1">&#39;localhost (127.0.0.1)&#39;</span> can<span class="s1">&#39;t be established.
+</span></span></span><span class="line"><span class="cl"><span class="s1">ECDSA key fingerprint is ------
+</span></span></span><span class="line"><span class="cl"><span class="s1">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span></span></span><span class="line"><span class="cl"><span class="s1">Warning: Permanently added &#39;</span>localhost<span class="err">&#39;</span> <span class="o">(</span>ECDSA<span class="o">)</span> to the list of known hosts.
+</span></span><span class="line"><span class="cl">root@localhost: Permission denied <span class="o">(</span>publickey<span class="o">)</span>.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Voici le retour dans le fichier <code>auth.log</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">$ tail -f /var/log/auth.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 08:55:45 tryhackme sshd<span class="o">[</span>70808<span class="o">]</span>: Connection closed by authenticating user root 127.0.0.1 port <span class="m">43086</span> <span class="o">[</span>preauth<span class="o">]</span>
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 08:56:10 tryhackme sudo:   ubuntu : <span class="nv">TTY</span><span class="o">=</span>pts/0 <span class="p">;</span> <span class="nv">PWD</span><span class="o">=</span>/home/ubuntu <span class="p">;</span> <span class="nv">USER</span><span class="o">=</span>root <span class="p">;</span> <span class="nv">COMMAND</span><span class="o">=</span>/usr/bin/tail -f /var/log/auth.log
+</span></span><span class="line"><span class="cl">Jun <span class="m">27</span> 08:56:10 tryhackme sudo: pam_unix<span class="o">(</span>sudo:session<span class="o">)</span>: session opened <span class="k">for</span> user root by ubuntu<span class="o">(</span><span class="nv">uid</span><span class="o">=</span>0<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Nous pouvons filtrer l&rsquo;output de la commande avec grep :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">$ grep <span class="s1">&#39;Accepted password&#39;</span> /var/log/auth.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">May <span class="m">31</span> 11:17:00 server sshd<span class="o">[</span>2009<span class="o">]</span>: Accepted password <span class="k">for</span> root from 192.168.1.50 port <span class="m">22</span> ssh2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>&lsquo;Accepted password&rsquo; peut être remplacé par &lsquo;sudo&rsquo;, &lsquo;session opened&rsquo; ou autre chose.</p>
+<p>Filtrage par jour/heure :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">awk <span class="s1">&#39;/2024-06-04 15:30:00/,/2024-06-05 15:29:59/&#39;</span> /var/log/auth.log
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="syslog"><code>syslog</code>
+</h3><p>Ce fichier nous permet de collecter divers messages système, ce qui en fait un point central pour comprendre les événements système. Ce journal capture tout, des exécutions de tâches cron aux activités du noyau, offrant une vue complète de l&rsquo;état et des activités de votre système.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">$ grep <span class="s1">&#39;CRON&#39;</span> /var/log/syslog
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Jun <span class="m">18</span> 00:09:01 tryhackme CRON<span class="o">[</span>18304<span class="o">]</span>: <span class="o">(</span>root<span class="o">)</span> CMD <span class="o">(</span>  <span class="o">[</span> -x /usr/lib/php/sessionclean <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">if</span> <span class="o">[</span> ! -d /run/systemd/system <span class="o">]</span><span class="p">;</span> <span class="k">then</span> /usr/lib/php/sessionclean<span class="p">;</span> <span class="k">fi</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">Jun <span class="m">18</span> 00:09:01 tryhackme CRON<span class="o">[</span>18305<span class="o">]</span>: <span class="o">(</span>root<span class="o">)</span> CMD <span class="o">(</span>   <span class="nb">test</span> -x /etc/cron.daily/popularity-contest <span class="o">&amp;&amp;</span> /etc/cron.daily/popularity-contest --crond<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Jun <span class="m">18</span> 00:17:01 tryhackme CRON<span class="o">[</span>18358<span class="o">]</span>: <span class="o">(</span>root<span class="o">)</span> CMD <span class="o">(</span>   <span class="nb">cd</span> / <span class="o">&amp;&amp;</span> run-parts --report /etc/cron.hourly<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Jun <span class="m">18</span> 00:39:01 tryhackme CRON<span class="o">[</span>18367<span class="o">]</span>: <span class="o">(</span>root<span class="o">)</span> CMD <span class="o">(</span>  <span class="o">[</span> -x /usr/lib/php/sessionclean <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">if</span> <span class="o">[</span> ! -d /run/systemd/system <span class="o">]</span><span class="p">;</span> <span class="k">then</span> /usr/lib/php/sessionclean<span class="p">;</span> <span class="k">fi</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">Jun <span class="m">18</span> 01:09:01 tryhackme CRON<span class="o">[</span>18424<span class="o">]</span>: <span class="o">(</span>root<span class="o">)</span> CMD <span class="o">(</span>  <span class="o">[</span> -x /usr/lib/php/sessionclean <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">if</span> <span class="o">[</span> ! -d /run/systemd/system <span class="o">]</span><span class="p">;</span> <span class="k">then</span> /usr/lib/php/sessionclean<span class="p">;</span> <span class="k">fi</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">Jun <span class="m">18</span> 01:17:01 tryhackme CRON<span class="o">[</span>18476<span class="o">]</span>: <span class="o">(</span>root<span class="o">)</span> CMD <span class="o">(</span>   <span class="nb">cd</span> / <span class="o">&amp;&amp;</span> run-parts --report /etc/cron.hourly<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Jun <span class="m">18</span> 01:39:01 tryhackme CRON<span class="o">[</span>18486<span class="o">]</span>: <span class="o">(</span>root<span class="o">)</span> CMD <span class="o">(</span>  <span class="o">[</span> -x /usr/lib/php/sessionclean <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">if</span> <span class="o">[</span> ! -d /run/systemd/system <span class="o">]</span><span class="p">;</span> <span class="k">then</span> /usr/lib/php/sessionclean<span class="p">;</span> <span class="k">fi</span><span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="btmp--wtmp"><code>btmp</code> &amp; <code>wtmp</code>
+</h3><p>Le <code>/var/log/btmp</code>le fichier enregistre les tentatives de connexion échouées, tandis que le <code>/var/log/wtmp</code>enregistre chaque connexion et déconnexion.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">$ last -f /var/log/wtmp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ubuntu   pts/3        10.110.7.185      Thu Jun <span class="m">27</span> 11:50 - 15:04  <span class="o">(</span>03:13<span class="o">)</span>
+</span></span><span class="line"><span class="cl">ubuntu   pts/2        10.110.7.185      Thu Jun <span class="m">27</span> 11:50 - 15:05  <span class="o">(</span>03:15<span class="o">)</span>
+</span></span><span class="line"><span class="cl">ubuntu   pts/1        10.110.7.185      Thu Jun <span class="m">27</span> 10:36 - 13:28  <span class="o">(</span>02:52<span class="o">)</span>
+</span></span><span class="line"><span class="cl">ubuntu   pts/0        10.110.7.185      Thu Jun <span class="m">27</span> 10:34 - 13:28  <span class="o">(</span>02:53<span class="o">)</span>
+</span></span><span class="line"><span class="cl">reboot   system boot  5.15.0-1053-aws  Thu Jun <span class="m">27</span> 10:33   still running
+</span></span><span class="line"><span class="cl">reboot   system boot  5.15.0-1053-aws  Sun Jun <span class="m">23</span> 16:34   still running
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="log-utilisateurs-avec-syslog">Log utilisateurs avec <code>syslog</code>
+</h2><h3 id="présentation">Présentation
+</h3><p><code>Syslog</code> a évolué avec le temps avec déiférentes versions :</p>
+<ul>
+<li>syslogd : démon d&rsquo;origine</li>
+<li>syslog-ng : version amélioré avec d&rsquo;avantages de fonctionnalités basé sur le contenu, le transport TCP &hellip;</li>
+<li>rsyslog : démon le plus récents avec des performances élevées, prise ne cahrge du TLS, du stockage de BDD et de la modification des messages</li>
+</ul>
+<p>Syslog se présente sous trois composants principaux :</p>
+<ul>
+<li>Le démon : <code>rsyslog</code> ou <code>syslogd</code> gères la journalisation</li>
+<li>Fichier de configuration : <code>/etc/rsyslog</code> ou <code>/etc/syslog.conf</code></li>
+<li>Fichier de journaux : <code>/var/log</code></li>
+</ul>
+<h3 id="niveaux-de-gravité-des-logs">Niveaux de gravité des logs
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Valeur</th>
+          <th>Gravité</th>
+          <th>Mot-clé</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>0</td>
+          <td>Emergency</td>
+          <td>emerg</td>
+          <td>Le système est inutilisable</td>
+      </tr>
+      <tr>
+          <td>1</td>
+          <td>Alert</td>
+          <td>alert</td>
+          <td>Une action immédiate est nécessaire</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>Critical</td>
+          <td>crit</td>
+          <td>Conditions critiques</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>Error</td>
+          <td>err</td>
+          <td>Conditions critiques</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>Warning</td>
+          <td>warning</td>
+          <td>Conditions d&rsquo;avertissement</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>Notice</td>
+          <td>notice</td>
+          <td>Normal mais significatif</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>Informational</td>
+          <td>info</td>
+          <td>Messages d&rsquo;information</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>Debug</td>
+          <td>debug</td>
+          <td>Messages de niveau de débogage</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="installations-syslog">Installations Syslog
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Code numérique</th>
+          <th>Mot-clé</th>
+          <th>Nom d&rsquo;installation</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>0</td>
+          <td>kern</td>
+          <td>Messages du noyau</td>
+      </tr>
+      <tr>
+          <td>1</td>
+          <td>user</td>
+          <td>Messages au niveau de l&rsquo;utilisateur</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>mail</td>
+          <td>Messages au niveau de l&rsquo;utilisateur</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>daemon</td>
+          <td>Démons système</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>auth</td>
+          <td>Messages de sécurité/d&rsquo;authentification</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>syslog</td>
+          <td>Messages syslog internes</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>lpr</td>
+          <td>Sous-système d&rsquo;imprimante en ligne</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>news</td>
+          <td>Sous-système d&rsquo;informations du réseau</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>uucp</td>
+          <td>Sous-système UUCP</td>
+      </tr>
+      <tr>
+          <td>9</td>
+          <td>cron</td>
+          <td>Sous-systèmes Cron</td>
+      </tr>
+      <tr>
+          <td>10</td>
+          <td>authpriv</td>
+          <td>Messages de sécurité</td>
+      </tr>
+      <tr>
+          <td>11</td>
+          <td>ftp</td>
+          <td>FTP démon</td>
+      </tr>
+      <tr>
+          <td>12</td>
+          <td>ntp</td>
+          <td>NTP Sous-système</td>
+      </tr>
+      <tr>
+          <td>13</td>
+          <td>security</td>
+          <td>Audit du journal de sécurité</td>
+      </tr>
+      <tr>
+          <td>14</td>
+          <td>console</td>
+          <td>Alertes du journal de la console</td>
+      </tr>
+      <tr>
+          <td>15</td>
+          <td>solaris-cron</td>
+          <td>Journaux de planification</td>
+      </tr>
+      <tr>
+          <td>16-23</td>
+          <td>local0 to local7</td>
+          <td>Installations utilisées localement</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="journalctl"><code>Journalctl</code>
+</h2><p>Binaire utilisé par les Distributions basés sur systemd.
+C&rsquo;est un outil très puissant, il fournit des logs structurés et indexés, ce qui permet de &ldquo;personnaliser&rdquo; l&rsquo;output (filtrage spécifique).</p>
+<h3 id="utilisation-de-la-commande">Utilisation de la commande
+</h3><p>Pour afficher les legs avec <code>journalctl</code> c&rsquo;est simple :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">$ journalctl
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">-- Logs begin at Wed 2023-09-06 07:57:36 UTC, end at Tue 2024-06-11 08:17:01 UTC. --
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel: Linux version 5.4.0-1029-aws <span class="o">(</span>buildd@lcy01-amd64-022<span class="o">)</span> <span class="o">(</span>gcc version 9.3.0 <span class="o">(</span>Ubuntu 9.3.0-17ubuntu1~20.04<span class="o">))</span> <span class="c1">#30-Ubuntu SMP Tue Oct 20 10:06:38 UTC 2020 (Ub&gt;</span>
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel: Command line: <span class="nv">BOOT_IMAGE</span><span class="o">=</span>/boot/vmlinuz-5.4.0-1029-aws <span class="nv">root</span><span class="o">=</span><span class="nv">PARTUUID</span><span class="o">=</span>da63a61e-01 ro <span class="nv">console</span><span class="o">=</span>tty1 <span class="nv">console</span><span class="o">=</span>ttyS0 nvme_core.io_timeout<span class="o">=</span><span class="m">4294967295</span> <span class="nv">panic</span><span class="o">=</span>-1
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel: KERNEL supported cpus:
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel:   Intel GenuineIntel
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel:   AMD AuthenticAMD
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel:   Hygon HygonGenuine
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel:   Centaur CentaurHauls
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel:   zhaoxin   Shanghai  
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel: x86/fpu: Supporting XSAVE feature 0x001: <span class="s1">&#39;x87 floating point registers&#39;</span>
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel: x86/fpu: Supporting XSAVE feature 0x002: <span class="s1">&#39;SSE registers&#39;</span>
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel: x86/fpu: Supporting XSAVE feature 0x004: <span class="s1">&#39;AVX registers&#39;</span>
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel: x86/fpu: xstate_offset<span class="o">[</span>2<span class="o">]</span>:  576, xstate_sizes<span class="o">[</span>2<span class="o">]</span>:  <span class="m">256</span>
+</span></span><span class="line"><span class="cl">Sep <span class="m">06</span> 07:57:36 ubuntu kernel: x86/fpu: Enabled xstate features 0x7, context size is <span class="m">832</span> bytes, using <span class="s1">&#39;standard&#39;</span> format.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Voici les arguments possible avec <code>journalctl</code></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Argument</th>
+          <th>Description</th>
+          <th>Exemple</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>-f</code></td>
+          <td>Suivez le journal et affichez les nouvelles entrées au fur et à mesure qu&rsquo;elles sont ajoutées.</td>
+          <td><code>journalctl -f</code></td>
+      </tr>
+      <tr>
+          <td><code>-k</code></td>
+          <td>Afficher uniquement les messages du noyau.</td>
+          <td><code>journalctl -k</code></td>
+      </tr>
+      <tr>
+          <td><code>-b</code></td>
+          <td>Afficher les messages d&rsquo;un démarrage spécifique.</td>
+          <td><code>journalctl -b -1</code></td>
+      </tr>
+      <tr>
+          <td><code>-u</code></td>
+          <td>Filtrer les messages par une unité spécifique.</td>
+          <td><code>journalctl -u apache.service</code></td>
+      </tr>
+      <tr>
+          <td><code>-p</code></td>
+          <td>Filtrer les messages par priorité.</td>
+          <td><code>journalctl -p err</code></td>
+      </tr>
+      <tr>
+          <td><code>-S</code></td>
+          <td>Afficher les messages depuis une heure spécifique.</td>
+          <td><code>journalctl -S &quot;2021-05-24 14:08:01&quot;</code></td>
+      </tr>
+      <tr>
+          <td><code>-U</code></td>
+          <td>Afficher les messages jusqu&rsquo;à une heure précise.</td>
+          <td><code>journalctl -U &quot;2021-05-24 15:46:01&quot;</code></td>
+      </tr>
+      <tr>
+          <td><code>-r</code></td>
+          <td>Inversez la sortie, en affichant d&rsquo;abord les entrées les plus récentes.</td>
+          <td><code>journalctl -r</code></td>
+      </tr>
+      <tr>
+          <td><code>-n</code></td>
+          <td>Limitez le nombre de lignes affichées.</td>
+          <td><code>journalctl -n 20</code></td>
+      </tr>
+      <tr>
+          <td><code>--no-pager</code></td>
+          <td>Ne dirigez pas la sortie vers un pager.</td>
+          <td><code>journalctl --no-pager</code></td>
+      </tr>
+  </tbody>
+</table></div>
+<p>Nous pouvons également, filtré les journaux pour avoir seulement les logs entre telles et telles date :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ journalctl -S <span class="s2">&#34;2024-02-06 15:30:00&#34;</span> -U <span class="s2">&#34;2024-02-17 15:29:59&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Filtrage par heures :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">$ journalctl -S <span class="s2">&#34;2 hours ago&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Par criticité :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">journalctl -p crit 
+</span></span><span class="line"><span class="cl">-- Logs begin at Sun 2022-02-27 13:52:14 UTC, end at Tue 2024-06-18 08:16:30 UTC. --
+</span></span><span class="line"><span class="cl">Feb <span class="m">27</span> 15:14:15 ip-10-10-238-44 gnome-session-binary<span class="o">[</span>38253<span class="o">]</span>: CRITICAL: We failed, but the fail whale is dead. Sorry....
+</span></span><span class="line"><span class="cl">-- Reboot --
+</span></span><span class="line"><span class="cl">Jun <span class="m">11</span> 19:20:37 tryhackme sudo<span class="o">[</span>77760<span class="o">]</span>: pam_unix<span class="o">(</span>sudo:auth<span class="o">)</span>: auth could not identify password <span class="k">for</span> <span class="o">[</span>www-data<span class="o">]</span>
+</span></span><span class="line"><span class="cl">Jun <span class="m">11</span> 19:20:37 tryhackme sudo<span class="o">[</span>77760<span class="o">]</span>: www-data : <span class="nb">command</span> not allowed <span class="p">;</span> <span class="nv">TTY</span><span class="o">=</span>unknown <span class="p">;</span> <span class="nv">PWD</span><span class="o">=</span>/var/www/html <span class="p">;</span> <span class="nv">USER</span><span class="o">=</span>root <span class="p">;</span> <span class="nv">COMMAND</span><span class="o">=</span>list
+</span></span><span class="line"><span class="cl">Jun <span class="m">11</span> 19:33:44 tryhackme sudo<span class="o">[</span>77794<span class="o">]</span>: pam_unix<span class="o">(</span>sudo:auth<span class="o">)</span>: auth could not identify password <span class="k">for</span> <span class="o">[</span>www-data<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="logs-dapplications">Logs d&rsquo;applications
+</h2><p>Prenons l&rsquo;exemple de l&rsquo;application apache2.
+Les logs se trouve dans <code>/var/log/apache2/{access.log,error.log}</code>, elles sont configurées dans <code>/etc/apache2/apache2.conf</code>.</p>
+<p>Pour lire les logs nous pouvons utiliser (comme toutes les autres logs) <code>cat</code>, <code>less</code> ou <code>tail</code>.</p>
+<p>Nous pouvons également filtrer l&rsquo;output avec <code>grep</code> :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">grep <span class="s2">&#34;10.109.30.250&#34;</span> /var/log/apache2/access.log*
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Nous pouvons filtrer avec les codes erreurs (404, 403 etc.).</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/forensic/">Forensic</a>
+        
+            <a href="/tags/analyse/">Analyse</a>
+        
+            <a href="/tags/log/">Log</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Contenus liés</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/linux-surface-dincident/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Surface d&#39;Incident</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-imagerie-forensic/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Imagerie Forensic</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-analyse-de-processus/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Analyse de Processus</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mobile-analyse-android/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Mobile - Analyse Android</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mobile-analyse-ios/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Mobile - Analyse iOS</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Enzo Ribeiro
+    </section>
+    
+    <section class="powerby">
+        Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

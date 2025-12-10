@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introduction Dans une analyse à chaud (directement sur le système), il est important d&rsquo;avoir les repertoires suivants &ldquo;propre&rdquo;, pour être sur que les binaires ne soit pas compromis, et fournir de vraie preuve.\nbin sbin lib lib64 Pour ça il nous faut intégrer des binaires &ldquo;propre&rdquo;, qui viennent d&rsquo;une installation neuve. Voici comment les importer dans notre machine :\n1 2 export PATH=/mnt/usb/bin:/mnt/usb/sbin export LD_LIBRARY_PATH=/mnt/usb/lib:/mnt/usb/lib64 Processus Un processus est un instance en cours d&rsquo;exécution. Chaque processus possède un PID (Process ID) unique, cela permet au système de le gérer et de le suivre.\n">
+<title>Linux - Analyse de Processus</title>
+
+<link rel='canonical' href='https://forensic.enzoribeiro.fr/p/linux-analyse-de-processus/'>
+
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Linux - Analyse de Processus">
+<meta property='og:description' content="Introduction Dans une analyse à chaud (directement sur le système), il est important d&rsquo;avoir les repertoires suivants &ldquo;propre&rdquo;, pour être sur que les binaires ne soit pas compromis, et fournir de vraie preuve.\nbin sbin lib lib64 Pour ça il nous faut intégrer des binaires &ldquo;propre&rdquo;, qui viennent d&rsquo;une installation neuve. Voici comment les importer dans notre machine :\n1 2 export PATH=/mnt/usb/bin:/mnt/usb/sbin export LD_LIBRARY_PATH=/mnt/usb/lib:/mnt/usb/lib64 Processus Un processus est un instance en cours d&rsquo;exécution. Chaque processus possède un PID (Process ID) unique, cela permet au système de le gérer et de le suivre.\n">
+<meta property='og:url' content='https://forensic.enzoribeiro.fr/p/linux-analyse-de-processus/'>
+<meta property='og:site_name' content='KIRÔN'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Linux' /><meta property='article:tag' content='Forensic' /><meta property='article:tag' content='Processus' /><meta property='article:published_time' content='2025-12-07T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-07T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Linux - Analyse de Processus">
+<meta name="twitter:description" content="Introduction Dans une analyse à chaud (directement sur le système), il est important d&rsquo;avoir les repertoires suivants &ldquo;propre&rdquo;, pour être sur que les binaires ne soit pas compromis, et fournir de vraie preuve.\nbin sbin lib lib64 Pour ça il nous faut intégrer des binaires &ldquo;propre&rdquo;, qui viennent d&rsquo;une installation neuve. Voici comment les importer dans notre machine :\n1 2 export PATH=/mnt/usb/bin:/mnt/usb/sbin export LD_LIBRARY_PATH=/mnt/usb/lib:/mnt/usb/lib64 Processus Un processus est un instance en cours d&rsquo;exécution. Chaque processus possède un PID (Process ID) unique, cela permet au système de le gérer et de le suivre.\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/enzo-anime_hu_3208ab5a0ff05de9.png" width="300"
+                            height="386" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">KIRÔN</a></h1>
+            <h2 class="site-description">Mes notes en forensic</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/enzo-ribeiro'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.linkedin.com/in/enzo-ribeiro-bb8794209/'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.975,20.667H3.117V9.059H6.975ZM5.072,3.462a2.011,2.011,0,1,0-.051,4.012h.026a2.012,2.012,0,1,0,.025-4.012ZM9.111,20.667h3.858V14.185a2.639,2.639,0,0,1,.127-.941,2.111,2.111,0,0,1,1.98-1.411c1.4,0,1.955,1.064,1.955,2.625v6.209h3.858V14.011c0-3.565-1.9-5.225-4.442-5.225A3.828,3.828,0,0,0,12.97,10.7V9.059H9.111c.051,1.089,0,11.609,0,11.609Z"/></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/" selected>Français</option>
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/zh-cn/" >中文</option>
+                                
+                                    <option value="https://forensic.enzoribeiro.fr/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Mode sombre</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#processus">Processus</a>
+      <ol>
+        <li><a href="#ps">PS</a></li>
+        <li><a href="#lsof">LSOF</a></li>
+        <li><a href="#pstree">PSTREE</a></li>
+        <li><a href="#top">TOP</a></li>
+      </ol>
+    </li>
+    <li><a href="#cronjobs">Cronjobs</a>
+      <ol>
+        <li><a href="#pspy">PSPY</a></li>
+      </ol>
+    </li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#autorun-script">Autorun Script</a>
+      <ol>
+        <li><a href="#script-système">Script système</a></li>
+        <li><a href="#script-utilisateur">Script utilisateur</a></li>
+      </ol>
+    </li>
+    <li><a href="#artefact-dapplication">Artefact d&rsquo;application</a>
+      <ol>
+        <li><a href="#vim">Vim</a></li>
+        <li><a href="#firefox">Firefox</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" >
+                Linux
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/linux-analyse-de-processus/">Linux - Analyse de Processus</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-12-07T00:00:00Z'>déc. 07, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    6 minutes de lecture
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="introduction">Introduction
+</h2><p>Dans une analyse à chaud (directement sur le système), il est important d&rsquo;avoir les repertoires suivants &ldquo;propre&rdquo;, pour être sur que les binaires ne soit pas compromis, et fournir de vraie preuve.</p>
+<ul>
+<li><code>bin</code></li>
+<li><code>sbin</code></li>
+<li><code>lib</code></li>
+<li><code>lib64</code></li>
+</ul>
+<p>Pour ça il nous faut intégrer des binaires &ldquo;propre&rdquo;, qui viennent d&rsquo;une installation neuve. Voici comment les importer dans notre machine :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/mnt/usb/bin:/mnt/usb/sbin
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>/mnt/usb/lib:/mnt/usb/lib64
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="processus">Processus
+</h2><p>Un processus est un instance en cours d&rsquo;exécution. Chaque processus possède un PID (Process ID) unique, cela permet au système de le gérer et de le suivre.</p>
+<p>Les processus peuvent avoir une relation parent-enfant, le parent appel l&rsquo;enfant. Ils seront &ldquo;attaché&rdquo; l&rsquo;un à l&rsquo;autre (nous pourrons voir quel est le parent du processus enfant, et quel processus à appeler le parent).</p>
+<p>Nous avons plusieurs utilitaire qui peuvent être utilisé pour voir les processus en cours d&rsquo;exécution :</p>
+<h3 id="ps">PS
+</h3><p>La commande <code>ps</code> nous donne cet output :
+![[Pasted image 20251006130135.png]]
+Où :</p>
+<ul>
+<li><code>PID</code> : Un identifiant unique pour chaque processus</li>
+<li><code>TTY</code> : Le terminal associé au processus</li>
+<li><code>TIME</code> : Temps utilisé par le processus</li>
+<li><code>CMD</code> : Commande associé au processus</li>
+</ul>
+<p>Il est également possible d&rsquo;associé un utilisateur à la commande ps (pour voir quel processus est relié à quel utilisateur) :
+<img src="/p/linux-analyse-de-processus/Pasted%20image%2020251006130454.png"
+	width="868"
+	height="352"
+	srcset="/p/linux-analyse-de-processus/Pasted%20image%2020251006130454_hu_2bd16f8d9f66d8e3.png 480w, /p/linux-analyse-de-processus/Pasted%20image%2020251006130454_hu_3e89a2cc6d0257d7.png 1024w"
+	loading="lazy"
+	
+		alt="ps -u investigator"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="246"
+		data-flex-basis="591px"
+	
+></p>
+<h3 id="lsof">LSOF
+</h3><p><code>LSOF</code> permet de voir les fichiers ouvert par les processus système, nous pouvons associé un PID à <code>lsof</code> pour voir quel fichier/commande à été ouvert/lancé avec le processus voulu.</p>
+<p>Exemple d&rsquo;utilisation :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">lsof -p &lt;PID&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="pstree">PSTREE
+</h3><p>Cet utilitaire nous permet de lister les processus sous forme d&rsquo;arborescence, ce qui permet de voir rapidement les relations parent-enfant.</p>
+<p>Exemple d&rsquo;utilisation :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">pstree -s -p &lt;PID&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>-s</code> : lister les processus parent</li>
+<li><code>-p</code> : donne le PID</li>
+</ul>
+<h3 id="top">TOP
+</h3><p>Le problème des outils ci-dessus est qu&rsquo;ils sont statique, ce qui permet de voir dynamiquement (et surtout en direct) les processus en cours d&rsquo;execution sur la machine. Il nous donne également un plus d&rsquo;information par rapport à l&rsquo;utilisation du CPU et de la MEMOIRE.</p>
+<p>Exemple d&rsquo;utilisation :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">top -d <span class="m">5</span> -u &lt;user&gt; -c
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>-d</code> : mise à jour dynamique toutes les 5 secondes</li>
+<li><code>-u</code> : définit un utilisateurs (pas obligatoire)</li>
+<li><code>-c</code> : donne le chemin complet des commande (avec le /bin/bash)</li>
+</ul>
+<h2 id="cronjobs">Cronjobs
+</h2><p>Cron est un outil qui permet de lancé automatiquement des processus à des moments spécifique, soit sous forme de &ldquo;boucle&rdquo; (toutes les secondes, minutes, heures, jours, mois &hellip;) soit à chaque redémarrage &hellip;</p>
+<p>Le fichier principal de cron se situe dans <code>/etc/crontab</code> mais il existe un repertoire qui nous donne chaque tâche par utilisateur : <code>/var/spool/cron/crontabs</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">Voila la nomenclature du fichier cron
+</span></span><span class="line"><span class="cl">M | H | Jour du Mois | Mois | Jour de la Semaine | Commande
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">10  05        *          *            *           /home/bob/backup_tmp.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Dans cet exemple tout les jours à 5:10 la tâche Backup_tmp.sh se lancera
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Toute les tâches effectué par cron sont logué dans <code>syslog</code> nous pouvons exécuter cette commande pour voir les log lié à cron :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">sudo grep cron /var/log/syslog
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Pour voir les tâches lié à un utilisateur</span>
+</span></span><span class="line"><span class="cl">sudo grep cron /var/log/syslog <span class="p">|</span> grep -i <span class="s1">&#39;&lt;utilisateur&gt;&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="pspy">PSPY
+</h3><p>Pspy est un outil open source permettant de surveiller en temps réel les processus Linux sans privilèges root. Il lit directement les données du système virtuel <strong>/proc</strong> pour afficher des informations comme les commandes exécutées, les PID, PPID, utilisateurs et horodatages.<br>
+Utile pour l’énumération et la réponse à incident, il permet d’identifier les processus éphémères et de suivre l’exécution de tâches <strong>cron</strong>, offrant ainsi une meilleure visibilité sur l’activité du système.</p>
+<p>Exemple d&rsquo;utilisation :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">pspy64
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="services">Services
+</h2><p>Pour le recensement des service nous utilisons la commande <code>systemctl</code>, voici avec quel argument utiliser la commande :</p>
+<ul>
+<li><code>status</code> : Donne le status du service</li>
+<li><code>start</code> : Démarre le service</li>
+<li><code>stop</code> : Stop le service</li>
+<li><code>enable</code> : Démarre le service à chaque démarrage de la machine</li>
+<li><code>disable</code> : Effet inverse de la commande enable</li>
+</ul>
+<p>Avec la commande <code>status</code> nous avons cette output :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">systemctl status b4ckd00rftw.service
+</span></span><span class="line"><span class="cl">b4ckd00rftw.service - Backdoor Service
+</span></span><span class="line"><span class="cl">     Loaded: loaded <span class="o">(</span>/etc/systemd/system/b4ckd00rftw.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+</span></span><span class="line"><span class="cl">     Active: active <span class="o">(</span>running<span class="o">)</span> since Wed 2024-03-13 18:38:06 UTC<span class="p">;</span> 1h 20min ago
+</span></span><span class="line"><span class="cl">   Main PID: <span class="m">596</span> <span class="o">(</span>b4ckd00rftw.sh<span class="o">)</span>
+</span></span><span class="line"><span class="cl">      Tasks: <span class="m">2</span> <span class="o">(</span>limit: 1126<span class="o">)</span>
+</span></span><span class="line"><span class="cl">     Memory: 6.4M
+</span></span><span class="line"><span class="cl">     CGroup: /system.slice/b4ckd00rftw.service
+</span></span><span class="line"><span class="cl">             ├─ <span class="m">596</span> /bin/bash /usr/local/bin/b4ckd00rftw.sh
+</span></span><span class="line"><span class="cl">             ├─4067 sleep <span class="m">60</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Pour voir la configuration du service nous avons le chemin du fichier de conf :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">cat /usr/local/bin/b4ckd00rftw.sh
+</span></span><span class="line"><span class="cl"><span class="c1">#!/bin/bash</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    sudo useradd -m -p <span class="k">$(</span>openssl passwd -1 Password123!<span class="k">)</span> b4ckd00rftw
+</span></span><span class="line"><span class="cl">    sudo usermod -aG sudo b4ckd00rftw
+</span></span><span class="line"><span class="cl">    sleep <span class="m">60</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Les service nous donnes également des logs :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">journalctl -f -u b4ckd00rftw.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="autorun-script">Autorun Script
+</h2><h3 id="script-système">Script système
+</h3><p>Script exécuté avant que l&rsquo;utilisateur se connecte. Ils se trouvent généralement dans :</p>
+<ul>
+<li><code>/etc/init.d/</code></li>
+<li><code>/etc/rc.d/</code></li>
+<li><code>/etc/systemd/system/</code></li>
+</ul>
+<h3 id="script-utilisateur">Script utilisateur
+</h3><p>Script exécuté quand l&rsquo;utilisateur se connecte. Ils se trouvent généralement dans :</p>
+<ul>
+<li><code>~/.config/autostart/</code></li>
+<li><code>~/.config/</code></li>
+</ul>
+<p>S&rsquo;il y a beaucoup d&rsquo;utilisateur nous pouvons utiliser cette commande :
+<code>ls -a /home/*/.config/autostart</code> pour voir les scripts qui se lance.</p>
+<h2 id="artefact-dapplication">Artefact d&rsquo;application
+</h2><p><code>dpkg -l</code> pour voir les application installé.</p>
+<h3 id="vim">Vim
+</h3><p>Vim peut être très intéressant pour les artefact qu&rsquo;il génère, grâce à son fichier caché <code>.viminfo</code> il peut révéler plusieurs changement fait dans des fichiers ouvert avec <code>vim</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">$ cat /home/janice/.viminfo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Last Search Pattern:</span>
+</span></span><span class="line"><span class="cl">~MSle0~/THM<span class="o">{</span>4a8fd984228d89999342d189e6b916de<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Command Line History (newest to oldest):</span>
+</span></span><span class="line"><span class="cl">:q
+</span></span><span class="line"><span class="cl"><span class="p">|</span>2,0,1710339077,,<span class="s2">&#34;q&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Search String History (newest to oldest):</span>
+</span></span><span class="line"><span class="cl">?/THM<span class="o">{</span>4a8fd984228d89999342d189e6b916de<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>2,1,1710339063,47,<span class="s2">&#34;THM{4a8fd984228d89999342d189e6b916de}&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Expression History (newest to oldest):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Input Line History (newest to oldest):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Debug Line History (newest to oldest):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Registers:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># File marks:</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;0  1  0  /tmp/exfil.txt
+</span></span></span><span class="line"><span class="cl"><span class="s1">|4,48,1,0,1710339077,&#34;/tmp/exfil.txt&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1"># Jumplist (newest first):
+</span></span></span><span class="line"><span class="cl"><span class="s1">-&#39;</span>  <span class="m">1</span>  <span class="m">0</span>  /tmp/exfil.txt
+</span></span><span class="line"><span class="cl"><span class="p">|</span>4,39,1,0,1710339077,<span class="s2">&#34;/tmp/exfil.txt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># History of marks within files (newest to oldest):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&gt; /tmp/exfil.txt
+</span></span><span class="line"><span class="cl">        *       <span class="m">1710339075</span>      <span class="m">0</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;       1       0
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="firefox">Firefox
+</h3><p>Tout comme Vim, Firefox nous génère beaucoup d&rsquo;artefact. Grâce à un outil (dumpzilla), nous pouvons récupérer énormément de donnés.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">$ sudo python3 /home/investigator/dumpzilla.py /home/eduardo/.mozilla/firefox/niijyovp.default-release -h
+</span></span><span class="line"><span class="cl">usage: python dumpzilla.py PROFILE_DIR <span class="o">[</span>OPTIONS<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Options:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> --Addons
+</span></span><span class="line"><span class="cl"> --Search
+</span></span><span class="line"><span class="cl"> --Bookmarks <span class="o">[</span>-bm_create_range &lt;start&gt; &lt;end&gt;<span class="o">][</span>-bm_last_range &lt;start&gt; &lt;end&gt;<span class="o">]</span>
+</span></span><span class="line"><span class="cl"> --Certoverride
+</span></span><span class="line"><span class="cl"> --Cookies <span class="o">[</span>-showdom<span class="o">]</span> <span class="o">[</span>-domain &lt;string&gt;<span class="o">]</span> <span class="o">[</span>-name &lt;string&gt;<span class="o">]</span> <span class="o">[</span>-hostcookie &lt;string&gt;<span class="o">]</span> <span class="o">[</span>-access &lt;date&gt;<span class="o">]</span> <span class="o">[</span>-create &lt;date&gt;<span class="o">]</span>
+</span></span><span class="line"><span class="cl">           <span class="o">[</span>-secure &lt;0<span class="p">|</span>1&gt;<span class="o">]</span> <span class="o">[</span>-httponly &lt;0<span class="p">|</span>1&gt;<span class="o">]</span> <span class="o">[</span>-last_range &lt;start&gt; &lt;end&gt;<span class="o">]</span> <span class="o">[</span>-create_range &lt;start&gt; &lt;end&gt;<span class="o">]</span>
+</span></span><span class="line"><span class="cl"> --Downloads <span class="o">[</span>-range &lt;start&gt; &lt;end&gt;<span class="o">]</span>
+</span></span><span class="line"><span class="cl"> --Export &lt;directory&gt; <span class="o">(</span><span class="nb">export</span> data as json<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> --Forms <span class="o">[</span>-value &lt;string&gt;<span class="o">]</span> <span class="o">[</span>-forms_range &lt;start&gt; &lt;end&gt;<span class="o">]</span>
+</span></span><span class="line"><span class="cl"> --Help <span class="o">(</span>shows this <span class="nb">help</span> message and <span class="nb">exit</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"> --History <span class="o">[</span>-url &lt;string&gt;<span class="o">]</span> <span class="o">[</span>-title &lt;string&gt;<span class="o">]</span> <span class="o">[</span>-date &lt;date&gt;<span class="o">]</span> <span class="o">[</span>-history_range &lt;start&gt; &lt;end&gt;<span class="o">]</span> <span class="o">[</span>-frequency<span class="o">]</span>
+</span></span><span class="line"><span class="cl"> --Keypinning <span class="o">[</span>-entry_type &lt;HPKP<span class="p">|</span>HSTS&gt;<span class="o">]</span>
+</span></span><span class="line"><span class="cl"> --OfflineCache <span class="o">[</span>-cache_range &lt;start&gt; &lt;end&gt; -extract &lt;directory&gt;<span class="o">]</span>
+</span></span><span class="line"><span class="cl"> --Preferences
+</span></span><span class="line"><span class="cl"> --Passwords
+</span></span><span class="line"><span class="cl"> --Permissions <span class="o">[</span>-host &lt;string&gt;<span class="o">]</span> <span class="o">[</span>-modif &lt;date&gt;<span class="o">]</span> <span class="o">[</span>-modif_range &lt;start&gt; &lt;end&gt;<span class="o">]</span>
+</span></span><span class="line"><span class="cl"> --RegExp <span class="o">(</span>use Regular Expresions <span class="k">for</span> string <span class="nb">type</span> filters instead of Wildcards<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> --Session
+</span></span><span class="line"><span class="cl"> --Summary <span class="o">(</span>no data extraction, only summary report<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> --Thumbnails <span class="o">[</span>-extract_thumb &lt;directory&gt;<span class="o">]</span>
+</span></span><span class="line"><span class="cl"> --Verbosity <span class="o">(</span>DEBUG<span class="p">|</span>INFO<span class="p">|</span>WARNING<span class="p">|</span>ERROR<span class="p">|</span>CRITICAL<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> --Watch <span class="o">[</span>-text &lt;string&gt;<span class="o">]</span> <span class="o">(</span>shows in daemon mode the URLs and text form in real time<span class="p">;</span> Unix only<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Wildcards <span class="o">(</span>without RegExp option<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> <span class="s1">&#39;%&#39;</span>  Any string of any length <span class="o">(</span>including zero length<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="s1">&#39;_&#39;</span>  Single character
+</span></span><span class="line"><span class="cl"> <span class="s1">&#39;\&#39;</span>  Escape character
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Regular Expresions: https://docs.python.org/3/library/re.html
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Date syntax:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> YYYY-MM-DD hh:mi:ss <span class="o">(</span>wildcards allowed<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Profile location:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> WinXP profile -&gt; <span class="s1">&#39;C:\Documents and Settings\%USERNAME%\Application Data\Mozilla\Firefox\Profiles\xxxx.default&#39;</span>
+</span></span><span class="line"><span class="cl"> Win7 profile  -&gt; <span class="s1">&#39;C:\Users\%USERNAME%\AppData\Roaming\Mozilla\Firefox\Profiles\xxxx.default&#39;</span>
+</span></span><span class="line"><span class="cl"> MacOS profile -&gt; <span class="s1">&#39;/Users/$USER/Library/Application\ Support/Firefox/Profiles/xxxx.default&#39;</span>
+</span></span><span class="line"><span class="cl"> Unix profile  -&gt; <span class="s1">&#39;/home/$USER/.mozilla/firefox/xxxx.default&#39;</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">dumpzilla.py: error: ambiguous option: -h could match -hostcookie, -httponly, -host, -history_range
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/forensic/">Forensic</a>
+        
+            <a href="/tags/processus/">Processus</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Contenus liés</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/linux-investigation-des-logs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Investigation des Logs</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-surface-dincident/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Surface d&#39;Incident</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-imagerie-forensic/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Imagerie Forensic</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Enzo Ribeiro
+    </section>
+    
+    <section class="powerby">
+        Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

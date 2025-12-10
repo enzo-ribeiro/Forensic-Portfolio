@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Acquisition on KIRÔN</title>
+        <link>https://forensic.enzoribeiro.fr/tags/acquisition/</link>
+        <description>Recent content in Acquisition on KIRÔN</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>fr</language>
+        <copyright>Enzo Ribeiro</copyright>
+        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://forensic.enzoribeiro.fr/tags/acquisition/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Mobile - Acquisition</title>
+        <link>https://forensic.enzoribeiro.fr/p/mobile-acquisition/</link>
+        <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://forensic.enzoribeiro.fr/p/mobile-acquisition/</guid>
+        <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
+&lt;/h2&gt;&lt;p&gt;Pourquoi les appareils mobiles sont des mines d&amp;rsquo;or de données ? Car il contiennent une large gamme de donnée :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Carnets d&amp;rsquo;appel et de discussion&lt;/li&gt;
+&lt;li&gt;GPS et données de navigation&lt;/li&gt;
+&lt;li&gt;Documents et téléchargements&lt;/li&gt;
+&lt;li&gt;Images et vidéo&lt;/li&gt;
+&lt;li&gt;Historique de navigation&lt;/li&gt;
+&lt;li&gt;Historique WiFi&lt;/li&gt;
+&lt;li&gt;Données spécifiques à l&amp;rsquo;application&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;forensic-mobile&#34;&gt;Forensic Mobile
+&lt;/h2&gt;&lt;h3 id=&#34;protection-des-fabricants&#34;&gt;Protection des fabricants
+&lt;/h3&gt;&lt;p&gt;Les mobiles modernes possèdent de nombreuses protections de sécurité, comme le chiffrement complet des disques, nécessitant une authentification (Mot de passe, Face ID, Empreinte digital &amp;hellip;).&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Mécanisme&lt;/th&gt;
+          &lt;th&gt;Explication&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Chiffrement complet du disque et cryptage des fichiers&lt;/td&gt;
+          &lt;td&gt;Sauf si l’appareil est authentifié ou contourné, les outils médico-légaux ne peuvent pas accéder aux données stockées. Les fichiers individuels peuvent également être chiffrés avec des clés distinctes.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Clés de chiffrement sécurisées&lt;/td&gt;
+          &lt;td&gt;Android et iOS utilisent un composant matériel dédié pour stocker les clés de chiffrement, ce qui les rend extrêmement difficiles à extraire, similaire au module TPM sur les cartes mères.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Démarrage sécurisé&lt;/td&gt;
+          &lt;td&gt;Assure que seul le code approuvé et signé par le fabricant peut s’exécuter, empêchant toute modification non autorisée. Une ancienne technique d’investigation consistait à utiliser un logiciel de démarrage personnalisé pour contourner certains mécanismes de sécurité.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Isolation des applications (Sandboxing)&lt;/td&gt;
+          &lt;td&gt;Les applications fonctionnent dans des environnements séparés et isolés les unes des autres. Ce concept sera approfondi dans le reste du module.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Effacement automatique après échec d’authentification&lt;/td&gt;
+          &lt;td&gt;Les dispositifs peuvent être configurés pour s’effacer après un certain nombre de tentatives d’authentification échouées (ex. PIN incorrects). Cela empêche les attaques par force brute.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Effacement à distance&lt;/td&gt;
+          &lt;td&gt;Grâce à des fonctionnalités comme « Find My », les appareils peuvent être effacés à distance en cas de vol ou de perte.&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;apt-vs-mobile&#34;&gt;APT vs Mobile
+&lt;/h2&gt;&lt;h3 id=&#34;logiciels-espions&#34;&gt;Logiciels espions
+&lt;/h3&gt;&lt;p&gt;La découverte de Pegasus, un logiciel malveillant très sophistiqué conçu à des fins de surveillance, ayant souvent accès via l&amp;rsquo;&amp;ldquo;interaction zéro&amp;rdquo;, était capable de choses telles que:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Lecture des courriels, accès aux photos&lt;/li&gt;
+&lt;li&gt;Lire les messages&lt;/li&gt;
+&lt;li&gt;Suivi par GPS&lt;/li&gt;
+&lt;li&gt;Enregistrement des appels téléphoniques, du microphone et de la caméra sans aucune connaissance de l&amp;rsquo;utilisateur&lt;/li&gt;
+&lt;li&gt;Obligation de captation&lt;/li&gt;
+&lt;li&gt;Ayant très peu de traces de présence&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;acquisition&#34;&gt;Acquisition
+&lt;/h2&gt;&lt;h3 id=&#34;niveaux-dacquisition&#34;&gt;Niveaux d&amp;rsquo;acquisition
+&lt;/h3&gt;&lt;p&gt;Quand nous parlons d&amp;rsquo;acquisition on se réfère à la profondeur et à la méthode nécessaire pour extraire les données d&amp;rsquo;appareils. Les méthodes utilisé sont déterminé par différents facteurs :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Age de l&amp;rsquo;appareil (par exemple version installée du système d&amp;rsquo;exploitation, mises à jour, etc.)&lt;/li&gt;
+&lt;li&gt;Mécanismes de sécurité en place&lt;/li&gt;
+&lt;li&gt;Accès authentique ou non authentifié (c&amp;rsquo;est-à-dire verrouillé ou déverrouillé)&lt;/li&gt;
+&lt;li&gt;Disponibilité d&amp;rsquo;outillage pour l&amp;rsquo;examinateur&lt;/li&gt;
+&lt;li&gt;Profondeur des données que nous souhaitons récupérer (c&amp;rsquo;est-à-dire les données supprimées)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;En Forensic Mobile on a 4 niveaux d&amp;rsquo;acquisition :&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Méthode d&amp;rsquo;acquisition&lt;/th&gt;
+          &lt;th&gt;Description&lt;/th&gt;
+          &lt;th&gt;Cas d&amp;rsquo;utilisation&lt;/th&gt;
+          &lt;th&gt;Niveau d&amp;rsquo;accès&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Manuel&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Collecte d’informations en interagissant directement avec l’appareil (ex. parcourir des messages, photographier l’écran).&lt;/td&gt;
+          &lt;td&gt;Utile si l’appareil est déverrouillé, car de nombreux mécanismes de sécurité sont déjà contournés. Soulève toutefois des problèmes d’intégrité et de non-répudiation.&lt;/td&gt;
+          &lt;td&gt;Accès limité aux journaux et bases de données système&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Logique&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Extraction de données via les fonctionnalités du système d’exploitation (API, sauvegardes, etc.).&lt;/td&gt;
+          &lt;td&gt;Pertinent quand l’appareil est verrouillé mais peut être authentifié via un autre dispositif de confiance.&lt;/td&gt;
+          &lt;td&gt;Accès partiel&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Système de fichiers&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Copie complète de l’arborescence et des fichiers système/applicatifs.&lt;/td&gt;
+          &lt;td&gt;Requiert souvent une vulnérabilité, un MDM, un jailbreak/root ou des outils spécialisés pour obtenir un accès privilégié.&lt;/td&gt;
+          &lt;td&gt;Accès effectif&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Physique&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Image bit-à-bit du stockage, incluant les données supprimées.&lt;/td&gt;
+          &lt;td&gt;Très utile en analyse forensique, surtout pour les anciens appareils. Plus difficile sur les modèles récents à cause du chiffrement et des protections matérielles.&lt;/td&gt;
+          &lt;td&gt;Accès total (si pas de chiffrement au repos)&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;maintien-daccès&#34;&gt;Maintien d&amp;rsquo;accès
+&lt;/h3&gt;&lt;p&gt;Comme absolument tout appareils il est important de garder le dispositif déverrouillé pour avoir le meilleur des scénario une analyse optimal.&lt;/p&gt;
+&lt;p&gt;Une désactivation du verrouillage automatique peut être un moyen efficace pour que l&amp;rsquo;appareil reste déverrouillé pendant l&amp;rsquo;analyse.&lt;/p&gt;
+&lt;p&gt;Il peut être également judicieux de mettre le téléphone en mode avion (pour éviter l&amp;rsquo;altération des données à distance, dans le cadre d&amp;rsquo;iCloud par exemple)&lt;/p&gt;
+&lt;h3 id=&#34;acquisition-logique&#34;&gt;Acquisition logique
+&lt;/h3&gt;&lt;p&gt;Cette méthode est l&amp;rsquo;une des plus sûre pour garder l&amp;rsquo;intégrité des données/preuves, car rien est écrasé ou modifié sur le téléphone.&lt;/p&gt;
+&lt;p&gt;Le problème avec cette méthodes c&amp;rsquo;est qu&amp;rsquo;elle ne prend pas les fichiers systèmes par exemple.&lt;/p&gt;
+&lt;p&gt;Nous pouvons réaliser ce genre d&amp;rsquo;extraction avec 3uTools, libimobiledevice, adb &amp;hellip;&lt;/p&gt;
+&lt;p&gt;Pour un iPhone on peut utiliser &lt;code&gt;idevicebackup2&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cmnatic@thm-dev$ idevicebackup2 backup --full ./backup  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Started &lt;span class=&#34;s2&#34;&gt;&amp;#34;com.apple.mobilebackup2&amp;#34;&lt;/span&gt; service on port 49174. Negotiated Protocol Version 2.1 Starting backup... Backup will be unencrypted. Requesting backup from device... 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Full backup mode. 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[===========================&lt;/span&gt;                       &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; 55% Finished 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Receiving files 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[==================================================]&lt;/span&gt; 100% &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;12.6 MB/12.5 MB&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[==================================================]&lt;/span&gt; 100% &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;12.6 MB/12.5 MB&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[==================================================]&lt;/span&gt; 100% &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;12.7 MB/12.5 MB&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[==================================================]&lt;/span&gt; 100% &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;12.7 MB/12.5 MB&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[==================================================]&lt;/span&gt; 100% &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;12.7 MB/12.5 MB&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Pour un Android &lt;code&gt;ADB&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cmnatic@thm-dev$ adb backup -apk -shared -all -f backup.ab 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Backing up data... Please wait. 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Writing android application package &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;APK&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; files...  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Writing shared storage files... 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Backup Complete!
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;acquisition-du-système-de-fichiers&#34;&gt;Acquisition du système de fichiers
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cmnatic@thm-dev$ adb pull /data /mnt/android_backup
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pull: building file list...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pull: /data/anr/traces.txt -&amp;gt; /mnt/android_backup/anr/traces.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pull: /data/system/packages.xml -&amp;gt; /mnt/android_backup/system/packages.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pull: /data/system/users/0.xml -&amp;gt; /mnt/android_backup/system/users/0.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pull: /data/data/com.android.providers.contacts/databases/contacts2.db -&amp;gt; /mnt/android_backup/data/com.android.providers.contacts/databases/contacts2.db
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;100%&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; /data -&amp;gt; /mnt/android_backup
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;technique-dacquisition-avancé&#34;&gt;Technique d&amp;rsquo;acquisition avancé
+&lt;/h2&gt;&lt;h3 id=&#34;utilitaires-spécialisés&#34;&gt;Utilitaires spécialisés
+&lt;/h3&gt;&lt;p&gt;Les Spécialiste logiciel et matériel utilise des suites spécialisé comme Cellebrite UFED, qui est une matérielle et logicielle d&amp;rsquo;exfiltration et d&amp;rsquo;analyse des données. Il est légalement réservé aux organismes gouvernementaux.&lt;/p&gt;
+&lt;h3 id=&#34;jailbreaking&#34;&gt;Jailbreaking
+&lt;/h3&gt;&lt;p&gt;Le Jailbreak consiste à exploiter une faille connue pour fournir un accès &amp;ldquo;niveau local&amp;rdquo;, ce qui permet un contrôle COMPLET de l&amp;rsquo;appareil. Cette technique permet un accès non filtré mais le modifie de manière permanente, donc les preuves, ne serons pas scientifiquement fondé.&lt;/p&gt;
+&lt;h3 id=&#34;custom-boot-loading&#34;&gt;Custom Boot Loading
+&lt;/h3&gt;&lt;p&gt;Cette technique consiste à faire démarrer l&amp;rsquo;appareil mobile dans un système d&amp;rsquo;exploitation temporaire et personnalisé qui fournit un accès de bas niveau à l&amp;rsquo;appareil et contourne les mécanismes de sécurité. Il diffère des autres, comme Jailbreaking, car il ne modifie pas de façon permanente l&amp;rsquo;appareil, ce qui le rend scientifiquement rationnel.&lt;/p&gt;
+&lt;h3 id=&#34;brute-force&#34;&gt;Brute Force
+&lt;/h3&gt;&lt;p&gt;Méthode obsolète car nous avons des temps d&amp;rsquo;attente bien trop long.&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
