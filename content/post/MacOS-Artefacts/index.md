@@ -1,4 +1,15 @@
-
++++
+author = "Enzo"
+title = "MacOS - Artefects"
+date = "2025-12-10"
+categories = [
+    "MacOS"
+]
+tags = [
+    "MacOS",
+    "Forensic"
+]
++++
 ## Rappel des fichiers
 
 ##### .plist

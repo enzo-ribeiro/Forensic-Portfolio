@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>MacOS on KIRÔN</title>
+        <link>http://localhost:1313/tags/macos/</link>
+        <description>Recent content in MacOS on KIRÔN</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>fr</language>
+        <copyright>Enzo Ribeiro</copyright>
+        <lastBuildDate>Wed, 10 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/macos/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>MacOS - Les Bases</title>
+        <link>http://localhost:1313/p/macos-les-bases/</link>
+        <pubDate>Wed, 10 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/macos-les-bases/</guid>
+        <description>&lt;h2 id=&#34;les-systèmes-de-fichiers&#34;&gt;Les systèmes de fichiers
+&lt;/h2&gt;&lt;h3 id=&#34;hfs&#34;&gt;HFS+
+&lt;/h3&gt;&lt;p&gt;HFS+, aussi appelé Mac OS Extended, est un système de fichiers développé par Apple en 1998 avec Mac OS 8.1. Il remplace le HFS original en offrant une meilleure gestion des fichiers sur les ordinateurs Macintosh.&lt;/p&gt;
+&lt;h4 id=&#34;contexte-historique-et-utilisation&#34;&gt;Contexte Historique et Utilisation
+&lt;/h4&gt;&lt;p&gt;HFS+ a été conçu pour surmonter les limitations du HFS, notamment en termes de gestion des grands volumes de stockage et d&amp;rsquo;allocation d&amp;rsquo;espace disque. Bien qu&amp;rsquo;initialement non adapté aux systèmes Unix, il a servi de système de fichiers principal pour Mac OS X et macOS jusqu&amp;rsquo;en 2017, date à laquelle il a été remplacé par APFS.&lt;/p&gt;
+&lt;p&gt;Aujourd&amp;rsquo;hui, HFS+ est considéré comme obsolète. Il reste utilisé sur les appareils antérieurs à 2017, comme les anciens Mac et les iPod. Il est toujours supporté sur macOS 10.12 (Sierra) et les versions antérieures, mais n&amp;rsquo;est plus le système par défaut sur les versions récentes.&lt;/p&gt;
+&lt;h4 id=&#34;architecture-et-structure&#34;&gt;Architecture et Structure
+&lt;/h4&gt;&lt;h5 id=&#34;composants-de-base&#34;&gt;Composants de Base
+&lt;/h5&gt;&lt;p&gt;HFS+ repose sur une architecture basée sur des secteurs (512 octets) et des blocs (composés d&amp;rsquo;un ou plusieurs secteurs). Les adresses 32 bits permettent de gérer jusqu&amp;rsquo;à 2^32 blocs (environ 4 milliards), contre 16 bits pour le HFS.&lt;/p&gt;
+&lt;h5 id=&#34;organisation-du-volume&#34;&gt;Organisation du Volume
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Secteurs 0 et 1&lt;/strong&gt; : Volume de démarrage.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Secteur 2&lt;/strong&gt; : En-tête de volume (métadonnées essentielles).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;catalogue-et-système-dindexation&#34;&gt;Catalogue et Système d&amp;rsquo;Indexation
+&lt;/h5&gt;&lt;p&gt;Le fichier catalogue est central dans HFS+. Il contient tous les fichiers et dossiers du volume et utilise une structure &lt;code&gt;B-Tree&lt;/code&gt; pour une recherche et une récupération efficaces.&lt;/p&gt;
+&lt;h4 id=&#34;caractéristiques-principales&#34;&gt;Caractéristiques Principales
+&lt;/h4&gt;&lt;h5 id=&#34;noms-de-fichiers-et-encodage&#34;&gt;Noms de Fichiers et Encodage
+&lt;/h5&gt;&lt;p&gt;HFS+ supporte des noms de fichiers jusqu&amp;rsquo;à 255 caractères en UTF-16 (contre 31 pour le HFS). L&amp;rsquo;encodage UTF-16 avec normalisation Unicode permet une compatibilité internationale.&lt;/p&gt;
+&lt;h5 id=&#34;capacités-de-stockage&#34;&gt;Capacités de Stockage
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;Nombre max de fichiers par volume : 2,1 milliards.&lt;/li&gt;
+&lt;li&gt;Taille max des fichiers et du volume : 8 exaoctets.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;journalisation-et-sécurité-des-données&#34;&gt;Journalisation et Sécurité des Données
+&lt;/h5&gt;&lt;p&gt;La journalisation, introduite en Mac OS X 10.2.2 et standardisée en 10.3, améliore la stabilité des données en permettant une récupération après un crash ou un redémarrage forcé.&lt;/p&gt;
+&lt;h4 id=&#34;limitations-et-contraintes&#34;&gt;Limitations et Contraintes
+&lt;/h4&gt;&lt;h5 id=&#34;limitation-temporelle&#34;&gt;Limitation Temporelle
+&lt;/h5&gt;&lt;p&gt;HFS+ ne peut pas gérer les dates postérieures au 6 décembre 2040 en raison de son encodage des horodatages.&lt;/p&gt;
+&lt;h4 id=&#34;évolution-et-remplacement&#34;&gt;Évolution et Remplacement
+&lt;/h4&gt;&lt;p&gt;HFS+ a été remplacé par APFS (Apple File System) en 2017 avec macOS High Sierra. APFS est optimisé pour les SSD et offre de meilleures performances. Malgré son obsolescence, HFS+ reste utile pour la compatibilité avec les anciens systèmes macOS et les environnements utilisant du matériel hérité.&lt;/p&gt;
+&lt;h3 id=&#34;apfs&#34;&gt;APFS
+&lt;/h3&gt;&lt;p&gt;Apparu en 2017, c&amp;rsquo;est le système de fichier commun entre iOS, WatchOS, tvOS, MacOS&lt;/p&gt;
+&lt;h4 id=&#34;caractéristiques-essentielles-de-lapfs&#34;&gt;Caractéristiques essentielles de l&amp;rsquo;APFS
+&lt;/h4&gt;&lt;p&gt;APFS a corrigé la plupart des problèmes HFS+. Quelques exemples sont ci-dessous:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;APFS prend en charge les horodatages jusqu&amp;rsquo;à 1 nanoseconde.&lt;/li&gt;
+&lt;li&gt;Les dates au-delà du 6 février 2040 sont possibles.&lt;/li&gt;
+&lt;li&gt;Le chiffrement complet du disque est pris en charge nativement.&lt;/li&gt;
+&lt;li&gt;Apple a introduit redirect-on-write, une fonctionnalité de protection contre les crashs. Pour éviter la corruption de données, les données sont écrites sur de nouveaux blocs, et les anciennes sont publiées une fois faites au lieu de réécrire celles existantes.&lt;/li&gt;
+&lt;li&gt;Le nombre maximum de fichiers stockés dans le système a été augmenté à 2^63.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Bien qu’APFS ait amélioré beaucoup de choses pour Apple, sa prise en charge du chiffrement complet du disque et du chiffrement matériel et logiciel a rendu les enquêtes forensic très difficiles.&lt;/p&gt;
+&lt;h4 id=&#34;structure&#34;&gt;Structure
+&lt;/h4&gt;&lt;p&gt;APFS utilise la table de partition GUID (GTP), à l&amp;rsquo;intérieur de la partition on y trouve un ou plusieurs conteneurs.
+Un conteneur peut contenir un ou plusieurs volumes, chacun l&amp;rsquo;un à côté de l&amp;rsquo;autre sans espace. S&amp;rsquo;il y a un espace libre dans un conteneur il est partagé entre tous les volumes.&lt;/p&gt;
+&lt;p&gt;Pour gérer les disques sous Mac OS nous pouvons utiliser &lt;code&gt;diskutil&lt;/code&gt; :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;enzo@MacBook-Pro ~ % diskutil 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Disk Utility Tool 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Utility to manage &lt;span class=&#34;nb&#34;&gt;local&lt;/span&gt; disks and volumes 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Most commands require an administrator or root user  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;WARNING: Most destructive operations are not prompted  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Usage:  diskutil &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;quiet&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;  , where  is as follows:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      list                 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;List the partitions of a disk&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      info&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;rmation&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;        &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Get information on a specific disk or partition&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      listFilesystems      &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;List file systems available &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; formatting&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      listClients          &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;List all current disk management clients&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      activity             &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Continuous log of system-wide disk arbitration&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      .
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      .
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      .
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      appleRAID      &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Perform additional verbs related to AppleRAID&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      coreStorage    &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Perform additional verbs related to CoreStorage&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      apfs           &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Perform additional verbs related to APFS&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      image          &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Perform additional verbs related to DiskImage&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      diskutil  with no options will provide &lt;span class=&#34;nb&#34;&gt;help&lt;/span&gt; on that verb&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Il est possible d&amp;rsquo;afficher les types de volumes APFS disponible sur la machine avec la commande &lt;code&gt;diskutil apfs list&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;structure-des-répertoires-et-domaine&#34;&gt;Structure des répertoires et domaine
+&lt;/h2&gt;&lt;p&gt;La structure de Mac OS à pas mal de similitude avec celle de Linux.&lt;/p&gt;
+&lt;h3 id=&#34;structure-des-répertoires&#34;&gt;Structure des répertoires
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;enzo@MacBook-Pro / % ls
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Applications	System		Volumes		cores		etc		opt		sbin		usr
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Library		Users		bin		dev		home		private		tmp		var
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Comme mentionné précédemment, certains de ces répertoires sont très similaires à ce que nous allons trouver dans les systèmes Linux, tels que:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;opt : Ce répertoire contient des fichiers pour les logiciels optionnels, tels que homebrew.&lt;/li&gt;
+&lt;li&gt;sbin : Ce répertoire contient des binaires système tels que lancé, ping et mount.&lt;/li&gt;
+&lt;li&gt;bin : Ce répertoire contient des binaires tels que chmod, rm et echo.&lt;/li&gt;
+&lt;li&gt;dev : Ce répertoire contient des fichiers d&amp;rsquo;appareils tels que des accessoires Bluetooth.&lt;/li&gt;
+&lt;li&gt;private : Ce répertoire contient trois répertoires principaux, &lt;code&gt;var&lt;/code&gt;, &lt;code&gt;etc&lt;/code&gt;, et &lt;code&gt;tmp&lt;/code&gt;, semblable aux mêmes répertoires de noms dans Linux.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;domaines&#34;&gt;Domaines
+&lt;/h3&gt;&lt;p&gt;macOS organise des fichiers dans différents domaines en fonction de leur utilisation prévue. Le système de fichiers macOS dispose de quatre domaines: local, utilisateur, système et réseau.&lt;/p&gt;
+&lt;h4 id=&#34;domaine-local&#34;&gt;Domaine local
+&lt;/h4&gt;&lt;p&gt;Le domaine local contient des ressources communes à tous les utilisateurs de l&amp;rsquo;ordinateur local. Ces ressources sont généralement présentes dans &lt;code&gt;/Applications&lt;/code&gt;et &lt;code&gt;/Library&lt;/code&gt;. Le système gère ce domaine mais peut également être géré par des utilisateurs disposant de privilèges administrateur.&lt;/p&gt;
+&lt;h4 id=&#34;domaine-système&#34;&gt;Domaine système
+&lt;/h4&gt;&lt;p&gt;Le domaine Système contient des logiciels développés et gérés par Apple. Il mappe le répertoire &lt;code&gt;/System&lt;/code&gt; et contient des applications et configurations de système d&amp;rsquo;exploitation critiques. Apple ne permet pas aux utilisateurs de modifier ou de supprimer des fichiers dans ce domaine, même avec des privilèges root.&lt;/p&gt;
+&lt;h4 id=&#34;domaine-utilisateur&#34;&gt;Domaine utilisateur
+&lt;/h4&gt;&lt;p&gt;Le domaine utilisateur contient des données et des fichiers utilisateur. Il est situé dans &lt;code&gt;/Users&lt;/code&gt;. Dans ce répertoire se trouve un répertoire pour chaque utilisateur de la machine. Par défaut, un utilisateur ne peut pas accéder aux fichiers d&amp;rsquo;un autre utilisateur. Il y a aussi un répertoire de bibliothèque caché à l&amp;rsquo;intérieur du domaine de l&amp;rsquo;utilisateur dans le répertoire de chaque utilisateur (situé à &lt;code&gt;/Users/&amp;lt;user&amp;gt;/Library&lt;/code&gt;). Ce répertoire contient des configurations spécifiques à l&amp;rsquo;utilisateur et des données d&amp;rsquo;application.&lt;/p&gt;
+&lt;h4 id=&#34;domaine-réseau&#34;&gt;Domaine réseau
+&lt;/h4&gt;&lt;p&gt;Le domaine réseau contient des ressources réseau telles que des imprimantes réseau, des serveurs de partage SMB et d&amp;rsquo;autres ordinateurs. Les administrateurs réseau gèrent généralement l&amp;rsquo;accès à ces ressources, que les utilisateurs du réseau local partagent.&lt;/p&gt;
+&lt;h2 id=&#34;les-formats-de-fichiers&#34;&gt;Les formats de fichiers
+&lt;/h2&gt;&lt;p&gt;macOS a une structure de fichier différente des autres systèmes d&amp;rsquo;exploitation et a ses propres formats de fichiers.&lt;/p&gt;
+&lt;h3 id=&#34;plist&#34;&gt;.plist
+&lt;/h3&gt;&lt;p&gt;Les fichiers .plist ou fichiers de liste de propriétés contiennent des configurations système similaires au Registre Windows dans Microsoft Windows. Par conséquent, comme le fichier Windows Registry, les fichiers .plist sont très importants d&amp;rsquo;un point de vue forensic. Généralement, deux formats sont utilisés pour les fichiers .plist:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;XML&lt;/li&gt;
+&lt;li&gt;BLOB&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Nous pouvons utiliser un éditeur de texte pour lire les données des fichiers .plist présents au format XML, mais pour lire les fichiers .plist au format BLOB, nous devons utiliser Xcode, un outil de développement qui peut être installé via l&amp;rsquo;App Store. L&amp;rsquo;image ci-dessous montre à quoi ressemble un fichier .plist lorsqu&amp;rsquo;il est ouvert à l&amp;rsquo;aide de Xcode.&lt;/p&gt;
+&lt;h3 id=&#34;app&#34;&gt;.app
+&lt;/h3&gt;&lt;p&gt;Les fichiers .app sont des exécutables d&amp;rsquo;application souvent trouvés dans le répertoire Applications. L&amp;rsquo;exécution d&amp;rsquo;un fichier .app lance l&amp;rsquo;application, tout comme l&amp;rsquo;exécution d&amp;rsquo;un fichier exécutable dans Windows peut lancer une application. Ces fichiers sont &amp;lsquo;zippé&amp;rsquo;, et nous pouvons voir le contenu du bundle en utilisant l&amp;rsquo;option &amp;lsquo;Afficher le contenu du paquet&amp;rsquo;.&lt;/p&gt;
+&lt;h3 id=&#34;dmg&#34;&gt;.dmg
+&lt;/h3&gt;&lt;p&gt;Les fichiers .dmg sont des fichiers image de disque macOS. Ces fichiers peuvent être montés facilement dans macOS, et les installateurs utilisent souvent ce format.&lt;/p&gt;
+&lt;h3 id=&#34;kext&#34;&gt;.kext
+&lt;/h3&gt;&lt;p&gt;Bien que obsolètes dans les nouvelles versions de macOS, les fichiers .kext sont des fichiers d&amp;rsquo;extension du noyau. Les extensions Kernel fonctionnent de la même manière que les pilotes dans Windows, donnant accès au noyau du système d&amp;rsquo;exploitation aux applications tierces.&lt;/p&gt;
+&lt;h3 id=&#34;dylib&#34;&gt;.dylib
+&lt;/h3&gt;&lt;p&gt;Ce sont des fichiers de bibliothèque chargés dynamiquement. Ils contiennent du code partagé utilisé par différents programmes. Ils sont similaires aux fichiers DLL dans Windows ou .so fichiers sous Linux.&lt;/p&gt;
+&lt;h2 id=&#34;les-défis-de-lacquisition&#34;&gt;Les défis de l&amp;rsquo;acquisition
+&lt;/h2&gt;&lt;p&gt;Apple a rendu ses produits très peu amicaux à la forensic. Comme nous l’avons déjà mentionné, Apple a résisté à une forte pression, même de la part des agences gouvernementales américaines, pour ouvrir ses plateformes et faciliter les enquêtes forensic. Mais qu&amp;rsquo;est-ce qui rend macOS si hostile pour les enquêtes ? Passons en revue certains défis qui rendent la prise d&amp;rsquo;une image de disque complète d&amp;rsquo;un appareil macOS dur.&lt;/p&gt;
+&lt;h3 id=&#34;accès-au-disque&#34;&gt;Accès au disque
+&lt;/h3&gt;&lt;p&gt;Dans les nouveaux Macbooks, les disques SSD sont soudés à la carte mère. Cela signifie que le retrait du SSD n&amp;rsquo;est pas une option sans risquer d&amp;rsquo;endommager le lecteur ou la machine dans son ensemble. Dans les appareils où les SSD ne sont pas soudés, tels que les appareils plus anciens, ils utilisent souvent des interfaces propriétaires, ce qui rend difficile leur connexion au matériel d&amp;rsquo;imagerie.&lt;/p&gt;
+&lt;h3 id=&#34;chiffrement-matériel&#34;&gt;Chiffrement matériel
+&lt;/h3&gt;&lt;p&gt;Même si nous pouvons accéder physiquement au SSD sur un Mac, nous ne serons pas en mesure d&amp;rsquo;en récupérer ou d&amp;rsquo;en extraire des données, car le lecteur est chiffré par un chiffrement matériel. À partir des puces basées sur T2, Apple stocke la clé de chiffrement du SSD dans une enclave sécurisée distincte du CPU. Cela signifie que si la carte mère échoue ou est autrement indisponible, les données du SSD chiffré sont perdues et ne peuvent pas être récupérées.&lt;/p&gt;
+&lt;h3 id=&#34;chiffrement-filevault&#34;&gt;Chiffrement FileVault
+&lt;/h3&gt;&lt;p&gt;Apple utilise FileVault pour ajouter une autre couche au cryptage macOS. FileVault lie le chiffrement des données avec le mot de passe de l&amp;rsquo;utilisateur, garantissant que les données sont chiffré tant que l&amp;rsquo;utilisateur n&amp;rsquo;a pas entré son mot de passe. Cela signifie que même si un système Mac est activé en utilisant le même matériel, nous ne pouvons pas accéder aux données à moins que le mot de passe de l&amp;rsquo;utilisateur ne déverrouille le FileVault. Par conséquent, même si nous démarrons la machine en récupération, ce qui est le moyen le plus fiable de prendre une image de disque complète du SSD Mac, nous devrons toujours déverrouiller FileVault pour accéder aux données en fournissant soit le mot de passe de l&amp;rsquo;utilisateur, soit, si une organisation gère le Mac, la clé d&amp;rsquo;accès de l&amp;rsquo;organisation. Bien que FileVault n&amp;rsquo;empêche pas un enquêteur d&amp;rsquo;obtenir une image de disque, l&amp;rsquo;enquêteur aura besoin du mot de passe ou des clés d&amp;rsquo;accès organisationnel pour déverrouiller le volume et accéder aux données.&lt;/p&gt;
+&lt;h3 id=&#34;protection-de-lintégrité-du-système-sip&#34;&gt;Protection de l&amp;rsquo;intégrité du système (SIP)
+&lt;/h3&gt;&lt;p&gt;La protection de l&amp;rsquo;intégrité du système (SIP) est une fonctionnalité qui protège le noyau contre l&amp;rsquo;accès non autorisé, l&amp;rsquo;injection de code, le débogage ou les modifications générales. SIP peut souvent empêcher l&amp;rsquo;accès à la mémoire ou à certaines parties du disque, même avec l&amp;rsquo;accès root. Par conséquent, la désactivation de SIP peut être une bonne idée avant d’acquérir une image. Cependant, comme cela nécessite un démarrage dans la récupération, cela peut entraîner la perte de données volatiles et des modifications du disque. SIP peut être désactivé en démarrant dans la récupération, en ouvrant le terminal et en utilisant la commande &lt;code&gt;csrutil disable&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;quelles-possibilités-&#34;&gt;Quelles possibilités ?
+&lt;/h3&gt;&lt;p&gt;Nous pouvons envisager les possibilités suivantes d&amp;rsquo;acquisition de données à partir d&amp;rsquo;un Mac.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Utilisez un outil propriétaire tel que Magnet AXIOM ou Cellebrite, accordez un accès complet au disque et imagez un système en direct.&lt;/li&gt;
+&lt;li&gt;Si le mot de passe de l&amp;rsquo;utilisateur est connu et que la machine est physiquement disponible, nous pouvons démarrer en récupération, désactiver les fonctionnalités de sécurité et prendre une image disque à l&amp;rsquo;aide du terminal à l&amp;rsquo;aide d&amp;rsquo;outils tels que dd, hdiutil ou dc3dd.&lt;/li&gt;
+&lt;li&gt;Après avoir démarré dans la récupération et déverrouillé le lecteur à l&amp;rsquo;aide du mot de passe utilisateur, le Mac peut être mis en mode de partage Mac ou en mode Target (pour les systèmes plus anciens). En connectant le Mac à un autre appareil à l&amp;rsquo;aide de Firewire ou Thunderbolt, une acquisition logique peut être effectuée (pour le mode de partage Mac), ou une image de disque complète peut être prise (si le mode Target est disponible). Cependant, le mode Target n&amp;rsquo;est plus disponible dans les nouveaux Mac avec des puces en silicium Apple.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;montage-dune-image-apfs&#34;&gt;Montage d&amp;rsquo;une image APFS
+&lt;/h2&gt;&lt;p&gt;POur commencer nous allons énumérer les volumes disponible sur l&amp;rsquo;image APFS :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ubuntu@ubuntu:~# apfsutil mac-disk.img 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Found partitions:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;69646961-6700-11AA-11AA-00306543ECAC 68CB0FFE-F676-47D6-D1A2-5707D06D3E49 &lt;span class=&#34;m&#34;&gt;0000000000000028&lt;/span&gt; 00000000000FA027 &lt;span class=&#34;m&#34;&gt;0000000000000000&lt;/span&gt; iBootSystemContainer
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7C3457EF-0000-11AA-11AA-00306543ECAC 449DFC0C-7E1F-44D5-6A9F-7EA2C2AF0ADC 00000000000FA028 &lt;span class=&#34;m&#34;&gt;0000000002800027&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0000000000000000&lt;/span&gt; Container
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;52637672-7900-11AA-11AA-00306543ECAC A9432466-4751-47B7-1BBC-45B7B70465DE &lt;span class=&#34;m&#34;&gt;0000000002800028&lt;/span&gt; 00000000031FFFD7 &lt;span class=&#34;m&#34;&gt;0000000000000000&lt;/span&gt; RecoveryOSContainer
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;First APFS partition is &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Pour monter l&amp;rsquo;image nous allons utiliser l&amp;rsquo;outil &lt;code&gt;apfs-fuse&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ubuntu@ubuntu:/home/ubuntu# apfs-fuse mac-disk.img mac/ 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ubuntu@ubuntu:/home/ubuntu# ls mac 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;private-dir  root
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ubuntu@ubuntu:/home/ubuntu# ls mac/root/Users 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ubuntu@ubuntu:/home/ubuntu#
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Nous n&amp;rsquo;avons pas monté le bon volume. Nous devons monté le volume 4 :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ubuntu@ubuntu:/home/ubuntu# apfs-fuse -v &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; mac-disk.img mac
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ubuntu@ubuntu:/home/ubuntu# ls mac/root/Users
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Shared  enzo
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

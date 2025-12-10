@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Les systèmes de fichiers HFS+ HFS+, aussi appelé Mac OS Extended, est un système de fichiers développé par Apple en 1998 avec Mac OS 8.1. Il remplace le HFS original en offrant une meilleure gestion des fichiers sur les ordinateurs Macintosh.\nContexte Historique et Utilisation HFS+ a été conçu pour surmonter les limitations du HFS, notamment en termes de gestion des grands volumes de stockage et d&rsquo;allocation d&rsquo;espace disque. Bien qu&rsquo;initialement non adapté aux systèmes Unix, il a servi de système de fichiers principal pour Mac OS X et macOS jusqu&rsquo;en 2017, date à laquelle il a été remplacé par APFS.\n">
+<title>MacOS - Les Bases</title>
+
+<link rel='canonical' href='http://localhost:1313/p/macos-les-bases/'>
+
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="MacOS - Les Bases">
+<meta property='og:description' content="Les systèmes de fichiers HFS+ HFS+, aussi appelé Mac OS Extended, est un système de fichiers développé par Apple en 1998 avec Mac OS 8.1. Il remplace le HFS original en offrant une meilleure gestion des fichiers sur les ordinateurs Macintosh.\nContexte Historique et Utilisation HFS+ a été conçu pour surmonter les limitations du HFS, notamment en termes de gestion des grands volumes de stockage et d&rsquo;allocation d&rsquo;espace disque. Bien qu&rsquo;initialement non adapté aux systèmes Unix, il a servi de système de fichiers principal pour Mac OS X et macOS jusqu&rsquo;en 2017, date à laquelle il a été remplacé par APFS.\n">
+<meta property='og:url' content='http://localhost:1313/p/macos-les-bases/'>
+<meta property='og:site_name' content='KIRÔN'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='MacOS' /><meta property='article:tag' content='Forensic' /><meta property='article:published_time' content='2025-12-10T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-10T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="MacOS - Les Bases">
+<meta name="twitter:description" content="Les systèmes de fichiers HFS+ HFS+, aussi appelé Mac OS Extended, est un système de fichiers développé par Apple en 1998 avec Mac OS 8.1. Il remplace le HFS original en offrant une meilleure gestion des fichiers sur les ordinateurs Macintosh.\nContexte Historique et Utilisation HFS+ a été conçu pour surmonter les limitations du HFS, notamment en termes de gestion des grands volumes de stockage et d&rsquo;allocation d&rsquo;espace disque. Bien qu&rsquo;initialement non adapté aux systèmes Unix, il a servi de système de fichiers principal pour Mac OS X et macOS jusqu&rsquo;en 2017, date à laquelle il a été remplacé par APFS.\n">
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">KIRÔN</a></h1>
+            <h2 class="site-description">Mes notes en forensic</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/enzo-ribeiro'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.linkedin.com/in/enzo-ribeiro-bb8794209/'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.975,20.667H3.117V9.059H6.975ZM5.072,3.462a2.011,2.011,0,1,0-.051,4.012h.026a2.012,2.012,0,1,0,.025-4.012ZM9.111,20.667h3.858V14.185a2.639,2.639,0,0,1,.127-.941,2.111,2.111,0,0,1,1.98-1.411c1.4,0,1.955,1.064,1.955,2.625v6.209h3.858V14.011c0-3.565-1.9-5.225-4.442-5.225A3.828,3.828,0,0,0,12.97,10.7V9.059H9.111c.051,1.089,0,11.609,0,11.609Z"/></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="http://localhost:1313/" selected>Français</option>
+                                
+                                    <option value="http://localhost:1313/zh-cn/" >中文</option>
+                                
+                                    <option value="http://localhost:1313/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Mode sombre</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#les-systèmes-de-fichiers">Les systèmes de fichiers</a>
+      <ol>
+        <li><a href="#hfs">HFS+</a>
+          <ol>
+            <li><a href="#contexte-historique-et-utilisation">Contexte Historique et Utilisation</a></li>
+            <li><a href="#architecture-et-structure">Architecture et Structure</a></li>
+            <li><a href="#caractéristiques-principales">Caractéristiques Principales</a></li>
+            <li><a href="#limitations-et-contraintes">Limitations et Contraintes</a></li>
+            <li><a href="#évolution-et-remplacement">Évolution et Remplacement</a></li>
+          </ol>
+        </li>
+        <li><a href="#apfs">APFS</a>
+          <ol>
+            <li><a href="#caractéristiques-essentielles-de-lapfs">Caractéristiques essentielles de l&rsquo;APFS</a></li>
+            <li><a href="#structure">Structure</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#structure-des-répertoires-et-domaine">Structure des répertoires et domaine</a>
+      <ol>
+        <li><a href="#structure-des-répertoires">Structure des répertoires</a></li>
+        <li><a href="#domaines">Domaines</a>
+          <ol>
+            <li><a href="#domaine-local">Domaine local</a></li>
+            <li><a href="#domaine-système">Domaine système</a></li>
+            <li><a href="#domaine-utilisateur">Domaine utilisateur</a></li>
+            <li><a href="#domaine-réseau">Domaine réseau</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#les-formats-de-fichiers">Les formats de fichiers</a>
+      <ol>
+        <li><a href="#plist">.plist</a></li>
+        <li><a href="#app">.app</a></li>
+        <li><a href="#dmg">.dmg</a></li>
+        <li><a href="#kext">.kext</a></li>
+        <li><a href="#dylib">.dylib</a></li>
+      </ol>
+    </li>
+    <li><a href="#les-défis-de-lacquisition">Les défis de l&rsquo;acquisition</a>
+      <ol>
+        <li><a href="#accès-au-disque">Accès au disque</a></li>
+        <li><a href="#chiffrement-matériel">Chiffrement matériel</a></li>
+        <li><a href="#chiffrement-filevault">Chiffrement FileVault</a></li>
+        <li><a href="#protection-de-lintégrité-du-système-sip">Protection de l&rsquo;intégrité du système (SIP)</a></li>
+        <li><a href="#quelles-possibilités-">Quelles possibilités ?</a></li>
+      </ol>
+    </li>
+    <li><a href="#montage-dune-image-apfs">Montage d&rsquo;une image APFS</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/macos/" >
+                MacOS
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/macos-les-bases/">MacOS - Les Bases</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-12-10T00:00:00Z'>déc. 10, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    11 minutes de lecture
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="les-systèmes-de-fichiers">Les systèmes de fichiers
+</h2><h3 id="hfs">HFS+
+</h3><p>HFS+, aussi appelé Mac OS Extended, est un système de fichiers développé par Apple en 1998 avec Mac OS 8.1. Il remplace le HFS original en offrant une meilleure gestion des fichiers sur les ordinateurs Macintosh.</p>
+<h4 id="contexte-historique-et-utilisation">Contexte Historique et Utilisation
+</h4><p>HFS+ a été conçu pour surmonter les limitations du HFS, notamment en termes de gestion des grands volumes de stockage et d&rsquo;allocation d&rsquo;espace disque. Bien qu&rsquo;initialement non adapté aux systèmes Unix, il a servi de système de fichiers principal pour Mac OS X et macOS jusqu&rsquo;en 2017, date à laquelle il a été remplacé par APFS.</p>
+<p>Aujourd&rsquo;hui, HFS+ est considéré comme obsolète. Il reste utilisé sur les appareils antérieurs à 2017, comme les anciens Mac et les iPod. Il est toujours supporté sur macOS 10.12 (Sierra) et les versions antérieures, mais n&rsquo;est plus le système par défaut sur les versions récentes.</p>
+<h4 id="architecture-et-structure">Architecture et Structure
+</h4><h5 id="composants-de-base">Composants de Base
+</h5><p>HFS+ repose sur une architecture basée sur des secteurs (512 octets) et des blocs (composés d&rsquo;un ou plusieurs secteurs). Les adresses 32 bits permettent de gérer jusqu&rsquo;à 2^32 blocs (environ 4 milliards), contre 16 bits pour le HFS.</p>
+<h5 id="organisation-du-volume">Organisation du Volume
+</h5><ul>
+<li><strong>Secteurs 0 et 1</strong> : Volume de démarrage.</li>
+<li><strong>Secteur 2</strong> : En-tête de volume (métadonnées essentielles).</li>
+</ul>
+<h5 id="catalogue-et-système-dindexation">Catalogue et Système d&rsquo;Indexation
+</h5><p>Le fichier catalogue est central dans HFS+. Il contient tous les fichiers et dossiers du volume et utilise une structure <code>B-Tree</code> pour une recherche et une récupération efficaces.</p>
+<h4 id="caractéristiques-principales">Caractéristiques Principales
+</h4><h5 id="noms-de-fichiers-et-encodage">Noms de Fichiers et Encodage
+</h5><p>HFS+ supporte des noms de fichiers jusqu&rsquo;à 255 caractères en UTF-16 (contre 31 pour le HFS). L&rsquo;encodage UTF-16 avec normalisation Unicode permet une compatibilité internationale.</p>
+<h5 id="capacités-de-stockage">Capacités de Stockage
+</h5><ul>
+<li>Nombre max de fichiers par volume : 2,1 milliards.</li>
+<li>Taille max des fichiers et du volume : 8 exaoctets.</li>
+</ul>
+<h5 id="journalisation-et-sécurité-des-données">Journalisation et Sécurité des Données
+</h5><p>La journalisation, introduite en Mac OS X 10.2.2 et standardisée en 10.3, améliore la stabilité des données en permettant une récupération après un crash ou un redémarrage forcé.</p>
+<h4 id="limitations-et-contraintes">Limitations et Contraintes
+</h4><h5 id="limitation-temporelle">Limitation Temporelle
+</h5><p>HFS+ ne peut pas gérer les dates postérieures au 6 décembre 2040 en raison de son encodage des horodatages.</p>
+<h4 id="évolution-et-remplacement">Évolution et Remplacement
+</h4><p>HFS+ a été remplacé par APFS (Apple File System) en 2017 avec macOS High Sierra. APFS est optimisé pour les SSD et offre de meilleures performances. Malgré son obsolescence, HFS+ reste utile pour la compatibilité avec les anciens systèmes macOS et les environnements utilisant du matériel hérité.</p>
+<h3 id="apfs">APFS
+</h3><p>Apparu en 2017, c&rsquo;est le système de fichier commun entre iOS, WatchOS, tvOS, MacOS</p>
+<h4 id="caractéristiques-essentielles-de-lapfs">Caractéristiques essentielles de l&rsquo;APFS
+</h4><p>APFS a corrigé la plupart des problèmes HFS+. Quelques exemples sont ci-dessous:</p>
+<ul>
+<li>APFS prend en charge les horodatages jusqu&rsquo;à 1 nanoseconde.</li>
+<li>Les dates au-delà du 6 février 2040 sont possibles.</li>
+<li>Le chiffrement complet du disque est pris en charge nativement.</li>
+<li>Apple a introduit redirect-on-write, une fonctionnalité de protection contre les crashs. Pour éviter la corruption de données, les données sont écrites sur de nouveaux blocs, et les anciennes sont publiées une fois faites au lieu de réécrire celles existantes.</li>
+<li>Le nombre maximum de fichiers stockés dans le système a été augmenté à 2^63.</li>
+</ul>
+<p>Bien qu’APFS ait amélioré beaucoup de choses pour Apple, sa prise en charge du chiffrement complet du disque et du chiffrement matériel et logiciel a rendu les enquêtes forensic très difficiles.</p>
+<h4 id="structure">Structure
+</h4><p>APFS utilise la table de partition GUID (GTP), à l&rsquo;intérieur de la partition on y trouve un ou plusieurs conteneurs.
+Un conteneur peut contenir un ou plusieurs volumes, chacun l&rsquo;un à côté de l&rsquo;autre sans espace. S&rsquo;il y a un espace libre dans un conteneur il est partagé entre tous les volumes.</p>
+<p>Pour gérer les disques sous Mac OS nous pouvons utiliser <code>diskutil</code> :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">enzo@MacBook-Pro ~ % diskutil 
+</span></span><span class="line"><span class="cl">Disk Utility Tool 
+</span></span><span class="line"><span class="cl">Utility to manage <span class="nb">local</span> disks and volumes 
+</span></span><span class="line"><span class="cl">Most commands require an administrator or root user  
+</span></span><span class="line"><span class="cl">WARNING: Most destructive operations are not prompted  
+</span></span><span class="line"><span class="cl">Usage:  diskutil <span class="o">[</span>quiet<span class="o">]</span>  , where  is as follows:
+</span></span><span class="line"><span class="cl">      list                 <span class="o">(</span>List the partitions of a disk<span class="o">)</span>
+</span></span><span class="line"><span class="cl">      info<span class="o">[</span>rmation<span class="o">]</span>        <span class="o">(</span>Get information on a specific disk or partition<span class="o">)</span>
+</span></span><span class="line"><span class="cl">      listFilesystems      <span class="o">(</span>List file systems available <span class="k">for</span> formatting<span class="o">)</span>
+</span></span><span class="line"><span class="cl">      listClients          <span class="o">(</span>List all current disk management clients<span class="o">)</span>
+</span></span><span class="line"><span class="cl">      activity             <span class="o">(</span>Continuous log of system-wide disk arbitration<span class="o">)</span>
+</span></span><span class="line"><span class="cl">      .
+</span></span><span class="line"><span class="cl">      .
+</span></span><span class="line"><span class="cl">      .
+</span></span><span class="line"><span class="cl">      appleRAID      <span class="o">(</span>Perform additional verbs related to AppleRAID<span class="o">)</span>
+</span></span><span class="line"><span class="cl">      coreStorage    <span class="o">(</span>Perform additional verbs related to CoreStorage<span class="o">)</span>
+</span></span><span class="line"><span class="cl">      apfs           <span class="o">(</span>Perform additional verbs related to APFS<span class="o">)</span>
+</span></span><span class="line"><span class="cl">      image          <span class="o">(</span>Perform additional verbs related to DiskImage<span class="o">)</span>
+</span></span><span class="line"><span class="cl">      diskutil  with no options will provide <span class="nb">help</span> on that verb<span class="sb">`</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Il est possible d&rsquo;afficher les types de volumes APFS disponible sur la machine avec la commande <code>diskutil apfs list</code>.</p>
+<h2 id="structure-des-répertoires-et-domaine">Structure des répertoires et domaine
+</h2><p>La structure de Mac OS à pas mal de similitude avec celle de Linux.</p>
+<h3 id="structure-des-répertoires">Structure des répertoires
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">enzo@MacBook-Pro / % ls
+</span></span><span class="line"><span class="cl">Applications	System		Volumes		cores		etc		opt		sbin		usr
+</span></span><span class="line"><span class="cl">Library		Users		bin		dev		home		private		tmp		var
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Comme mentionné précédemment, certains de ces répertoires sont très similaires à ce que nous allons trouver dans les systèmes Linux, tels que:</p>
+<ul>
+<li>opt : Ce répertoire contient des fichiers pour les logiciels optionnels, tels que homebrew.</li>
+<li>sbin : Ce répertoire contient des binaires système tels que lancé, ping et mount.</li>
+<li>bin : Ce répertoire contient des binaires tels que chmod, rm et echo.</li>
+<li>dev : Ce répertoire contient des fichiers d&rsquo;appareils tels que des accessoires Bluetooth.</li>
+<li>private : Ce répertoire contient trois répertoires principaux, <code>var</code>, <code>etc</code>, et <code>tmp</code>, semblable aux mêmes répertoires de noms dans Linux.</li>
+</ul>
+<h3 id="domaines">Domaines
+</h3><p>macOS organise des fichiers dans différents domaines en fonction de leur utilisation prévue. Le système de fichiers macOS dispose de quatre domaines: local, utilisateur, système et réseau.</p>
+<h4 id="domaine-local">Domaine local
+</h4><p>Le domaine local contient des ressources communes à tous les utilisateurs de l&rsquo;ordinateur local. Ces ressources sont généralement présentes dans <code>/Applications</code>et <code>/Library</code>. Le système gère ce domaine mais peut également être géré par des utilisateurs disposant de privilèges administrateur.</p>
+<h4 id="domaine-système">Domaine système
+</h4><p>Le domaine Système contient des logiciels développés et gérés par Apple. Il mappe le répertoire <code>/System</code> et contient des applications et configurations de système d&rsquo;exploitation critiques. Apple ne permet pas aux utilisateurs de modifier ou de supprimer des fichiers dans ce domaine, même avec des privilèges root.</p>
+<h4 id="domaine-utilisateur">Domaine utilisateur
+</h4><p>Le domaine utilisateur contient des données et des fichiers utilisateur. Il est situé dans <code>/Users</code>. Dans ce répertoire se trouve un répertoire pour chaque utilisateur de la machine. Par défaut, un utilisateur ne peut pas accéder aux fichiers d&rsquo;un autre utilisateur. Il y a aussi un répertoire de bibliothèque caché à l&rsquo;intérieur du domaine de l&rsquo;utilisateur dans le répertoire de chaque utilisateur (situé à <code>/Users/&lt;user&gt;/Library</code>). Ce répertoire contient des configurations spécifiques à l&rsquo;utilisateur et des données d&rsquo;application.</p>
+<h4 id="domaine-réseau">Domaine réseau
+</h4><p>Le domaine réseau contient des ressources réseau telles que des imprimantes réseau, des serveurs de partage SMB et d&rsquo;autres ordinateurs. Les administrateurs réseau gèrent généralement l&rsquo;accès à ces ressources, que les utilisateurs du réseau local partagent.</p>
+<h2 id="les-formats-de-fichiers">Les formats de fichiers
+</h2><p>macOS a une structure de fichier différente des autres systèmes d&rsquo;exploitation et a ses propres formats de fichiers.</p>
+<h3 id="plist">.plist
+</h3><p>Les fichiers .plist ou fichiers de liste de propriétés contiennent des configurations système similaires au Registre Windows dans Microsoft Windows. Par conséquent, comme le fichier Windows Registry, les fichiers .plist sont très importants d&rsquo;un point de vue forensic. Généralement, deux formats sont utilisés pour les fichiers .plist:</p>
+<ul>
+<li>XML</li>
+<li>BLOB</li>
+</ul>
+<p>Nous pouvons utiliser un éditeur de texte pour lire les données des fichiers .plist présents au format XML, mais pour lire les fichiers .plist au format BLOB, nous devons utiliser Xcode, un outil de développement qui peut être installé via l&rsquo;App Store. L&rsquo;image ci-dessous montre à quoi ressemble un fichier .plist lorsqu&rsquo;il est ouvert à l&rsquo;aide de Xcode.</p>
+<h3 id="app">.app
+</h3><p>Les fichiers .app sont des exécutables d&rsquo;application souvent trouvés dans le répertoire Applications. L&rsquo;exécution d&rsquo;un fichier .app lance l&rsquo;application, tout comme l&rsquo;exécution d&rsquo;un fichier exécutable dans Windows peut lancer une application. Ces fichiers sont &lsquo;zippé&rsquo;, et nous pouvons voir le contenu du bundle en utilisant l&rsquo;option &lsquo;Afficher le contenu du paquet&rsquo;.</p>
+<h3 id="dmg">.dmg
+</h3><p>Les fichiers .dmg sont des fichiers image de disque macOS. Ces fichiers peuvent être montés facilement dans macOS, et les installateurs utilisent souvent ce format.</p>
+<h3 id="kext">.kext
+</h3><p>Bien que obsolètes dans les nouvelles versions de macOS, les fichiers .kext sont des fichiers d&rsquo;extension du noyau. Les extensions Kernel fonctionnent de la même manière que les pilotes dans Windows, donnant accès au noyau du système d&rsquo;exploitation aux applications tierces.</p>
+<h3 id="dylib">.dylib
+</h3><p>Ce sont des fichiers de bibliothèque chargés dynamiquement. Ils contiennent du code partagé utilisé par différents programmes. Ils sont similaires aux fichiers DLL dans Windows ou .so fichiers sous Linux.</p>
+<h2 id="les-défis-de-lacquisition">Les défis de l&rsquo;acquisition
+</h2><p>Apple a rendu ses produits très peu amicaux à la forensic. Comme nous l’avons déjà mentionné, Apple a résisté à une forte pression, même de la part des agences gouvernementales américaines, pour ouvrir ses plateformes et faciliter les enquêtes forensic. Mais qu&rsquo;est-ce qui rend macOS si hostile pour les enquêtes ? Passons en revue certains défis qui rendent la prise d&rsquo;une image de disque complète d&rsquo;un appareil macOS dur.</p>
+<h3 id="accès-au-disque">Accès au disque
+</h3><p>Dans les nouveaux Macbooks, les disques SSD sont soudés à la carte mère. Cela signifie que le retrait du SSD n&rsquo;est pas une option sans risquer d&rsquo;endommager le lecteur ou la machine dans son ensemble. Dans les appareils où les SSD ne sont pas soudés, tels que les appareils plus anciens, ils utilisent souvent des interfaces propriétaires, ce qui rend difficile leur connexion au matériel d&rsquo;imagerie.</p>
+<h3 id="chiffrement-matériel">Chiffrement matériel
+</h3><p>Même si nous pouvons accéder physiquement au SSD sur un Mac, nous ne serons pas en mesure d&rsquo;en récupérer ou d&rsquo;en extraire des données, car le lecteur est chiffré par un chiffrement matériel. À partir des puces basées sur T2, Apple stocke la clé de chiffrement du SSD dans une enclave sécurisée distincte du CPU. Cela signifie que si la carte mère échoue ou est autrement indisponible, les données du SSD chiffré sont perdues et ne peuvent pas être récupérées.</p>
+<h3 id="chiffrement-filevault">Chiffrement FileVault
+</h3><p>Apple utilise FileVault pour ajouter une autre couche au cryptage macOS. FileVault lie le chiffrement des données avec le mot de passe de l&rsquo;utilisateur, garantissant que les données sont chiffré tant que l&rsquo;utilisateur n&rsquo;a pas entré son mot de passe. Cela signifie que même si un système Mac est activé en utilisant le même matériel, nous ne pouvons pas accéder aux données à moins que le mot de passe de l&rsquo;utilisateur ne déverrouille le FileVault. Par conséquent, même si nous démarrons la machine en récupération, ce qui est le moyen le plus fiable de prendre une image de disque complète du SSD Mac, nous devrons toujours déverrouiller FileVault pour accéder aux données en fournissant soit le mot de passe de l&rsquo;utilisateur, soit, si une organisation gère le Mac, la clé d&rsquo;accès de l&rsquo;organisation. Bien que FileVault n&rsquo;empêche pas un enquêteur d&rsquo;obtenir une image de disque, l&rsquo;enquêteur aura besoin du mot de passe ou des clés d&rsquo;accès organisationnel pour déverrouiller le volume et accéder aux données.</p>
+<h3 id="protection-de-lintégrité-du-système-sip">Protection de l&rsquo;intégrité du système (SIP)
+</h3><p>La protection de l&rsquo;intégrité du système (SIP) est une fonctionnalité qui protège le noyau contre l&rsquo;accès non autorisé, l&rsquo;injection de code, le débogage ou les modifications générales. SIP peut souvent empêcher l&rsquo;accès à la mémoire ou à certaines parties du disque, même avec l&rsquo;accès root. Par conséquent, la désactivation de SIP peut être une bonne idée avant d’acquérir une image. Cependant, comme cela nécessite un démarrage dans la récupération, cela peut entraîner la perte de données volatiles et des modifications du disque. SIP peut être désactivé en démarrant dans la récupération, en ouvrant le terminal et en utilisant la commande <code>csrutil disable</code>.</p>
+<h3 id="quelles-possibilités-">Quelles possibilités ?
+</h3><p>Nous pouvons envisager les possibilités suivantes d&rsquo;acquisition de données à partir d&rsquo;un Mac.</p>
+<ul>
+<li>Utilisez un outil propriétaire tel que Magnet AXIOM ou Cellebrite, accordez un accès complet au disque et imagez un système en direct.</li>
+<li>Si le mot de passe de l&rsquo;utilisateur est connu et que la machine est physiquement disponible, nous pouvons démarrer en récupération, désactiver les fonctionnalités de sécurité et prendre une image disque à l&rsquo;aide du terminal à l&rsquo;aide d&rsquo;outils tels que dd, hdiutil ou dc3dd.</li>
+<li>Après avoir démarré dans la récupération et déverrouillé le lecteur à l&rsquo;aide du mot de passe utilisateur, le Mac peut être mis en mode de partage Mac ou en mode Target (pour les systèmes plus anciens). En connectant le Mac à un autre appareil à l&rsquo;aide de Firewire ou Thunderbolt, une acquisition logique peut être effectuée (pour le mode de partage Mac), ou une image de disque complète peut être prise (si le mode Target est disponible). Cependant, le mode Target n&rsquo;est plus disponible dans les nouveaux Mac avec des puces en silicium Apple.</li>
+</ul>
+<h2 id="montage-dune-image-apfs">Montage d&rsquo;une image APFS
+</h2><p>POur commencer nous allons énumérer les volumes disponible sur l&rsquo;image APFS :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">ubuntu@ubuntu:~# apfsutil mac-disk.img 
+</span></span><span class="line"><span class="cl">Found partitions:
+</span></span><span class="line"><span class="cl">69646961-6700-11AA-11AA-00306543ECAC 68CB0FFE-F676-47D6-D1A2-5707D06D3E49 <span class="m">0000000000000028</span> 00000000000FA027 <span class="m">0000000000000000</span> iBootSystemContainer
+</span></span><span class="line"><span class="cl">7C3457EF-0000-11AA-11AA-00306543ECAC 449DFC0C-7E1F-44D5-6A9F-7EA2C2AF0ADC 00000000000FA028 <span class="m">0000000002800027</span> <span class="m">0000000000000000</span> Container
+</span></span><span class="line"><span class="cl">52637672-7900-11AA-11AA-00306543ECAC A9432466-4751-47B7-1BBC-45B7B70465DE <span class="m">0000000002800028</span> 00000000031FFFD7 <span class="m">0000000000000000</span> RecoveryOSContainer
+</span></span><span class="line"><span class="cl">First APFS partition is <span class="m">1</span>
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Pour monter l&rsquo;image nous allons utiliser l&rsquo;outil <code>apfs-fuse</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">ubuntu@ubuntu:/home/ubuntu# apfs-fuse mac-disk.img mac/ 
+</span></span><span class="line"><span class="cl">ubuntu@ubuntu:/home/ubuntu# ls mac 
+</span></span><span class="line"><span class="cl">private-dir  root
+</span></span><span class="line"><span class="cl">ubuntu@ubuntu:/home/ubuntu# ls mac/root/Users 
+</span></span><span class="line"><span class="cl">ubuntu@ubuntu:/home/ubuntu#
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Nous n&rsquo;avons pas monté le bon volume. Nous devons monté le volume 4 :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">ubuntu@ubuntu:/home/ubuntu# apfs-fuse -v <span class="m">4</span> mac-disk.img mac
+</span></span><span class="line"><span class="cl">ubuntu@ubuntu:/home/ubuntu# ls mac/root/Users
+</span></span><span class="line"><span class="cl">Shared  enzo
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/macos/">MacOS</a>
+        
+            <a href="/tags/forensic/">Forensic</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Enzo Ribeiro
+    </section>
+    
+    <section class="powerby">
+        Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e4dd2d7a791b3794ae9889b21f5598875c8169002592e3d7b6a9ed269f54068.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
