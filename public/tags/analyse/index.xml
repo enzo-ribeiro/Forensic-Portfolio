@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Analyse on KIRÔN</title>
-        <link>https://forensic.enzoribeiro.fr/tags/analyse/</link>
+        <link>http://localhost:1313/tags/analyse/</link>
         <description>Recent content in Analyse on KIRÔN</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>fr</language>
         <copyright>Enzo Ribeiro</copyright>
-        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://forensic.enzoribeiro.fr/tags/analyse/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/analyse/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Linux - Investigation des Logs</title>
-        <link>https://forensic.enzoribeiro.fr/p/linux-investigation-des-logs/</link>
+        <link>http://localhost:1313/p/linux-investigation-des-logs/</link>
         <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://forensic.enzoribeiro.fr/p/linux-investigation-des-logs/</guid>
+        <guid>http://localhost:1313/p/linux-investigation-des-logs/</guid>
         <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
 &lt;/h2&gt;&lt;p&gt;Dans le monde Linux comprendre les logs revient à comprendre comment le système fonctionne. Les logs nous permettent de remonter les historiques d&amp;rsquo;activités, les erreurs et les événements système.&lt;/p&gt;
 &lt;h3 id=&#34;les-types-de-logs&#34;&gt;Les types de logs
@@ -576,10 +576,10 @@ Les logs se trouve dans &lt;code&gt;/var/log/apache2/{access.log,error.log}&lt;/
         </item>
         <item>
         <title>Linux - Surface d&#39;Incident</title>
-        <link>https://forensic.enzoribeiro.fr/p/linux-surface-dincident/</link>
+        <link>http://localhost:1313/p/linux-surface-dincident/</link>
         <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://forensic.enzoribeiro.fr/p/linux-surface-dincident/</guid>
+        <guid>http://localhost:1313/p/linux-surface-dincident/</guid>
         <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
 &lt;/h2&gt;&lt;p&gt;La surface d&amp;rsquo;incident fait référence aux points d&amp;rsquo;entré du système.&lt;/p&gt;
 &lt;p&gt;Il y a une différence entre Surface d&amp;rsquo;Attaque et une Surface d&amp;rsquo;Incident.&lt;/p&gt;
@@ -623,10 +623,10 @@ Les logs se trouve dans &lt;code&gt;/var/log/apache2/{access.log,error.log}&lt;/
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;Une fois la notre binaire lancé, nous ppouvons ouvrir un nouveau terminal et voir les processus en cours d&amp;rsquo;exécution avec la commande &lt;code&gt;ps aux&lt;/code&gt;:
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/SCR-20251004-lada.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/SCR-20251004-lada.png&#34;
 	width=&#34;1770&#34;
 	height=&#34;802&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/SCR-20251004-lada_hu_85084d1d7c703cb7.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/SCR-20251004-lada_hu_d48f5a44539c200f.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/SCR-20251004-lada_hu_85084d1d7c703cb7.png 480w, http://localhost:1313/p/linux-surface-dincident/SCR-20251004-lada_hu_d48f5a44539c200f.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -665,10 +665,10 @@ Avec le &lt;code&gt;PID&lt;/code&gt; nous pouvons faire une recherche plus appro
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lsof -p &amp;lt;PID&amp;gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/SCR-20251004-lfdn.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/SCR-20251004-lfdn.png&#34;
 	width=&#34;1722&#34;
 	height=&#34;440&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/SCR-20251004-lfdn_hu_5ae030f49cfa0fcb.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/SCR-20251004-lfdn_hu_fe265d328c659f76.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/SCR-20251004-lfdn_hu_5ae030f49cfa0fcb.png 480w, http://localhost:1313/p/linux-surface-dincident/SCR-20251004-lfdn_hu_fe265d328c659f76.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -689,10 +689,10 @@ Avec le &lt;code&gt;PID&lt;/code&gt; nous pouvons faire une recherche plus appro
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ps aux
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251004125812.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251004125812.png&#34;
 	width=&#34;1832&#34;
 	height=&#34;254&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251004125812_hu_ee3cd97bf5a2fec.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251004125812_hu_37a980506d6950fd.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251004125812_hu_ee3cd97bf5a2fec.png 480w, http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251004125812_hu_37a980506d6950fd.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -710,10 +710,10 @@ Il possède le PID 2130, mais nous allons d&amp;rsquo;abord voir si une connexio
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lsof -i -P -n 
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251004130148.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251004130148.png&#34;
 	width=&#34;1878&#34;
 	height=&#34;226&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251004130148_hu_252aa4eb2a35b79d.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251004130148_hu_9aff8b7f1d992efd.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251004130148_hu_252aa4eb2a35b79d.png 480w, http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251004130148_hu_9aff8b7f1d992efd.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -739,10 +739,10 @@ Il possède le PID 2130, mais nous allons d&amp;rsquo;abord voir si une connexio
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;SELECT pid, fd, socket, local_address, remote_address FROM process_open_sockets WHERE &lt;span class=&#34;nv&#34;&gt;pid&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &amp;lt;PID&amp;gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005130848.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005130848.png&#34;
 	width=&#34;1446&#34;
 	height=&#34;254&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005130848_hu_add901bd3022947b.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005130848_hu_b38d1718c51d73ec.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005130848_hu_add901bd3022947b.png 480w, http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005130848_hu_b38d1718c51d73ec.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -945,10 +945,10 @@ Nous pouvons voir quel utilisateur à des tâches cron au chemin suivant : &lt;c
 &lt;h3 id=&#34;services&#34;&gt;Services
 &lt;/h3&gt;&lt;p&gt;C&amp;rsquo;est une autre méthode qui permet d&amp;rsquo;assurer la persistance, tout comme la cron task ci dessus, les services vont nous permettent. La tâche s&amp;rsquo;exécutera en arrière plan et à chaque démarrage de la machine.&lt;/p&gt;
 &lt;p&gt;Pour analyser un service qui nous paraît suspect nous pouvons nous rendre dans &lt;code&gt;/etc/systemd/system/&amp;lt;service qui nous paraît suspect&amp;gt;&lt;/code&gt;.
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005140053.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005140053.png&#34;
 	width=&#34;2464&#34;
 	height=&#34;690&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005140053_hu_f4df8766ef18849e.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005140053_hu_a59ec42070265fea.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005140053_hu_f4df8766ef18849e.png 480w, http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005140053_hu_a59ec42070265fea.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -958,10 +958,10 @@ Nous pouvons voir quel utilisateur à des tâches cron au chemin suivant : &lt;c
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;Ici le service benign.service est suspect :
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005140200.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005140200.png&#34;
 	width=&#34;1036&#34;
 	height=&#34;476&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005140200_hu_8001c7e29c10de0a.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005140200_hu_738848432e0d0a75.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005140200_hu_8001c7e29c10de0a.png 480w, http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005140200_hu_738848432e0d0a75.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1144,13 +1144,13 @@ pas d&amp;rsquo;utilisateur, pas de groupe, lancement dans le /tmp tout paraît 
         </item>
         <item>
         <title>Mobile - Analyse Android</title>
-        <link>https://forensic.enzoribeiro.fr/p/mobile-analyse-android/</link>
+        <link>http://localhost:1313/p/mobile-analyse-android/</link>
         <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://forensic.enzoribeiro.fr/p/mobile-analyse-android/</guid>
+        <guid>http://localhost:1313/p/mobile-analyse-android/</guid>
         <description>&lt;h2 id=&#34;architecture-android&#34;&gt;Architecture Android
 &lt;/h2&gt;&lt;p&gt;L&amp;rsquo;architecture d&amp;rsquo;Android est superposée et modulaire, ce qui la rend polyvalente et complexe d&amp;rsquo;un point de vue Forensic.
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/5e8dd9a4a45e18443162feab-1747826237632.svg&#34;
+&lt;img src=&#34;http://localhost:1313/p/mobile-analyse-android/5e8dd9a4a45e18443162feab-1747826237632.svg&#34;
 	
 	
 	
@@ -1192,10 +1192,10 @@ pas d&amp;rsquo;utilisateur, pas de groupe, lancement dans le /tmp tout paraît 
 &lt;/ul&gt;
 &lt;h3 id=&#34;système-de-fichiers-android&#34;&gt;Système de fichiers Android
 &lt;/h3&gt;&lt;p&gt;Android utilise un système de fichier basé sur Linux qui partitionne et met des &amp;ldquo;couches&amp;rdquo; pour gérer les données de manière sécurisée et efficace. La structure est personnalisée en fonction du matériel et de l&amp;rsquo;OS.&lt;br&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/5e8dd9a4a45e18443162feab-1747796686545-1.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/mobile-analyse-android/5e8dd9a4a45e18443162feab-1747796686545-1.png&#34;
 	width=&#34;1140&#34;
 	height=&#34;646&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/5e8dd9a4a45e18443162feab-1747796686545-1_hu_ac297e09cc0f4aeb.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/5e8dd9a4a45e18443162feab-1747796686545-1_hu_afc5172f7d3b6162.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/mobile-analyse-android/5e8dd9a4a45e18443162feab-1747796686545-1_hu_ac297e09cc0f4aeb.png 480w, http://localhost:1313/p/mobile-analyse-android/5e8dd9a4a45e18443162feab-1747796686545-1_hu_afc5172f7d3b6162.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1248,10 +1248,10 @@ pas d&amp;rsquo;utilisateur, pas de groupe, lancement dans le /tmp tout paraît 
 &lt;/div&gt;&lt;h3 id=&#34;analyse-dune-image&#34;&gt;Analyse d&amp;rsquo;une image
 &lt;/h3&gt;&lt;p&gt;Nous avons un fichier &lt;code&gt;.ad1&lt;/code&gt;, nous l&amp;rsquo;importons dans FTK Imager.
 Ensuite nous avons accès à certains fichiers de l&amp;rsquo;appareil suspect :
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251001170204.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251001170204.png&#34;
 	width=&#34;296&#34;
 	height=&#34;241&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251001170204_hu_82aa26a132180bd0.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251001170204_hu_d1d09be5653387f.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251001170204_hu_82aa26a132180bd0.png 480w, http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251001170204_hu_d1d09be5653387f.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1261,10 +1261,10 @@ Ensuite nous avons accès à certains fichiers de l&amp;rsquo;appareil suspect :
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;Le but de l&amp;rsquo;exercice ici est de trouver le numéro de série qui se trouve dans &lt;code&gt;/system/build.prop&lt;/code&gt;:
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251001170322.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251001170322.png&#34;
 	width=&#34;905&#34;
 	height=&#34;462&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251001170322_hu_97cc46fd7ae85bfb.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251001170322_hu_797483f15ace8047.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251001170322_hu_97cc46fd7ae85bfb.png 480w, http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251001170322_hu_797483f15ace8047.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1430,10 +1430,10 @@ Ensuite nous avons accès à certains fichiers de l&amp;rsquo;appareil suspect :
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;.tables
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002160557.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002160557.png&#34;
 	width=&#34;1048&#34;
 	height=&#34;182&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002160557_hu_6bcdb2e5b615b9d0.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002160557_hu_94fdace3a87ad96c.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002160557_hu_6bcdb2e5b615b9d0.png 480w, http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002160557_hu_94fdace3a87ad96c.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1443,10 +1443,10 @@ Ensuite nous avons accès à certains fichiers de l&amp;rsquo;appareil suspect :
 	
 &gt;
 On envoie une requête SQL pour nous afficher TOUT les messages de la base sms :
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002160718.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002160718.png&#34;
 	width=&#34;945&#34;
 	height=&#34;256&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002160718_hu_e2c03de5c1fe1e53.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002160718_hu_137ec7ba125aad79.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002160718_hu_e2c03de5c1fe1e53.png 480w, http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002160718_hu_137ec7ba125aad79.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1471,10 +1471,10 @@ On envoie une requête SQL pour nous afficher TOUT les messages de la base sms :
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;.tables
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002161210.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002161210.png&#34;
 	width=&#34;1599&#34;
 	height=&#34;383&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002161210_hu_cbc29a52c1438772.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002161210_hu_49e6a0f5a01f2132.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002161210_hu_cbc29a52c1438772.png 480w, http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002161210_hu_49e6a0f5a01f2132.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1490,10 +1490,10 @@ On envoie une requête SQL pour nous afficher TOUT les messages de la base sms :
 &lt;/h3&gt;&lt;p&gt;aLEAPP analyse et fournit un rapport lisible par nous. Il possède 2 interface, une graphique et l&amp;rsquo;autre en ligne de commande.&lt;/p&gt;
 &lt;h4 id=&#34;gui&#34;&gt;GUI
 &lt;/h4&gt;&lt;p&gt;&lt;code&gt;python aleappgui.py&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002163345.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002163345.png&#34;
 	width=&#34;889&#34;
 	height=&#34;648&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002163345_hu_1149ee929d0e82d.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002163345_hu_f2d885a29b3605a4.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002163345_hu_1149ee929d0e82d.png 480w, http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002163345_hu_f2d885a29b3605a4.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1504,10 +1504,10 @@ On envoie une requête SQL pour nous afficher TOUT les messages de la base sms :
 &gt;
 Il prend des fichier .zip/.tar/.gz.&lt;/p&gt;
 &lt;p&gt;Une fois le fichier en .zip donné, un fichier de sortie et lancé l&amp;rsquo;analyse nous pouvons cliquer sur &lt;code&gt;Open Report and Close&lt;/code&gt; Le rapport s&amp;rsquo;ouvrira dans le navigateur.
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002163726.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002163726.png&#34;
 	width=&#34;1255&#34;
 	height=&#34;765&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002163726_hu_cf12aabc94164805.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-android/Pasted%20image%2020251002163726_hu_eb39be46b11eb8ff.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002163726_hu_cf12aabc94164805.png 480w, http://localhost:1313/p/mobile-analyse-android/Pasted%20image%2020251002163726_hu_eb39be46b11eb8ff.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1520,18 +1520,18 @@ Il prend des fichier .zip/.tar/.gz.&lt;/p&gt;
         </item>
         <item>
         <title>Mobile - Analyse iOS</title>
-        <link>https://forensic.enzoribeiro.fr/p/mobile-analyse-ios/</link>
+        <link>http://localhost:1313/p/mobile-analyse-ios/</link>
         <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://forensic.enzoribeiro.fr/p/mobile-analyse-ios/</guid>
+        <guid>http://localhost:1313/p/mobile-analyse-ios/</guid>
         <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
 &lt;/h2&gt;&lt;p&gt;Depuis 2018, Apple impose un certificat de confiance, ce qui restreint l&amp;rsquo;accès des appareils vers les iPhone. Cette fonctionnalité permet de désactivé/activé l&amp;rsquo;entré/la sortie des données de l&amp;rsquo;iPhone.&lt;/p&gt;
 &lt;p&gt;Une fois le certificat validé par les deux appareils, nous pouvons le trouver (sur Windows dans le chemin ci-dessous) :
 &lt;code&gt;C:\ProgramData\Apple\Lockdow&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945.png&#34;
 	width=&#34;888&#34;
 	height=&#34;644&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945_hu_4af36508e5dd8b6f.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945_hu_85cf5f70334bfb74.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945_hu_4af36508e5dd8b6f.png 480w, http://localhost:1313/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945_hu_85cf5f70334bfb74.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	

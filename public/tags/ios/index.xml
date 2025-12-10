@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>IOS on KIRÔN</title>
-        <link>https://forensic.enzoribeiro.fr/tags/ios/</link>
+        <link>http://localhost:1313/tags/ios/</link>
         <description>Recent content in IOS on KIRÔN</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>fr</language>
         <copyright>Enzo Ribeiro</copyright>
-        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://forensic.enzoribeiro.fr/tags/ios/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/ios/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Mobile - Analyse iOS</title>
-        <link>https://forensic.enzoribeiro.fr/p/mobile-analyse-ios/</link>
+        <link>http://localhost:1313/p/mobile-analyse-ios/</link>
         <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://forensic.enzoribeiro.fr/p/mobile-analyse-ios/</guid>
+        <guid>http://localhost:1313/p/mobile-analyse-ios/</guid>
         <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
 &lt;/h2&gt;&lt;p&gt;Depuis 2018, Apple impose un certificat de confiance, ce qui restreint l&amp;rsquo;accès des appareils vers les iPhone. Cette fonctionnalité permet de désactivé/activé l&amp;rsquo;entré/la sortie des données de l&amp;rsquo;iPhone.&lt;/p&gt;
 &lt;p&gt;Une fois le certificat validé par les deux appareils, nous pouvons le trouver (sur Windows dans le chemin ci-dessous) :
 &lt;code&gt;C:\ProgramData\Apple\Lockdow&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945.png&#34;
 	width=&#34;888&#34;
 	height=&#34;644&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945_hu_4af36508e5dd8b6f.png 480w, https://forensic.enzoribeiro.fr/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945_hu_85cf5f70334bfb74.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945_hu_4af36508e5dd8b6f.png 480w, http://localhost:1313/p/mobile-analyse-ios/5de96d9ca744773ea7ef8c00-1718720183945_hu_85cf5f70334bfb74.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	

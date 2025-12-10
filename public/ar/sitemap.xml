@@ -2,55 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://forensic.enzoribeiro.fr/ar/categories/</loc>
+    <loc>http://localhost:1313/ar/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://forensic.enzoribeiro.fr/categories/"
+                href="http://localhost:1313/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="https://forensic.enzoribeiro.fr/zh-cn/categories/"
+                href="http://localhost:1313/zh-cn/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
-                href="https://forensic.enzoribeiro.fr/ar/categories/"
+                href="http://localhost:1313/ar/categories/"
                 />
   </url><url>
-    <loc>https://forensic.enzoribeiro.fr/ar/tags/</loc>
+    <loc>http://localhost:1313/ar/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://forensic.enzoribeiro.fr/tags/"
+                href="http://localhost:1313/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="https://forensic.enzoribeiro.fr/zh-cn/tags/"
+                href="http://localhost:1313/zh-cn/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
-                href="https://forensic.enzoribeiro.fr/ar/tags/"
+                href="http://localhost:1313/ar/tags/"
                 />
   </url><url>
-    <loc>https://forensic.enzoribeiro.fr/ar/</loc>
+    <loc>http://localhost:1313/ar/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://forensic.enzoribeiro.fr/"
+                href="http://localhost:1313/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="https://forensic.enzoribeiro.fr/zh-cn/"
+                href="http://localhost:1313/zh-cn/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
-                href="https://forensic.enzoribeiro.fr/ar/"
+                href="http://localhost:1313/ar/"
                 />
   </url>
 </urlset>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Linux on KIRÔN</title>
-        <link>https://forensic.enzoribeiro.fr/categories/linux/</link>
+        <link>http://localhost:1313/categories/linux/</link>
         <description>Recent content in Linux on KIRÔN</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>fr</language>
         <copyright>Enzo Ribeiro</copyright>
-        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://forensic.enzoribeiro.fr/categories/linux/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/linux/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Linux - Investigation des Logs</title>
-        <link>https://forensic.enzoribeiro.fr/p/linux-investigation-des-logs/</link>
+        <link>http://localhost:1313/p/linux-investigation-des-logs/</link>
         <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://forensic.enzoribeiro.fr/p/linux-investigation-des-logs/</guid>
+        <guid>http://localhost:1313/p/linux-investigation-des-logs/</guid>
         <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
 &lt;/h2&gt;&lt;p&gt;Dans le monde Linux comprendre les logs revient à comprendre comment le système fonctionne. Les logs nous permettent de remonter les historiques d&amp;rsquo;activités, les erreurs et les événements système.&lt;/p&gt;
 &lt;h3 id=&#34;les-types-de-logs&#34;&gt;Les types de logs
@@ -576,10 +576,10 @@ Les logs se trouve dans &lt;code&gt;/var/log/apache2/{access.log,error.log}&lt;/
         </item>
         <item>
         <title>Linux - Surface d&#39;Incident</title>
-        <link>https://forensic.enzoribeiro.fr/p/linux-surface-dincident/</link>
+        <link>http://localhost:1313/p/linux-surface-dincident/</link>
         <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://forensic.enzoribeiro.fr/p/linux-surface-dincident/</guid>
+        <guid>http://localhost:1313/p/linux-surface-dincident/</guid>
         <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
 &lt;/h2&gt;&lt;p&gt;La surface d&amp;rsquo;incident fait référence aux points d&amp;rsquo;entré du système.&lt;/p&gt;
 &lt;p&gt;Il y a une différence entre Surface d&amp;rsquo;Attaque et une Surface d&amp;rsquo;Incident.&lt;/p&gt;
@@ -623,10 +623,10 @@ Les logs se trouve dans &lt;code&gt;/var/log/apache2/{access.log,error.log}&lt;/
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;Une fois la notre binaire lancé, nous ppouvons ouvrir un nouveau terminal et voir les processus en cours d&amp;rsquo;exécution avec la commande &lt;code&gt;ps aux&lt;/code&gt;:
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/SCR-20251004-lada.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/SCR-20251004-lada.png&#34;
 	width=&#34;1770&#34;
 	height=&#34;802&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/SCR-20251004-lada_hu_85084d1d7c703cb7.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/SCR-20251004-lada_hu_d48f5a44539c200f.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/SCR-20251004-lada_hu_85084d1d7c703cb7.png 480w, http://localhost:1313/p/linux-surface-dincident/SCR-20251004-lada_hu_d48f5a44539c200f.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -665,10 +665,10 @@ Avec le &lt;code&gt;PID&lt;/code&gt; nous pouvons faire une recherche plus appro
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lsof -p &amp;lt;PID&amp;gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/SCR-20251004-lfdn.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/SCR-20251004-lfdn.png&#34;
 	width=&#34;1722&#34;
 	height=&#34;440&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/SCR-20251004-lfdn_hu_5ae030f49cfa0fcb.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/SCR-20251004-lfdn_hu_fe265d328c659f76.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/SCR-20251004-lfdn_hu_5ae030f49cfa0fcb.png 480w, http://localhost:1313/p/linux-surface-dincident/SCR-20251004-lfdn_hu_fe265d328c659f76.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -689,10 +689,10 @@ Avec le &lt;code&gt;PID&lt;/code&gt; nous pouvons faire une recherche plus appro
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ps aux
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251004125812.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251004125812.png&#34;
 	width=&#34;1832&#34;
 	height=&#34;254&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251004125812_hu_ee3cd97bf5a2fec.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251004125812_hu_37a980506d6950fd.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251004125812_hu_ee3cd97bf5a2fec.png 480w, http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251004125812_hu_37a980506d6950fd.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -710,10 +710,10 @@ Il possède le PID 2130, mais nous allons d&amp;rsquo;abord voir si une connexio
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lsof -i -P -n 
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251004130148.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251004130148.png&#34;
 	width=&#34;1878&#34;
 	height=&#34;226&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251004130148_hu_252aa4eb2a35b79d.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251004130148_hu_9aff8b7f1d992efd.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251004130148_hu_252aa4eb2a35b79d.png 480w, http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251004130148_hu_9aff8b7f1d992efd.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -739,10 +739,10 @@ Il possède le PID 2130, mais nous allons d&amp;rsquo;abord voir si une connexio
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;SELECT pid, fd, socket, local_address, remote_address FROM process_open_sockets WHERE &lt;span class=&#34;nv&#34;&gt;pid&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &amp;lt;PID&amp;gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005130848.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005130848.png&#34;
 	width=&#34;1446&#34;
 	height=&#34;254&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005130848_hu_add901bd3022947b.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005130848_hu_b38d1718c51d73ec.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005130848_hu_add901bd3022947b.png 480w, http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005130848_hu_b38d1718c51d73ec.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -945,10 +945,10 @@ Nous pouvons voir quel utilisateur à des tâches cron au chemin suivant : &lt;c
 &lt;h3 id=&#34;services&#34;&gt;Services
 &lt;/h3&gt;&lt;p&gt;C&amp;rsquo;est une autre méthode qui permet d&amp;rsquo;assurer la persistance, tout comme la cron task ci dessus, les services vont nous permettent. La tâche s&amp;rsquo;exécutera en arrière plan et à chaque démarrage de la machine.&lt;/p&gt;
 &lt;p&gt;Pour analyser un service qui nous paraît suspect nous pouvons nous rendre dans &lt;code&gt;/etc/systemd/system/&amp;lt;service qui nous paraît suspect&amp;gt;&lt;/code&gt;.
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005140053.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005140053.png&#34;
 	width=&#34;2464&#34;
 	height=&#34;690&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005140053_hu_f4df8766ef18849e.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005140053_hu_a59ec42070265fea.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005140053_hu_f4df8766ef18849e.png 480w, http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005140053_hu_a59ec42070265fea.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -958,10 +958,10 @@ Nous pouvons voir quel utilisateur à des tâches cron au chemin suivant : &lt;c
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;Ici le service benign.service est suspect :
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005140200.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005140200.png&#34;
 	width=&#34;1036&#34;
 	height=&#34;476&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005140200_hu_8001c7e29c10de0a.png 480w, https://forensic.enzoribeiro.fr/p/linux-surface-dincident/Pasted%20image%2020251005140200_hu_738848432e0d0a75.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005140200_hu_8001c7e29c10de0a.png 480w, http://localhost:1313/p/linux-surface-dincident/Pasted%20image%2020251005140200_hu_738848432e0d0a75.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1144,10 +1144,10 @@ pas d&amp;rsquo;utilisateur, pas de groupe, lancement dans le /tmp tout paraît 
         </item>
         <item>
         <title>Linux - Imagerie Forensic</title>
-        <link>https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/</link>
+        <link>http://localhost:1313/p/linux-imagerie-forensic/</link>
         <pubDate>Mon, 08 Dec 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/</guid>
+        <guid>http://localhost:1313/p/linux-imagerie-forensic/</guid>
         <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
 &lt;/h2&gt;&lt;p&gt;Chaque OS a une structure et une configuration propre à eux, ils nécessite donc d&amp;rsquo;avoir plusieurs technique d&amp;rsquo;&lt;code&gt;Imaging&lt;/code&gt;. Ici nous verrons comment faire une capture d&amp;rsquo;image d&amp;rsquo;un système Linux.&lt;/p&gt;
 &lt;h3 id=&#34;résumé-des-commandes-et-variables-denvironnement-&#34;&gt;Résumé des commandes et variables d&amp;rsquo;environnement :
@@ -1195,10 +1195,10 @@ Ajoute un horodatage (AAAA-MM-JJ HH:MM) devant chaque commande sauvegardée dans
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;df
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001094606.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001094606.png&#34;
 	width=&#34;772&#34;
 	height=&#34;420&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001094606_hu_fdfdd57a8d671406.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001094606_hu_4621f17953c3a64b.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001094606_hu_fdfdd57a8d671406.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001094606_hu_4621f17953c3a64b.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1208,10 +1208,10 @@ Ajoute un horodatage (AAAA-MM-JJ HH:MM) devant chaque commande sauvegardée dans
 	
 &gt;
 Les disque physique sont identifié grave au &lt;code&gt;/dev&lt;/code&gt;. Le disque pour booté l&amp;rsquo;OS sur cette machine est &lt;code&gt;/dev/root&lt;/code&gt;. Ici le disque que nous allons monté n&amp;rsquo;est pas répertorié car c&amp;rsquo;est un disque virtuel attaché à une interface &lt;code&gt;loop&lt;/code&gt;. Nous pourrons voir notre disque virtuel avec &lt;code&gt;lsblk -a&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001095509.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001095509.png&#34;
 	width=&#34;628&#34;
 	height=&#34;346&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001095509_hu_950ddedb8acce456.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001095509_hu_b6187f08826c7cb5.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001095509_hu_950ddedb8acce456.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001095509_hu_b6187f08826c7cb5.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1222,10 +1222,10 @@ Les disque physique sont identifié grave au &lt;code&gt;/dev&lt;/code&gt;. Le d
 &gt;
 (IMPORTANT: il est nécessaire de voir la taille du disque que nous allons &amp;ldquo;cloner&amp;rdquo; car il faut avoir la place nécessaire à ce clonnage sur notre machine)&lt;/p&gt;
 &lt;p&gt;On peut avoir plus d&amp;rsquo;info sur le disque avec la commande &lt;code&gt;sudo losetup -l /dev/loop11&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100002.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001100002.png&#34;
 	width=&#34;805&#34;
 	height=&#34;60&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100002_hu_d014d11c451f3037.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100002_hu_8f8c0855caa3d8ac.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001100002_hu_d014d11c451f3037.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001100002_hu_8f8c0855caa3d8ac.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1235,10 +1235,10 @@ Les disque physique sont identifié grave au &lt;code&gt;/dev&lt;/code&gt;. Le d
 	
 &gt;
 Ou encore plus d&amp;rsquo;info comme l&amp;rsquo;UUID avec &lt;code&gt;sudo blkid /dev/loop11&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100113.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001100113.png&#34;
 	width=&#34;698&#34;
 	height=&#34;41&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100113_hu_cbc1dce0371e829.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100113_hu_5e583b5cd968db2e.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001100113_hu_cbc1dce0371e829.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001100113_hu_5e583b5cd968db2e.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1308,10 +1308,10 @@ Ensemble d’outils pour créer/manipuler des images au format Expert Witness Fo
 &lt;li&gt;of : fichier de sortie&lt;/li&gt;
 &lt;li&gt;log : enregistre les sorties dans ce fichier&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101509.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001101509.png&#34;
 	width=&#34;892&#34;
 	height=&#34;325&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101509_hu_3c8b5539121daa29.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101509_hu_3dcd8ef28dbd7c20.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001101509_hu_3c8b5539121daa29.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001101509_hu_3dcd8ef28dbd7c20.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1329,10 +1329,10 @@ Ensemble d’outils pour créer/manipuler des images au format Expert Witness Fo
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ls -alh example1.img 
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101729.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001101729.png&#34;
 	width=&#34;541&#34;
 	height=&#34;45&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101729_hu_fe0905e6fb1aa66c.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101729_hu_afdcdf4aa6287948.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001101729_hu_fe0905e6fb1aa66c.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001101729_hu_afdcdf4aa6287948.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1345,10 +1345,10 @@ Nous pouvons voir que l&amp;rsquo;image fait la même taille que &lt;code&gt;/de
 &lt;h2 id=&#34;contrôle-de-lintégrité&#34;&gt;Contrôle de l&amp;rsquo;intégrité
 &lt;/h2&gt;&lt;p&gt;Nous allons comparer le hash md5 pour vérifier l&amp;rsquo;intégrité du fichier.
 pour l&amp;rsquo;image que nous venons de faire : &lt;code&gt;sudo md5sum example1.img&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102328.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001102328.png&#34;
 	width=&#34;471&#34;
 	height=&#34;39&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102328_hu_b04d75682724aa3f.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102328_hu_8c44ba2ce44b978b.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001102328_hu_b04d75682724aa3f.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001102328_hu_8c44ba2ce44b978b.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1358,10 +1358,10 @@ pour l&amp;rsquo;image que nous venons de faire : &lt;code&gt;sudo md5sum exampl
 	
 &gt;
 pour le disque que nous avons &amp;ldquo;cloné&amp;rdquo; : &lt;code&gt;sudo md5sum /dev/loop11&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102341.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001102341.png&#34;
 	width=&#34;464&#34;
 	height=&#34;42&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102341_hu_30f57028e61eb937.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102341_hu_7b3eb311c8e359b5.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001102341_hu_30f57028e61eb937.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001102341_hu_7b3eb311c8e359b5.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1392,10 +1392,10 @@ Snapshot du &lt;strong&gt;système de fichiers et de la configuration d’un con
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Pour continuer l&amp;rsquo;exercice nous allons monté notre image &lt;code&gt;example1.img&lt;/code&gt; avec la commande &lt;code&gt;mount&lt;/code&gt;, pour commencer le montage de cette image nous allons créer un point de montage dans &lt;code&gt;/mnt/&lt;/code&gt; avec la commande &lt;code&gt;sudo mkdir -p /mnt/example1&lt;/code&gt;.
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103436.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001103436.png&#34;
 	width=&#34;495&#34;
 	height=&#34;59&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103436_hu_7aad579b8f06dc53.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103436_hu_7c487a88649bbe78.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001103436_hu_7aad579b8f06dc53.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001103436_hu_7c487a88649bbe78.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1406,10 +1406,10 @@ Snapshot du &lt;strong&gt;système de fichiers et de la configuration d’un con
 &gt;&lt;/p&gt;
 &lt;p&gt;Nous pouvons passer au montage :
 &lt;code&gt;sudo mount -o loop example1.img /mnt/example1&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103610.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001103610.png&#34;
 	width=&#34;769&#34;
 	height=&#34;459&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103610_hu_da6266aad7a32df3.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103610_hu_e17ff3da10be1de2.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001103610_hu_da6266aad7a32df3.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001103610_hu_e17ff3da10be1de2.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -1526,10 +1526,10 @@ Nous avons monté example1.&lt;/p&gt;
         </item>
         <item>
         <title>Linux - Analyse de Processus</title>
-        <link>https://forensic.enzoribeiro.fr/p/linux-analyse-de-processus/</link>
+        <link>http://localhost:1313/p/linux-analyse-de-processus/</link>
         <pubDate>Sun, 07 Dec 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://forensic.enzoribeiro.fr/p/linux-analyse-de-processus/</guid>
+        <guid>http://localhost:1313/p/linux-analyse-de-processus/</guid>
         <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
 &lt;/h2&gt;&lt;p&gt;Dans une analyse à chaud (directement sur le système), il est important d&amp;rsquo;avoir les repertoires suivants &amp;ldquo;propre&amp;rdquo;, pour être sur que les binaires ne soit pas compromis, et fournir de vraie preuve.&lt;/p&gt;
 &lt;ul&gt;
@@ -1564,10 +1564,10 @@ Où :&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;CMD&lt;/code&gt; : Commande associé au processus&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Il est également possible d&amp;rsquo;associé un utilisateur à la commande ps (pour voir quel processus est relié à quel utilisateur) :
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-analyse-de-processus/Pasted%20image%2020251006130454.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-analyse-de-processus/Pasted%20image%2020251006130454.png&#34;
 	width=&#34;868&#34;
 	height=&#34;352&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-analyse-de-processus/Pasted%20image%2020251006130454_hu_2bd16f8d9f66d8e3.png 480w, https://forensic.enzoribeiro.fr/p/linux-analyse-de-processus/Pasted%20image%2020251006130454_hu_3e89a2cc6d0257d7.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-analyse-de-processus/Pasted%20image%2020251006130454_hu_2bd16f8d9f66d8e3.png 480w, http://localhost:1313/p/linux-analyse-de-processus/Pasted%20image%2020251006130454_hu_3e89a2cc6d0257d7.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;ps -u investigator&#34;

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Acquisition on KIRÔN</title>
-        <link>https://forensic.enzoribeiro.fr/tags/acquisition/</link>
+        <link>http://localhost:1313/tags/acquisition/</link>
         <description>Recent content in Acquisition on KIRÔN</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>fr</language>
         <copyright>Enzo Ribeiro</copyright>
-        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://forensic.enzoribeiro.fr/tags/acquisition/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/acquisition/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Mobile - Acquisition</title>
-        <link>https://forensic.enzoribeiro.fr/p/mobile-acquisition/</link>
+        <link>http://localhost:1313/p/mobile-acquisition/</link>
         <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://forensic.enzoribeiro.fr/p/mobile-acquisition/</guid>
+        <guid>http://localhost:1313/p/mobile-acquisition/</guid>
         <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
 &lt;/h2&gt;&lt;p&gt;Pourquoi les appareils mobiles sont des mines d&amp;rsquo;or de données ? Car il contiennent une large gamme de donnée :&lt;/p&gt;
 &lt;ul&gt;

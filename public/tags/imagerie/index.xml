@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Imagerie on KIRÔN</title>
-        <link>https://forensic.enzoribeiro.fr/tags/imagerie/</link>
+        <link>http://localhost:1313/tags/imagerie/</link>
         <description>Recent content in Imagerie on KIRÔN</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>fr</language>
         <copyright>Enzo Ribeiro</copyright>
-        <lastBuildDate>Mon, 08 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://forensic.enzoribeiro.fr/tags/imagerie/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 08 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/imagerie/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Linux - Imagerie Forensic</title>
-        <link>https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/</link>
+        <link>http://localhost:1313/p/linux-imagerie-forensic/</link>
         <pubDate>Mon, 08 Dec 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/</guid>
+        <guid>http://localhost:1313/p/linux-imagerie-forensic/</guid>
         <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
 &lt;/h2&gt;&lt;p&gt;Chaque OS a une structure et une configuration propre à eux, ils nécessite donc d&amp;rsquo;avoir plusieurs technique d&amp;rsquo;&lt;code&gt;Imaging&lt;/code&gt;. Ici nous verrons comment faire une capture d&amp;rsquo;image d&amp;rsquo;un système Linux.&lt;/p&gt;
 &lt;h3 id=&#34;résumé-des-commandes-et-variables-denvironnement-&#34;&gt;Résumé des commandes et variables d&amp;rsquo;environnement :
@@ -60,10 +60,10 @@ Ajoute un horodatage (AAAA-MM-JJ HH:MM) devant chaque commande sauvegardée dans
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;df
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001094606.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001094606.png&#34;
 	width=&#34;772&#34;
 	height=&#34;420&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001094606_hu_fdfdd57a8d671406.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001094606_hu_4621f17953c3a64b.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001094606_hu_fdfdd57a8d671406.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001094606_hu_4621f17953c3a64b.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -73,10 +73,10 @@ Ajoute un horodatage (AAAA-MM-JJ HH:MM) devant chaque commande sauvegardée dans
 	
 &gt;
 Les disque physique sont identifié grave au &lt;code&gt;/dev&lt;/code&gt;. Le disque pour booté l&amp;rsquo;OS sur cette machine est &lt;code&gt;/dev/root&lt;/code&gt;. Ici le disque que nous allons monté n&amp;rsquo;est pas répertorié car c&amp;rsquo;est un disque virtuel attaché à une interface &lt;code&gt;loop&lt;/code&gt;. Nous pourrons voir notre disque virtuel avec &lt;code&gt;lsblk -a&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001095509.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001095509.png&#34;
 	width=&#34;628&#34;
 	height=&#34;346&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001095509_hu_950ddedb8acce456.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001095509_hu_b6187f08826c7cb5.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001095509_hu_950ddedb8acce456.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001095509_hu_b6187f08826c7cb5.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -87,10 +87,10 @@ Les disque physique sont identifié grave au &lt;code&gt;/dev&lt;/code&gt;. Le d
 &gt;
 (IMPORTANT: il est nécessaire de voir la taille du disque que nous allons &amp;ldquo;cloner&amp;rdquo; car il faut avoir la place nécessaire à ce clonnage sur notre machine)&lt;/p&gt;
 &lt;p&gt;On peut avoir plus d&amp;rsquo;info sur le disque avec la commande &lt;code&gt;sudo losetup -l /dev/loop11&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100002.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001100002.png&#34;
 	width=&#34;805&#34;
 	height=&#34;60&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100002_hu_d014d11c451f3037.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100002_hu_8f8c0855caa3d8ac.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001100002_hu_d014d11c451f3037.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001100002_hu_8f8c0855caa3d8ac.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -100,10 +100,10 @@ Les disque physique sont identifié grave au &lt;code&gt;/dev&lt;/code&gt;. Le d
 	
 &gt;
 Ou encore plus d&amp;rsquo;info comme l&amp;rsquo;UUID avec &lt;code&gt;sudo blkid /dev/loop11&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100113.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001100113.png&#34;
 	width=&#34;698&#34;
 	height=&#34;41&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100113_hu_cbc1dce0371e829.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001100113_hu_5e583b5cd968db2e.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001100113_hu_cbc1dce0371e829.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001100113_hu_5e583b5cd968db2e.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -173,10 +173,10 @@ Ensemble d’outils pour créer/manipuler des images au format Expert Witness Fo
 &lt;li&gt;of : fichier de sortie&lt;/li&gt;
 &lt;li&gt;log : enregistre les sorties dans ce fichier&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101509.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001101509.png&#34;
 	width=&#34;892&#34;
 	height=&#34;325&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101509_hu_3c8b5539121daa29.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101509_hu_3dcd8ef28dbd7c20.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001101509_hu_3c8b5539121daa29.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001101509_hu_3dcd8ef28dbd7c20.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -194,10 +194,10 @@ Ensemble d’outils pour créer/manipuler des images au format Expert Witness Fo
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ls -alh example1.img 
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101729.png&#34;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001101729.png&#34;
 	width=&#34;541&#34;
 	height=&#34;45&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101729_hu_fe0905e6fb1aa66c.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001101729_hu_afdcdf4aa6287948.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001101729_hu_fe0905e6fb1aa66c.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001101729_hu_afdcdf4aa6287948.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -210,10 +210,10 @@ Nous pouvons voir que l&amp;rsquo;image fait la même taille que &lt;code&gt;/de
 &lt;h2 id=&#34;contrôle-de-lintégrité&#34;&gt;Contrôle de l&amp;rsquo;intégrité
 &lt;/h2&gt;&lt;p&gt;Nous allons comparer le hash md5 pour vérifier l&amp;rsquo;intégrité du fichier.
 pour l&amp;rsquo;image que nous venons de faire : &lt;code&gt;sudo md5sum example1.img&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102328.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001102328.png&#34;
 	width=&#34;471&#34;
 	height=&#34;39&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102328_hu_b04d75682724aa3f.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102328_hu_8c44ba2ce44b978b.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001102328_hu_b04d75682724aa3f.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001102328_hu_8c44ba2ce44b978b.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -223,10 +223,10 @@ pour l&amp;rsquo;image que nous venons de faire : &lt;code&gt;sudo md5sum exampl
 	
 &gt;
 pour le disque que nous avons &amp;ldquo;cloné&amp;rdquo; : &lt;code&gt;sudo md5sum /dev/loop11&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102341.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001102341.png&#34;
 	width=&#34;464&#34;
 	height=&#34;42&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102341_hu_30f57028e61eb937.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001102341_hu_7b3eb311c8e359b5.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001102341_hu_30f57028e61eb937.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001102341_hu_7b3eb311c8e359b5.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -257,10 +257,10 @@ Snapshot du &lt;strong&gt;système de fichiers et de la configuration d’un con
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Pour continuer l&amp;rsquo;exercice nous allons monté notre image &lt;code&gt;example1.img&lt;/code&gt; avec la commande &lt;code&gt;mount&lt;/code&gt;, pour commencer le montage de cette image nous allons créer un point de montage dans &lt;code&gt;/mnt/&lt;/code&gt; avec la commande &lt;code&gt;sudo mkdir -p /mnt/example1&lt;/code&gt;.
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103436.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001103436.png&#34;
 	width=&#34;495&#34;
 	height=&#34;59&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103436_hu_7aad579b8f06dc53.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103436_hu_7c487a88649bbe78.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001103436_hu_7aad579b8f06dc53.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001103436_hu_7c487a88649bbe78.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -271,10 +271,10 @@ Snapshot du &lt;strong&gt;système de fichiers et de la configuration d’un con
 &gt;&lt;/p&gt;
 &lt;p&gt;Nous pouvons passer au montage :
 &lt;code&gt;sudo mount -o loop example1.img /mnt/example1&lt;/code&gt;
-&lt;img src=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103610.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001103610.png&#34;
 	width=&#34;769&#34;
 	height=&#34;459&#34;
-	srcset=&#34;https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103610_hu_da6266aad7a32df3.png 480w, https://forensic.enzoribeiro.fr/p/linux-imagerie-forensic/Pasted%20image%2020251001103610_hu_e17ff3da10be1de2.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001103610_hu_da6266aad7a32df3.png 480w, http://localhost:1313/p/linux-imagerie-forensic/Pasted%20image%2020251001103610_hu_e17ff3da10be1de2.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	

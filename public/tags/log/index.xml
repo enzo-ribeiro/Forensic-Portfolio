@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Log on KIRÔN</title>
-        <link>https://forensic.enzoribeiro.fr/tags/log/</link>
+        <link>http://localhost:1313/tags/log/</link>
         <description>Recent content in Log on KIRÔN</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>fr</language>
         <copyright>Enzo Ribeiro</copyright>
-        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://forensic.enzoribeiro.fr/tags/log/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 09 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/log/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Linux - Investigation des Logs</title>
-        <link>https://forensic.enzoribeiro.fr/p/linux-investigation-des-logs/</link>
+        <link>http://localhost:1313/p/linux-investigation-des-logs/</link>
         <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://forensic.enzoribeiro.fr/p/linux-investigation-des-logs/</guid>
+        <guid>http://localhost:1313/p/linux-investigation-des-logs/</guid>
         <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
 &lt;/h2&gt;&lt;p&gt;Dans le monde Linux comprendre les logs revient à comprendre comment le système fonctionne. Les logs nous permettent de remonter les historiques d&amp;rsquo;activités, les erreurs et les événements système.&lt;/p&gt;
 &lt;h3 id=&#34;les-types-de-logs&#34;&gt;Les types de logs
