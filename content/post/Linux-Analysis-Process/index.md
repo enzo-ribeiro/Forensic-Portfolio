@@ -3,7 +3,7 @@ author = "Enzo"
 title = "Linux - Analyse de Processus"
 date = "2025-12-07"
 categories = [
-    "Linux"
+    "Blue Team"
 ]
 tags = [
     "Linux",

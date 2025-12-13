@@ -58,6 +58,8 @@
                     
                     
                         
+                        <img src="/img/enzo-anime_hu_6e79a1c3b52c56b8.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
                 </a>
@@ -255,6 +257,23 @@
         </li>
       </ol>
     </li>
+    <li><a href="#informations-importante">Informations Importante</a>
+      <ol>
+        <li><a href="#version-de-los">Version de l&rsquo;OS</a></li>
+        <li><a href="#numéro-de-série">Numéro de série</a></li>
+        <li><a href="#fuseau-horaire">Fuseau horaire</a></li>
+        <li><a href="#démarrage-et-redémarrage">Démarrage et redémarrage</a></li>
+        <li><a href="#interface-réseau">Interface réseau</a></li>
+        <li><a href="#dhcp">DHCP</a></li>
+        <li><a href="#wifi">WiFi</a></li>
+        <li><a href="#comptes-utilisateurs">Comptes utilisateurs</a></li>
+        <li><a href="#connexion-et-déconnexion">Connexion et déconnexion</a></li>
+        <li><a href="#volume-monté">Volume monté</a></li>
+        <li><a href="#appareil-apple">Appareil Apple</a></li>
+        <li><a href="#connexion-bluetooth">Connexion Bluetooth</a></li>
+        <li><a href="#imprimantes-connecté">Imprimantes connecté</a></li>
+      </ol>
+    </li>
   </ol>
 </nav>
         </div>
@@ -273,8 +292,8 @@
     
     <header class="article-category">
         
-            <a href="/categories/macos/" >
-                MacOS
+            <a href="/categories/blue-team/" >
+                Blue Team
             </a>
         
     </header>
@@ -319,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    1 minute de lecture
+                    3 minutes de lecture
                 </time>
             </div>
         
@@ -372,6 +391,97 @@ Voici un outil supplémentaire pour ouvrir ce type de fichier (dispo sur Mac OS)
 <h5 id="logs">Logs
 </h5><h6 id="apple-system-logs-asl">Apple System Logs (ASL)
 </h6><p>Logs système Apple se trouve à l&rsquo;emplacement <code>/private/var/log/asl/</code>. Nous pourrons y retrouver les fichiers de logs utmp, wtmp et les détails de connexion. Voici une commande qui nous ouvrira les fichiers de log ASL : <code>open -a Console /private/var/log/asl/&lt;log&gt;.asl</code>.</p>
+<h2 id="informations-importante">Informations Importante
+</h2><h3 id="version-de-los">Version de l&rsquo;OS
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">cat /System/Library/CoreServices/SystemVersion.plist
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">&lt;key&gt;ProductUserVisibleVersion&lt;/key&gt;
+</span></span><span class="line"><span class="cl">&lt;string&gt;15.3.1&lt;/string&gt;
+</span></span><span class="line"><span class="cl">&lt;key&gt;ProductVersion&lt;/key&gt;
+</span></span><span class="line"><span class="cl">&lt;string&gt;15.3.1&lt;/string&gt;
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="numéro-de-série">Numéro de série
+</h3><p>Le numéro de série est situé dans : <code>/private/var/folders/*/&lt;DARWIN_USER_DIR/C/locationd/consolidated.db</code>. c&rsquo;est une BDD, donc à ouvrir avec DB Browser for SQLite (ou autre DB Reader).</p>
+<h3 id="fuseau-horaire">Fuseau horaire
+</h3><p>Pour connaître le fuseau horaire d&rsquo;un mac il faut taper la commande :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">ls -la /etc/localtime 
+</span></span><span class="line"><span class="cl">lrwxr-xr-x   <span class="m">1</span> root   wheel   <span class="m">36</span> Feb <span class="m">12</span> 22:07 /etc/localtime -&gt; /var/db/timezone/zoneinfo/Asia/Dubai
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ici nous pouvons voir que le fuseau est celui de Dubaï. Mais une autre information est intéressante, la date et l&rsquo;heure, elle correspond au dernier changement de fuseau.</p>
+<h3 id="démarrage-et-redémarrage">Démarrage et redémarrage
+</h3><p>Dans le fichier <code>/private/var/log/system.log</code> nous pouvons voir ces données, je conseil de faire un <code>zgrep</code> pour éviter de les chercher :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">zgrep SHUTDOWN_TIME /private/var/log/system.log.* 
+</span></span><span class="line"><span class="cl">Jan <span class="m">04</span> 03:07:18 MacBook-Pro reboot<span class="o">[</span>27104<span class="o">]</span>: SHUTDOWN_TIME: <span class="m">1739383459</span> <span class="m">133812</span>
+</span></span><span class="line"><span class="cl">zgrep BOOT_TIME /private/var/log/system.log.* 
+</span></span><span class="line"><span class="cl">Feb <span class="m">15</span> 20:24:35 MacBook-Pro bootlog<span class="o">[</span>0<span class="o">]</span>: BOOT_TIME <span class="m">1739383559</span> <span class="m">185882</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="interface-réseau">Interface réseau
+</h3><p>Les informations importante sur les interface réseau se trouve dans le fichier <code>/Library/Preferences/SystemConfiguration/NetworkInterfaces.plist</code>, nous pouvons l&rsquo;ouvrir avec un simple <code>cat</code>.</p>
+<h3 id="dhcp">DHCP
+</h3><p>Pour les paramètres DHCP (principalement les baux) nous pouvons les trouver dans <code>/private/var/db/dhcpclient/leases/en0.plist</code></p>
+<h3 id="wifi">WiFi
+</h3><p>Les informations sur le Wi-Fi se trouve dans le fichier <code>/Library/Preferences/com.apple.wifi.known-networks.plist</code>.</p>
+<h3 id="comptes-utilisateurs">Comptes utilisateurs
+</h3><p>Dans le fichier <code>/private/var/db/dslocal/nodes/Default/users/&lt;user&gt;.plist</code> nous pouvons récupérer : l&rsquo;heure de création du compte, l&rsquo;heure des connexion échoué, les réinitialisation du mot de passe et le nombre de connexion échoué. Pour avoir les historique de connexion des utilisateurs dans le fichier <code>/Library/Preferences/com.apple.loginwindow.plist</code>.</p>
+<h3 id="connexion-et-déconnexion">Connexion et déconnexion
+</h3><p>Toujours dans les fichiers de logs et toujours avec un <code>zgrep</code> :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">zgrep login system.log*
+</span></span><span class="line"><span class="cl">OU 
+</span></span><span class="line"><span class="cl">zgrep DEAD_PROCESS system.log*
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="volume-monté">Volume monté
+</h3><p>Les volume qui ont été monté se trouve dans <code>/Users/&lt;user&gt;/Library/Preferences/com.apple.finder.plist</code> nous pouvons les lire avec :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">plutil -p com.apple.finder.plist
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="appareil-apple">Appareil Apple
+</h3><p>Toujours dans <code>/Users/&lt;user&gt;/Library/Preferences/</code> mais dans le fichier <code>com.apple.iPod.plist</code>. Nous pouvons ouvrir ce fichier avec la même commande.</p>
+<h3 id="connexion-bluetooth">Connexion Bluetooth
+</h3><p>Les appareils connecté en bluetooth se trouve dans <code>/Bluetooth/isConnected</code> c&rsquo;est une BDD, le fichier s&rsquo;ouvre donc avec <code>SQL Browser for SQLite</code>.</p>
+<h3 id="imprimantes-connecté">Imprimantes connecté
+</h3><p>Ce fichier se trouve dans <code>/Users/&lt;user&gt;/Library/Preferences/org.cups.PrintingPrefs.plist</code> à ouvrir avec <code>plutil -p</code>.</p>
 
 </section>
 
@@ -387,18 +497,6 @@ Voici un outil supplémentaire pour ouvrir ce type de fichier (dispo sur Mac OS)
     </section>
 
 
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
     </footer>
 
 
@@ -422,6 +520,58 @@ Voici un outil supplémentaire pour ouvrir ce type de fichier (dispo sur Mac OS)
 
         <div class="article-details">
             <h2 class="article-title">MacOS - Les Bases</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-investigation-des-logs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Investigation des Logs</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-surface-dincident/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Surface d&#39;Incident</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mobile-acquisition/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Mobile - Acquisition</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mobile-analyse-android/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Mobile - Analyse Android</h2>
         </div>
     </a>
 </article>

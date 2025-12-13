@@ -3,7 +3,7 @@ author = "Enzo"
 title = "Linux - Imagerie Forensic"
 date = "2025-12-08"
 categories = [
-    "Linux"
+    "Blue Team"
 ]
 tags = [
     "Linux",
@@ -55,20 +55,6 @@ On peut avoir plus d'info sur le disque avec la commande ``sudo losetup -l /dev/
 Ou encore plus d'info comme l'UUID avec ``sudo blkid /dev/loop11``
 
 ![](Pasted-image-20251001100113.png)
-
-### Question THM
-
-```
-Q : What command can be used to list all block devices in Linux OS?
-
-A : lsblk
-```
-
-```
-Q : Which bash command displays all commands executed in a session?
-
-A : history
-```
 
 ## Création de l'image
 Dans cet exercice nous allons utiliser l'outil ``dc3dd``, une amélioration de la commande ``dd``. 

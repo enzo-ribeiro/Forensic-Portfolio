@@ -3,7 +3,7 @@ author = "Enzo"
 title = "MacOS - Les Bases"
 date = "2025-12-10"
 categories = [
-    "MacOS"
+    "Blue Team"
 ]
 tags = [
     "MacOS",

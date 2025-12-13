@@ -3,7 +3,7 @@ author = "Enzo"
 title = "Mobile - Acquisition"
 date = "2025-12-09"
 categories = [
-    "Mobile"
+    "Blue Team"
 ]
 tags = [
     "Mobile",

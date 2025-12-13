@@ -3,7 +3,7 @@ author = "Enzo"
 title = "Linux - Surface d'Incident"
 date = "2025-12-09"
 categories = [
-    "Linux"
+    "Blue Team"
 ]
 tags = [
     "Linux",

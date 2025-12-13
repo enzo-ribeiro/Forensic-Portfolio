@@ -8,6 +8,143 @@
         <language>fr</language>
         <copyright>Enzo Ribeiro</copyright>
         <lastBuildDate>Wed, 10 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/macos/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>MacOS - Artefects</title>
+        <link>http://localhost:1313/p/macos-artefects/</link>
+        <pubDate>Wed, 10 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/macos-artefects/</guid>
+        <description>&lt;h2 id=&#34;rappel-des-fichiers&#34;&gt;Rappel des fichiers
+&lt;/h2&gt;&lt;h5 id=&#34;plist&#34;&gt;.plist
+&lt;/h5&gt;&lt;p&gt;Dans le cours où nous voyons les bases de la forensic sous Mac OS nous avons parler des fichiers &lt;code&gt;.plist&lt;/code&gt;, et plus particulièrement des fichiers BLOB.
+Voici un outil supplémentaire pour ouvrir ce type de fichier (dispo sur Mac OS) :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plutil -p APMExperimentSuiteName.plist 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;s2&#34;&gt;&amp;#34;APMExperimentFetchSuccessTimestamp&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&amp;gt; 1728475253.533066
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Voici un outil disponible sur Linux :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plistutil -p APMExperimentSuiteName.plist 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;s2&#34;&gt;&amp;#34;APMExperimentFetchSuccessTimestamp&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&amp;gt; 1728475253.533066
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h5 id=&#34;bdd&#34;&gt;BDD
+&lt;/h5&gt;&lt;p&gt;Pour naviguer dans les fichiers de base de données nous pouvons utiliser &lt;code&gt;DB Browser for SQLite&lt;/code&gt;. Nous pouvons également les extraire et créer des chronologie avec &lt;code&gt;apollo&lt;/code&gt; création de mac4n6 voici le lien du repo &lt;code&gt;https://github.com/mac4n6/APOLLO&lt;/code&gt;.&lt;/p&gt;
+&lt;h5 id=&#34;logs&#34;&gt;Logs
+&lt;/h5&gt;&lt;h6 id=&#34;apple-system-logs-asl&#34;&gt;Apple System Logs (ASL)
+&lt;/h6&gt;&lt;p&gt;Logs système Apple se trouve à l&amp;rsquo;emplacement &lt;code&gt;/private/var/log/asl/&lt;/code&gt;. Nous pourrons y retrouver les fichiers de logs utmp, wtmp et les détails de connexion. Voici une commande qui nous ouvrira les fichiers de log ASL : &lt;code&gt;open -a Console /private/var/log/asl/&amp;lt;log&amp;gt;.asl&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;informations-importante&#34;&gt;Informations Importante
+&lt;/h2&gt;&lt;h3 id=&#34;version-de-los&#34;&gt;Version de l&amp;rsquo;OS
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat /System/Library/CoreServices/SystemVersion.plist
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;key&amp;gt;ProductUserVisibleVersion&amp;lt;/key&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;string&amp;gt;15.3.1&amp;lt;/string&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;key&amp;gt;ProductVersion&amp;lt;/key&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;string&amp;gt;15.3.1&amp;lt;/string&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;numéro-de-série&#34;&gt;Numéro de série
+&lt;/h3&gt;&lt;p&gt;Le numéro de série est situé dans : &lt;code&gt;/private/var/folders/*/&amp;lt;DARWIN_USER_DIR/C/locationd/consolidated.db&lt;/code&gt;. c&amp;rsquo;est une BDD, donc à ouvrir avec DB Browser for SQLite (ou autre DB Reader).&lt;/p&gt;
+&lt;h3 id=&#34;fuseau-horaire&#34;&gt;Fuseau horaire
+&lt;/h3&gt;&lt;p&gt;Pour connaître le fuseau horaire d&amp;rsquo;un mac il faut taper la commande :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ls -la /etc/localtime 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lrwxr-xr-x   &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; root   wheel   &lt;span class=&#34;m&#34;&gt;36&lt;/span&gt; Feb &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt; 22:07 /etc/localtime -&amp;gt; /var/db/timezone/zoneinfo/Asia/Dubai
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Ici nous pouvons voir que le fuseau est celui de Dubaï. Mais une autre information est intéressante, la date et l&amp;rsquo;heure, elle correspond au dernier changement de fuseau.&lt;/p&gt;
+&lt;h3 id=&#34;démarrage-et-redémarrage&#34;&gt;Démarrage et redémarrage
+&lt;/h3&gt;&lt;p&gt;Dans le fichier &lt;code&gt;/private/var/log/system.log&lt;/code&gt; nous pouvons voir ces données, je conseil de faire un &lt;code&gt;zgrep&lt;/code&gt; pour éviter de les chercher :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;zgrep SHUTDOWN_TIME /private/var/log/system.log.* 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Jan &lt;span class=&#34;m&#34;&gt;04&lt;/span&gt; 03:07:18 MacBook-Pro reboot&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;27104&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: SHUTDOWN_TIME: &lt;span class=&#34;m&#34;&gt;1739383459&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;133812&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;zgrep BOOT_TIME /private/var/log/system.log.* 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Feb &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt; 20:24:35 MacBook-Pro bootlog&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;0&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: BOOT_TIME &lt;span class=&#34;m&#34;&gt;1739383559&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;185882&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;interface-réseau&#34;&gt;Interface réseau
+&lt;/h3&gt;&lt;p&gt;Les informations importante sur les interface réseau se trouve dans le fichier &lt;code&gt;/Library/Preferences/SystemConfiguration/NetworkInterfaces.plist&lt;/code&gt;, nous pouvons l&amp;rsquo;ouvrir avec un simple &lt;code&gt;cat&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;dhcp&#34;&gt;DHCP
+&lt;/h3&gt;&lt;p&gt;Pour les paramètres DHCP (principalement les baux) nous pouvons les trouver dans &lt;code&gt;/private/var/db/dhcpclient/leases/en0.plist&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;wifi&#34;&gt;WiFi
+&lt;/h3&gt;&lt;p&gt;Les informations sur le Wi-Fi se trouve dans le fichier &lt;code&gt;/Library/Preferences/com.apple.wifi.known-networks.plist&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;comptes-utilisateurs&#34;&gt;Comptes utilisateurs
+&lt;/h3&gt;&lt;p&gt;Dans le fichier &lt;code&gt;/private/var/db/dslocal/nodes/Default/users/&amp;lt;user&amp;gt;.plist&lt;/code&gt; nous pouvons récupérer : l&amp;rsquo;heure de création du compte, l&amp;rsquo;heure des connexion échoué, les réinitialisation du mot de passe et le nombre de connexion échoué. Pour avoir les historique de connexion des utilisateurs dans le fichier &lt;code&gt;/Library/Preferences/com.apple.loginwindow.plist&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;connexion-et-déconnexion&#34;&gt;Connexion et déconnexion
+&lt;/h3&gt;&lt;p&gt;Toujours dans les fichiers de logs et toujours avec un &lt;code&gt;zgrep&lt;/code&gt; :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;zgrep login system.log*
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;OU 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;zgrep DEAD_PROCESS system.log*
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;volume-monté&#34;&gt;Volume monté
+&lt;/h3&gt;&lt;p&gt;Les volume qui ont été monté se trouve dans &lt;code&gt;/Users/&amp;lt;user&amp;gt;/Library/Preferences/com.apple.finder.plist&lt;/code&gt; nous pouvons les lire avec :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;plutil -p com.apple.finder.plist
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;appareil-apple&#34;&gt;Appareil Apple
+&lt;/h3&gt;&lt;p&gt;Toujours dans &lt;code&gt;/Users/&amp;lt;user&amp;gt;/Library/Preferences/&lt;/code&gt; mais dans le fichier &lt;code&gt;com.apple.iPod.plist&lt;/code&gt;. Nous pouvons ouvrir ce fichier avec la même commande.&lt;/p&gt;
+&lt;h3 id=&#34;connexion-bluetooth&#34;&gt;Connexion Bluetooth
+&lt;/h3&gt;&lt;p&gt;Les appareils connecté en bluetooth se trouve dans &lt;code&gt;/Bluetooth/isConnected&lt;/code&gt; c&amp;rsquo;est une BDD, le fichier s&amp;rsquo;ouvre donc avec &lt;code&gt;SQL Browser for SQLite&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;imprimantes-connecté&#34;&gt;Imprimantes connecté
+&lt;/h3&gt;&lt;p&gt;Ce fichier se trouve dans &lt;code&gt;/Users/&amp;lt;user&amp;gt;/Library/Preferences/org.cups.PrintingPrefs.plist&lt;/code&gt; à ouvrir avec &lt;code&gt;plutil -p&lt;/code&gt;.&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>MacOS - Les Bases</title>
         <link>http://localhost:1313/p/macos-les-bases/</link>
         <pubDate>Wed, 10 Dec 2025 00:00:00 +0000</pubDate>
