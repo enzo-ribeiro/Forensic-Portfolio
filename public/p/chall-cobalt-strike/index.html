@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Rappel des fichiers .plist Dans le cours où nous voyons les bases de la forensic sous Mac OS nous avons parler des fichiers .plist, et plus particulièrement des fichiers BLOB. Voici un outil supplémentaire pour ouvrir ce type de fichier (dispo sur Mac OS) :\n1 2 3 4 plutil -p APMExperimentSuiteName.plist { &#34;APMExperimentFetchSuccessTimestamp&#34; =&gt; 1728475253.533066 } Voici un outil disponible sur Linux :\n1 2 3 4 plistutil -p APMExperimentSuiteName.plist { &#34;APMExperimentFetchSuccessTimestamp&#34; =&gt; 1728475253.533066 } BDD Pour naviguer dans les fichiers de base de données nous pouvons utiliser DB Browser for SQLite. Nous pouvons également les extraire et créer des chronologie avec apollo création de mac4n6 voici le lien du repo https://github.com/mac4n6/APOLLO.\n">
-<title>MacOS - Artefects</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introdution Je suis alternant à l&rsquo;ESGI et en intervenant j&rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensic Digital, nous avons donc eu ce challenge à résoudre.\nLe but est de retrouver certaines informations sur une capture mémoire d&rsquo;un poste infecté.\nConsigne Identifier le binaire malveillant téléchargé dans un répertoire temporaire, Identifier le hash NT de l&rsquo;administrateur, Identifier l&rsquo;adresse IP probable de l&rsquo;attaquant Recherche Tout d&rsquo;abord nous devons installer volatility. Il y a pas mal de tutos sur internet pour ça, je vous laisse checker tout ça.\n">
+<title>Chall - Cobalt Strike</title>
 
-<link rel='canonical' href='http://localhost:1313/p/macos-artefects/'>
+<link rel='canonical' href='http://localhost:1313/p/chall-cobalt-strike/'>
 
-<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="MacOS - Artefects">
-<meta property='og:description' content="Rappel des fichiers .plist Dans le cours où nous voyons les bases de la forensic sous Mac OS nous avons parler des fichiers .plist, et plus particulièrement des fichiers BLOB. Voici un outil supplémentaire pour ouvrir ce type de fichier (dispo sur Mac OS) :\n1 2 3 4 plutil -p APMExperimentSuiteName.plist { &#34;APMExperimentFetchSuccessTimestamp&#34; =&gt; 1728475253.533066 } Voici un outil disponible sur Linux :\n1 2 3 4 plistutil -p APMExperimentSuiteName.plist { &#34;APMExperimentFetchSuccessTimestamp&#34; =&gt; 1728475253.533066 } BDD Pour naviguer dans les fichiers de base de données nous pouvons utiliser DB Browser for SQLite. Nous pouvons également les extraire et créer des chronologie avec apollo création de mac4n6 voici le lien du repo https://github.com/mac4n6/APOLLO.\n">
-<meta property='og:url' content='http://localhost:1313/p/macos-artefects/'>
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Chall - Cobalt Strike">
+<meta property='og:description' content="Introdution Je suis alternant à l&rsquo;ESGI et en intervenant j&rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensic Digital, nous avons donc eu ce challenge à résoudre.\nLe but est de retrouver certaines informations sur une capture mémoire d&rsquo;un poste infecté.\nConsigne Identifier le binaire malveillant téléchargé dans un répertoire temporaire, Identifier le hash NT de l&rsquo;administrateur, Identifier l&rsquo;adresse IP probable de l&rsquo;attaquant Recherche Tout d&rsquo;abord nous devons installer volatility. Il y a pas mal de tutos sur internet pour ça, je vous laisse checker tout ça.\n">
+<meta property='og:url' content='http://localhost:1313/p/chall-cobalt-strike/'>
 <meta property='og:site_name' content='KIRÔN'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='MacOS' /><meta property='article:tag' content='Forensic' /><meta property='article:published_time' content='2025-12-10T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-10T00:00:00&#43;00:00'/>
-<meta name="twitter:title" content="MacOS - Artefects">
-<meta name="twitter:description" content="Rappel des fichiers .plist Dans le cours où nous voyons les bases de la forensic sous Mac OS nous avons parler des fichiers .plist, et plus particulièrement des fichiers BLOB. Voici un outil supplémentaire pour ouvrir ce type de fichier (dispo sur Mac OS) :\n1 2 3 4 plutil -p APMExperimentSuiteName.plist { &#34;APMExperimentFetchSuccessTimestamp&#34; =&gt; 1728475253.533066 } Voici un outil disponible sur Linux :\n1 2 3 4 plistutil -p APMExperimentSuiteName.plist { &#34;APMExperimentFetchSuccessTimestamp&#34; =&gt; 1728475253.533066 } BDD Pour naviguer dans les fichiers de base de données nous pouvons utiliser DB Browser for SQLite. Nous pouvons également les extraire et créer des chronologie avec apollo création de mac4n6 voici le lien du repo https://github.com/mac4n6/APOLLO.\n">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Windows' /><meta property='article:tag' content='Forensic' /><meta property='article:tag' content='CTF' /><meta property='article:tag' content='Chall' /><meta property='article:tag' content='Volatility' /><meta property='article:published_time' content='2025-12-28T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-28T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Chall - Cobalt Strike">
+<meta name="twitter:description" content="Introdution Je suis alternant à l&rsquo;ESGI et en intervenant j&rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensic Digital, nous avons donc eu ce challenge à résoudre.\nLe but est de retrouver certaines informations sur une capture mémoire d&rsquo;un poste infecté.\nConsigne Identifier le binaire malveillant téléchargé dans un répertoire temporaire, Identifier le hash NT de l&rsquo;administrateur, Identifier l&rsquo;adresse IP probable de l&rsquo;attaquant Recherche Tout d&rsquo;abord nous devons installer volatility. Il y a pas mal de tutos sur internet pour ça, je vous laisse checker tout ça.\n">
 
 
     </head>
@@ -248,30 +248,17 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#rappel-des-fichiers">Rappel des fichiers</a>
+    <li><a href="#introdution">Introdution</a></li>
+    <li><a href="#consigne">Consigne</a></li>
+    <li><a href="#recherche">Recherche</a>
       <ol>
-        <li>
+        <li><a href="#binaire-malveillant">Binaire Malveillant</a></li>
+        <li><a href="#nt-hash">NT Hash</a>
           <ol>
-            <li></li>
+            <li><a href="#pour-le-fun">Pour le fun</a></li>
           </ol>
         </li>
-      </ol>
-    </li>
-    <li><a href="#informations-importante">Informations Importante</a>
-      <ol>
-        <li><a href="#version-de-los">Version de l&rsquo;OS</a></li>
-        <li><a href="#numéro-de-série">Numéro de série</a></li>
-        <li><a href="#fuseau-horaire">Fuseau horaire</a></li>
-        <li><a href="#démarrage-et-redémarrage">Démarrage et redémarrage</a></li>
-        <li><a href="#interface-réseau">Interface réseau</a></li>
-        <li><a href="#dhcp">DHCP</a></li>
-        <li><a href="#wifi">WiFi</a></li>
-        <li><a href="#comptes-utilisateurs">Comptes utilisateurs</a></li>
-        <li><a href="#connexion-et-déconnexion">Connexion et déconnexion</a></li>
-        <li><a href="#volume-monté">Volume monté</a></li>
-        <li><a href="#appareil-apple">Appareil Apple</a></li>
-        <li><a href="#connexion-bluetooth">Connexion Bluetooth</a></li>
-        <li><a href="#imprimantes-connecté">Imprimantes connecté</a></li>
+        <li><a href="#ip-de-lattanquant">IP de l&rsquo;attanquant</a></li>
       </ol>
     </li>
   </ol>
@@ -301,7 +288,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/macos-artefects/">MacOS - Artefects</a>
+            <a href="/p/chall-cobalt-strike/">Chall - Cobalt Strike</a>
         </h2>
     
         
@@ -323,7 +310,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published" datetime='2025-12-10T00:00:00Z'>déc. 10, 2025</time>
+                <time class="article-time--published" datetime='2025-12-28T00:00:00Z'>déc. 28, 2025</time>
             </div>
         
 
@@ -353,47 +340,65 @@
     <section class="article-content">
     
     
-    <h2 id="rappel-des-fichiers">Rappel des fichiers
-</h2><h5 id="plist">.plist
-</h5><p>Dans le cours où nous voyons les bases de la forensic sous Mac OS nous avons parler des fichiers <code>.plist</code>, et plus particulièrement des fichiers BLOB.
-Voici un outil supplémentaire pour ouvrir ce type de fichier (dispo sur Mac OS) :</p>
+    <h2 id="introdution">Introdution
+</h2><p>Je suis alternant à l&rsquo;ESGI et en intervenant j&rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensic Digital, nous avons donc eu ce challenge à résoudre.</p>
+<p>Le but est de retrouver certaines informations sur une capture mémoire d&rsquo;un poste infecté.</p>
+<h2 id="consigne">Consigne
+</h2><ul>
+<li>Identifier le binaire malveillant téléchargé dans un répertoire temporaire,</li>
+<li>Identifier le hash NT de l&rsquo;administrateur,</li>
+<li>Identifier l&rsquo;adresse IP probable de l&rsquo;attaquant</li>
+</ul>
+<h2 id="recherche">Recherche
+</h2><p>Tout d&rsquo;abord nous devons installer volatility. Il y a pas mal de tutos sur internet pour ça, je vous laisse checker tout ça.</p>
+<p>De mon côté, à l&rsquo;installation j&rsquo;ai préféré faire un alias pour m&rsquo;éviter les commandes à rallonge avec les chemins absolut.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="c1"># VOLATILITY</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> <span class="nv">vol</span><span class="o">=</span><span class="s1">&#39;python3 /Users/enzo/volatility3/vol.py&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>La capture mémoire est au nom de <code>cobalt_strike_hta.raw</code></p>
+<h3 id="binaire-malveillant">Binaire Malveillant
+</h3><p>Pour trouver le binaire malveillant nous devons scanner les différents processus en cours durant la capture :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">vol -f cobalt_strike_hta.raw windows.psscan.PsScan   
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Cette commande nous renvoie tout les processus mais un seul nous inrtéresse :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">2232    988     evil.exe        0x1f65fb30      10      248     1       True    2023-01-01 19:21:58.000000 UTC  N/A     Disabled
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Nous avons donc la première étape.</p>
+<h3 id="nt-hash">NT Hash
+</h3><p>Pour récupérer les hash NT des utilisateurs nous avons un plugins intégré :</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
-</span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">plutil -p APMExperimentSuiteName.plist 
-</span></span><span class="line"><span class="cl"><span class="o">{</span>
-</span></span><span class="line"><span class="cl">  <span class="s2">&#34;APMExperimentFetchSuccessTimestamp&#34;</span> <span class="o">=</span>&gt; 1728475253.533066
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -h
+</span></span><span class="line"><span class="cl">    windows.hashdump.Hashdump
+</span></span><span class="line"><span class="cl">                        Dumps user hashes from memory
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>Voici un outil disponible sur Linux :</p>
+</div><p>En applications ça nous donne ça :</p>
 <div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">plistutil -p APMExperimentSuiteName.plist 
-</span></span><span class="line"><span class="cl"><span class="o">{</span>
-</span></span><span class="line"><span class="cl">  <span class="s2">&#34;APMExperimentFetchSuccessTimestamp&#34;</span> <span class="o">=</span>&gt; 1728475253.533066
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h5 id="bdd">BDD
-</h5><p>Pour naviguer dans les fichiers de base de données nous pouvons utiliser <code>DB Browser for SQLite</code>. Nous pouvons également les extraire et créer des chronologie avec <code>apollo</code> création de mac4n6 voici le lien du repo <code>https://github.com/mac4n6/APOLLO</code>.</p>
-<h5 id="logs">Logs
-</h5><h6 id="apple-system-logs-asl">Apple System Logs (ASL)
-</h6><p>Logs système Apple se trouve à l&rsquo;emplacement <code>/private/var/log/asl/</code>. Nous pourrons y retrouver les fichiers de logs utmp, wtmp et les détails de connexion. Voici une commande qui nous ouvrira les fichiers de log ASL : <code>open -a Console /private/var/log/asl/&lt;log&gt;.asl</code>.</p>
-<h2 id="informations-importante">Informations Importante
-</h2><h3 id="version-de-los">Version de l&rsquo;OS
-</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -401,87 +406,78 @@ Voici un outil supplémentaire pour ouvrir ce type de fichier (dispo sur Mac OS)
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span><span class="lnt">6
-</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">cat /System/Library/CoreServices/SystemVersion.plist
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -f cobalt_strike_hta.raw windows.hashdump.Hashdump 
+</span></span><span class="line"><span class="cl">Volatility <span class="m">3</span> Framework 2.27.0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Administrateur  <span class="m">500</span>     aad3b435b51404eeaad3b435b51404ee        8758304b6af01bb8ce1691495d29cb61
+</span></span><span class="line"><span class="cl">Invité  <span class="m">501</span>     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+</span></span><span class="line"><span class="cl">POC-USER        <span class="m">1000</span>    aad3b435b51404eeaad3b435b51404ee        8758304b6af01bb8ce1691495d29cb61
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Nous avons maintenant les hash NT des utilisateurs du poste infecté.</p>
+<h4 id="pour-le-fun">Pour le fun
+</h4><p>Nous pouvons nous rendre sur CrackStation pour avoir le hash en claire :</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Hash</th>
+          <th style="text-align: center">Type</th>
+          <th style="text-align: right">Cracked</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">8758304b6af01bb8ce1691495d29cb61</td>
+          <td style="text-align: center">NTLM</td>
+          <td style="text-align: right">spiderman</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="ip-de-lattanquant">IP de l&rsquo;attanquant
+</h3><p>Pour trouver les connexions réseau nous avons un autre plugin <code>windows.netscan.NetScan</code>.
+Voici ce que donne le plugin sur la capture mémoire.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -f cobalt_strike_hta.raw windows.netscan.NetScan
+</span></span><span class="line"><span class="cl">Volatility <span class="m">3</span> Framework 2.27.0
+</span></span><span class="line"><span class="cl">Progress:  100.00               PDB scanning finished
+</span></span><span class="line"><span class="cl">Offset  Proto   LocalAddr       LocalPort       ForeignAddr     ForeignPort     State   PID     Owner   Created
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">0x47f8010       TCPv4   -       <span class="m">49172</span>   172.19.63.255   <span class="m">1337</span>    CLOSED  <span class="m">324</span>     taskmgr.exe     N/A
+</span></span><span class="line"><span class="cl">0xa8d0010       TCPv4   -       <span class="m">49172</span>   172.19.63.255   <span class="m">1337</span>    CLOSED  <span class="m">324</span>     taskmgr.exe     N/A
+</span></span><span class="line"><span class="cl">0x1e4372c0      UDPv6   fe80::8dfc:d689:b527:b151       <span class="m">49726</span>   *       <span class="m">0</span>               <span class="m">1308</span>    svchost.exe     2023-01-01 17:29:12.000000 UTC
+</span></span><span class="line"><span class="cl">0x1e4430e0      TCPv4   0.0.0.0 <span class="m">49158</span>   0.0.0.0 <span class="m">0</span>       LISTENING       <span class="m">512</span>     lsass.exe       -
+</span></span><span class="line"><span class="cl">0x1e463010      UDPv6   ::1     <span class="m">49727</span>   *       <span class="m">0</span>               <span class="m">1308</span>    svchost.exe     2023-01-01 17:29:12.000000 UTC
 </span></span><span class="line"><span class="cl">...
-</span></span><span class="line"><span class="cl">&lt;key&gt;ProductUserVisibleVersion&lt;/key&gt;
-</span></span><span class="line"><span class="cl">&lt;string&gt;15.3.1&lt;/string&gt;
-</span></span><span class="line"><span class="cl">&lt;key&gt;ProductVersion&lt;/key&gt;
-</span></span><span class="line"><span class="cl">&lt;string&gt;15.3.1&lt;/string&gt;
-</span></span><span class="line"><span class="cl">...
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="numéro-de-série">Numéro de série
-</h3><p>Le numéro de série est situé dans : <code>/private/var/folders/*/&lt;DARWIN_USER_DIR/C/locationd/consolidated.db</code>. c&rsquo;est une BDD, donc à ouvrir avec DB Browser for SQLite (ou autre DB Reader).</p>
-<h3 id="fuseau-horaire">Fuseau horaire
-</h3><p>Pour connaître le fuseau horaire d&rsquo;un mac il faut taper la commande :</p>
+</div><p>Pour éviter de faire tout les processus qui ont une connexion externe nous pouvons filtrer la sortie avec un grep :</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">ls -la /etc/localtime 
-</span></span><span class="line"><span class="cl">lrwxr-xr-x   <span class="m">1</span> root   wheel   <span class="m">36</span> Feb <span class="m">12</span> 22:07 /etc/localtime -&gt; /var/db/timezone/zoneinfo/Asia/Dubai
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -f cobalt_strike_hta.raw windows.netscan.NetScan <span class="p">|</span> grep evil
+</span></span><span class="line"><span class="cl">0x1fc92a80 100.0TCPv4   172.19.59.55scan49239fin51.38.35.62     <span class="m">8182</span>    CLOSED  <span class="m">2232</span>    evil.exe        -
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>Ici nous pouvons voir que le fuseau est celui de Dubaï. Mais une autre information est intéressante, la date et l&rsquo;heure, elle correspond au dernier changement de fuseau.</p>
-<h3 id="démarrage-et-redémarrage">Démarrage et redémarrage
-</h3><p>Dans le fichier <code>/private/var/log/system.log</code> nous pouvons voir ces données, je conseil de faire un <code>zgrep</code> pour éviter de les chercher :</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">zgrep SHUTDOWN_TIME /private/var/log/system.log.* 
-</span></span><span class="line"><span class="cl">Jan <span class="m">04</span> 03:07:18 MacBook-Pro reboot<span class="o">[</span>27104<span class="o">]</span>: SHUTDOWN_TIME: <span class="m">1739383459</span> <span class="m">133812</span>
-</span></span><span class="line"><span class="cl">zgrep BOOT_TIME /private/var/log/system.log.* 
-</span></span><span class="line"><span class="cl">Feb <span class="m">15</span> 20:24:35 MacBook-Pro bootlog<span class="o">[</span>0<span class="o">]</span>: BOOT_TIME <span class="m">1739383559</span> <span class="m">185882</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="interface-réseau">Interface réseau
-</h3><p>Les informations importante sur les interface réseau se trouve dans le fichier <code>/Library/Preferences/SystemConfiguration/NetworkInterfaces.plist</code>, nous pouvons l&rsquo;ouvrir avec un simple <code>cat</code>.</p>
-<h3 id="dhcp">DHCP
-</h3><p>Pour les paramètres DHCP (principalement les baux) nous pouvons les trouver dans <code>/private/var/db/dhcpclient/leases/en0.plist</code></p>
-<h3 id="wifi">WiFi
-</h3><p>Les informations sur le Wi-Fi se trouve dans le fichier <code>/Library/Preferences/com.apple.wifi.known-networks.plist</code>.</p>
-<h3 id="comptes-utilisateurs">Comptes utilisateurs
-</h3><p>Dans le fichier <code>/private/var/db/dslocal/nodes/Default/users/&lt;user&gt;.plist</code> nous pouvons récupérer : l&rsquo;heure de création du compte, l&rsquo;heure des connexion échoué, les réinitialisation du mot de passe et le nombre de connexion échoué. Pour avoir les historique de connexion des utilisateurs dans le fichier <code>/Library/Preferences/com.apple.loginwindow.plist</code>.</p>
-<h3 id="connexion-et-déconnexion">Connexion et déconnexion
-</h3><p>Toujours dans les fichiers de logs et toujours avec un <code>zgrep</code> :</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">zgrep login system.log*
-</span></span><span class="line"><span class="cl">OU 
-</span></span><span class="line"><span class="cl">zgrep DEAD_PROCESS system.log*
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="volume-monté">Volume monté
-</h3><p>Les volume qui ont été monté se trouve dans <code>/Users/&lt;user&gt;/Library/Preferences/com.apple.finder.plist</code> nous pouvons les lire avec :</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">plutil -p com.apple.finder.plist
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="appareil-apple">Appareil Apple
-</h3><p>Toujours dans <code>/Users/&lt;user&gt;/Library/Preferences/</code> mais dans le fichier <code>com.apple.iPod.plist</code>. Nous pouvons ouvrir ce fichier avec la même commande.</p>
-<h3 id="connexion-bluetooth">Connexion Bluetooth
-</h3><p>Les appareils connecté en bluetooth se trouve dans <code>/Bluetooth/isConnected</code> c&rsquo;est une BDD, le fichier s&rsquo;ouvre donc avec <code>SQL Browser for SQLite</code>.</p>
-<h3 id="imprimantes-connecté">Imprimantes connecté
-</h3><p>Ce fichier se trouve dans <code>/Users/&lt;user&gt;/Library/Preferences/org.cups.PrintingPrefs.plist</code> à ouvrir avec <code>plutil -p</code>.</p>
+</div><p>Et voilà nous avons le dernier <code>flag</code></p>
 
 </section>
 
@@ -490,9 +486,15 @@ Voici un outil supplémentaire pour ouvrir ce type de fichier (dispo sur Mac OS)
     
     <section class="article-tags">
         
-            <a href="/tags/macos/">MacOS</a>
+            <a href="/tags/windows/">Windows</a>
         
             <a href="/tags/forensic/">Forensic</a>
+        
+            <a href="/tags/ctf/">CTF</a>
+        
+            <a href="/tags/chall/">Chall</a>
+        
+            <a href="/tags/volatility/">Volatility</a>
         
     </section>
 
@@ -514,12 +516,12 @@ Voici un outil supplémentaire pour ouvrir ce type de fichier (dispo sur Mac OS)
             
                 
 <article class="">
-    <a href="/p/macos-les-bases/">
+    <a href="/p/macos-artefects/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">MacOS - Les Bases</h2>
+            <h2 class="article-title">MacOS - Artefects</h2>
         </div>
     </a>
 </article>
@@ -527,12 +529,12 @@ Voici un outil supplémentaire pour ouvrir ce type de fichier (dispo sur Mac OS)
             
                 
 <article class="">
-    <a href="/p/chall-cobalt-strike/">
+    <a href="/p/macos-les-bases/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">Chall - Cobalt Strike</h2>
+            <h2 class="article-title">MacOS - Les Bases</h2>
         </div>
     </a>
 </article>

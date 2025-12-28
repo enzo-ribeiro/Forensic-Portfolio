@@ -150,6 +150,8 @@
   </url><url>
     <loc>http://localhost:1313/categories/bt/</loc>
   </url><url>
+    <loc>http://localhost:1313/categories/rt/</loc>
+  </url><url>
     <loc>http://localhost:1313/search/</loc>
   </url>
 </urlset>

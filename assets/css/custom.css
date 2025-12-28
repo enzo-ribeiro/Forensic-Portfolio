@@ -1,0 +1,6 @@
+.article-tags a,
+.article-category a,
+.article-meta .categories a {
+  background-color: #ff5050;  /* couleur de fond du badge */
+  color: #ffffff;             /* couleur du texte */
+}

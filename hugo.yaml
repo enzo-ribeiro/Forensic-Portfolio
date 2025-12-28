@@ -52,6 +52,7 @@ permalinks:
     page: /:slug/
 
 params:
+    customCSS: assets/css/custom.css
     mainSections:
         - post
     featuredImageField: image
@@ -68,7 +69,7 @@ params:
 
     sidebar:
         emoji: 🍥
-        subtitle: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        subtitle: ""
         avatar:
             enabled: true
             local: true
