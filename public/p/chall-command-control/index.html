@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introduction Challenge Root-Me\nNiveau 2 Berthier, grâce à vous la machine a été identifiée, vous avez demandé un dump de la mémoire vive de la machine et vous aimeriez bien jeter un coup d’œil aux logs de l’antivirus. Malheureusement, vous n’avez pas pensé à noter le nom de cette machine. Heureusement ce n’est pas un problème, vous disposez du dump de memoire.\nLe mot de passe de validation est le nom de la machine.\n">
+<title>Chall - Command &amp; Control</title>
+
+<link rel='canonical' href='http://localhost:1313/p/chall-command-control/'>
+
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Chall - Command & Control">
+<meta property='og:description' content="Introduction Challenge Root-Me\nNiveau 2 Berthier, grâce à vous la machine a été identifiée, vous avez demandé un dump de la mémoire vive de la machine et vous aimeriez bien jeter un coup d’œil aux logs de l’antivirus. Malheureusement, vous n’avez pas pensé à noter le nom de cette machine. Heureusement ce n’est pas un problème, vous disposez du dump de memoire.\nLe mot de passe de validation est le nom de la machine.\n">
+<meta property='og:url' content='http://localhost:1313/p/chall-command-control/'>
+<meta property='og:site_name' content='KIRÔN'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Windows' /><meta property='article:tag' content='Forensic' /><meta property='article:tag' content='CTF' /><meta property='article:tag' content='Chall' /><meta property='article:tag' content='Volatility' /><meta property='article:tag' content='Root-Me' /><meta property='article:published_time' content='2025-12-28T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-28T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Chall - Command & Control">
+<meta name="twitter:description" content="Introduction Challenge Root-Me\nNiveau 2 Berthier, grâce à vous la machine a été identifiée, vous avez demandé un dump de la mémoire vive de la machine et vous aimeriez bien jeter un coup d’œil aux logs de l’antivirus. Malheureusement, vous n’avez pas pensé à noter le nom de cette machine. Heureusement ce n’est pas un problème, vous disposez du dump de memoire.\nLe mot de passe de validation est le nom de la machine.\n">
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/enzo-anime_hu_6e79a1c3b52c56b8.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">KIRÔN</a></h1>
+            <h2 class="site-description">Mes notes en forensic</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/enzo-ribeiro'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.linkedin.com/in/enzo-ribeiro-bb8794209/'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.975,20.667H3.117V9.059H6.975ZM5.072,3.462a2.011,2.011,0,1,0-.051,4.012h.026a2.012,2.012,0,1,0,.025-4.012ZM9.111,20.667h3.858V14.185a2.639,2.639,0,0,1,.127-.941,2.111,2.111,0,0,1,1.98-1.411c1.4,0,1.955,1.064,1.955,2.625v6.209h3.858V14.011c0-3.565-1.9-5.225-4.442-5.225A3.828,3.828,0,0,0,12.97,10.7V9.059H9.111c.051,1.089,0,11.609,0,11.609Z"/></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="http://localhost:1313/" selected>Français</option>
+                                
+                                    <option value="http://localhost:1313/zh-cn/" >中文</option>
+                                
+                                    <option value="http://localhost:1313/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Mode sombre</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction">Introduction</a>
+      <ol>
+        <li><a href="#niveau-2">Niveau 2</a>
+          <ol>
+            <li><a href="#recherche">Recherche</a></li>
+          </ol>
+        </li>
+        <li><a href="#niveau-3">Niveau 3</a>
+          <ol>
+            <li><a href="#recherche-1">Recherche</a></li>
+          </ol>
+        </li>
+        <li><a href="#niveau-5">Niveau 5</a>
+          <ol>
+            <li><a href="#recherche-2">Recherche</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/blue-team/" >
+                Blue Team
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/chall-command-control/">Chall - Command &amp; Control</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-12-28T00:00:00Z'>déc. 28, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    6 minutes de lecture
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="introduction">Introduction
+</h2><p>Challenge Root-Me</p>
+<h3 id="niveau-2">Niveau 2
+</h3><p>Berthier, grâce à vous la machine a été identifiée, vous avez demandé un dump de la mémoire vive de la machine et vous aimeriez bien jeter un coup d’œil aux logs de l’antivirus. Malheureusement, vous n’avez pas pensé à noter le nom de cette machine. Heureusement ce n’est pas un problème, vous disposez du dump de memoire.</p>
+<p>Le mot de passe de validation est le nom de la machine.</p>
+<h4 id="recherche">Recherche
+</h4><p>Nous avons donc un fichier, <code>ch2.dmp</code>. Je lance un <code>vol -h</code> pour voir quel argument je peux utiliser pour avoir le nom du poste.</p>
+<p>J&rsquo;ai un argument intéressant :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -h 
+</span></span><span class="line"><span class="cl">    windows.envars.Envars
+</span></span><span class="line"><span class="cl">                        Display process environment variables
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>En effet, les noms des ordinateurs/postes se trouve toujours dans les variables d&rsquo;environnement.
+Nous lançons donc la commande suivante :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -f ch2.dmp windows.envars.Envars
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Volatility <span class="m">3</span> Framework 2.27.0
+</span></span><span class="line"><span class="cl">Progress:  100.00               PDB scanning finished
+</span></span><span class="line"><span class="cl">PID     Process Block   Variable        Value
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl"><span class="m">560</span>     services.exe    0x120ea8        COMPUTERNAME    WIN-ETSA91RKCFP
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Nous avons maintenant récupérer le nom du poste, et donc, le flag du challenge.</p>
+<h3 id="niveau-3">Niveau 3
+</h3><p>Berthier, l’antivirus n’a rien trouvé. A vous d’essayer de trouver le programme malveillant dans le dump de la mémoire vive. Le mot de passe de validation est le hash MD5 (en minuscules) du chemin d’accès absolu vers l’exécutable.</p>
+<h4 id="recherche-1">Recherche
+</h4><p>Les programmes/processus sont lancé grâce à une commande. Pour connaître le programme malveillant nous pouvons utiliser l&rsquo;argument <code>windows.cmdline.CmdLine</code> :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -f ch2.dmp windows.cmdline.CmdLine
+</span></span><span class="line"><span class="cl">Volatility <span class="m">3</span> Framework 2.27.0
+</span></span><span class="line"><span class="cl">Progress:  100.00               PDB scanning finished
+</span></span><span class="line"><span class="cl">PID     Process Args
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">4</span>       System  -
+</span></span><span class="line"><span class="cl"><span class="m">308</span>     smss.exe        <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\s</span>mss.exe
+</span></span><span class="line"><span class="cl"><span class="m">404</span>     csrss.exe       %SystemRoot%<span class="se">\s</span>ystem32<span class="se">\c</span>srss.exe <span class="nv">ObjectDirectory</span><span class="o">=</span><span class="se">\W</span>indows <span class="nv">SharedSection</span><span class="o">=</span>1024,12288,512 <span class="nv">Windows</span><span class="o">=</span>On <span class="nv">SubSystemType</span><span class="o">=</span>Windows <span class="nv">ServerDll</span><span class="o">=</span>basesrv,1 <span class="nv">ServerDll</span><span class="o">=</span>winsrv:UserServerDllInitialization,3 <span class="nv">ServerDll</span><span class="o">=</span>winsrv:ConServerDllInitialization,2 <span class="nv">ServerDll</span><span class="o">=</span>sxssrv,4 <span class="nv">ProfileControl</span><span class="o">=</span>Off <span class="nv">MaxRequestThreads</span><span class="o">=</span><span class="m">16</span>
+</span></span><span class="line"><span class="cl"><span class="m">456</span>     wininit.exe     -
+</span></span><span class="line"><span class="cl"><span class="m">468</span>     csrss.exe       %SystemRoot%<span class="se">\s</span>ystem32<span class="se">\c</span>srss.exe <span class="nv">ObjectDirectory</span><span class="o">=</span><span class="se">\W</span>indows <span class="nv">SharedSection</span><span class="o">=</span>1024,12288,512 <span class="nv">Windows</span><span class="o">=</span>On <span class="nv">SubSystemType</span><span class="o">=</span>Windows <span class="nv">ServerDll</span><span class="o">=</span>basesrv,1 <span class="nv">ServerDll</span><span class="o">=</span>winsrv:UserServerDllInitialization,3 <span class="nv">ServerDll</span><span class="o">=</span>winsrv:ConServerDllInitialization,2 <span class="nv">ServerDll</span><span class="o">=</span>sxssrv,4 <span class="nv">ProfileControl</span><span class="o">=</span>Off <span class="nv">MaxRequestThreads</span><span class="o">=</span><span class="m">16</span>
+</span></span><span class="line"><span class="cl"><span class="m">500</span>     winlogon.exe    -
+</span></span><span class="line"><span class="cl"><span class="m">560</span>     services.exe    C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\s</span>ervices.exe
+</span></span><span class="line"><span class="cl"><span class="m">576</span>     lsass.exe       C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\l</span>sass.exe
+</span></span><span class="line"><span class="cl"><span class="m">584</span>     lsm.exe C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\l</span>sm.exe
+</span></span><span class="line"><span class="cl"><span class="m">692</span>     svchost.exe     C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\s</span>vchost.exe -k DcomLaunch
+</span></span><span class="line"><span class="cl"><span class="m">764</span>     svchost.exe     C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\s</span>vchost.exe -k RPCSS
+</span></span><span class="line"><span class="cl"><span class="m">832</span>     svchost.exe     C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\s</span>vchost.exe -k LocalServiceNetworkRestricted
+</span></span><span class="line"><span class="cl"><span class="m">904</span>     svchost.exe     C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\s</span>vchost.exe -k LocalSystemNetworkRestricted
+</span></span><span class="line"><span class="cl"><span class="m">928</span>     svchost.exe     C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\s</span>vchost.exe -k netsvcs
+</span></span><span class="line"><span class="cl"><span class="m">1084</span>    svchost.exe     C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\s</span>vchost.exe -k LocalService
+</span></span><span class="line"><span class="cl"><span class="m">1172</span>    svchost.exe     C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\s</span>vchost.exe -k NetworkService
+</span></span><span class="line"><span class="cl"><span class="m">1220</span>    AvastSvc.exe    <span class="s2">&#34;C:\Program Files\AVAST Software\Avast\AvastSvc.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">1712</span>    spoolsv.exe     C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\s</span>poolsv.exe
+</span></span><span class="line"><span class="cl"><span class="m">1748</span>    svchost.exe     C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\s</span>vchost.exe -k LocalServiceNoNetwork
+</span></span><span class="line"><span class="cl"><span class="m">1872</span>    sppsvc.exe      -
+</span></span><span class="line"><span class="cl"><span class="m">1968</span>    vmtoolsd.exe    <span class="s2">&#34;C:\Program Files\VMware\VMware Tools\vmtoolsd.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">336</span>     wlms.exe        -
+</span></span><span class="line"><span class="cl"><span class="m">448</span>     VMUpgradeHelpe  -
+</span></span><span class="line"><span class="cl"><span class="m">1612</span>    TPAutoConnSvc.  <span class="s2">&#34;C:\Program Files\VMware\VMware Tools\TPAutoConnSvc.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">2352</span>    taskhost.exe    <span class="s2">&#34;taskhost.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">2496</span>    dwm.exe <span class="s2">&#34;C:\Windows\system32\Dwm.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">2548</span>    explorer.exe    C:<span class="se">\W</span>indows<span class="se">\E</span>xplorer.EXE
+</span></span><span class="line"><span class="cl"><span class="m">2568</span>    TPAutoConnect.  TPAutoConnect.exe -q -i vmware -a COM1 -F <span class="m">30</span>
+</span></span><span class="line"><span class="cl"><span class="m">2600</span>    conhost.exe     -
+</span></span><span class="line"><span class="cl"><span class="m">2660</span>    VMwareTray.exe  <span class="s2">&#34;C:\Program Files\VMware\VMware Tools\VMwareTray.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">2676</span>    VMwareUser.exe  <span class="s2">&#34;C:\Program Files\VMware\VMware Tools\VMwareUser.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">2720</span>    AvastUI.exe     <span class="s2">&#34;C:\Program Files\AVAST Software\Avast\AvastUI.exe&#34;</span> /nogui
+</span></span><span class="line"><span class="cl"><span class="m">2744</span>    StikyNot.exe    <span class="s2">&#34;C:\Windows\System32\StikyNot.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">2772</span>    iexplore.exe    <span class="s2">&#34;C:\Users\John Doe\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\iexplore.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">2900</span>    SearchIndexer.  C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\S</span>earchIndexer.exe /Embedding
+</span></span><span class="line"><span class="cl"><span class="m">3176</span>    wmpnetwk.exe    <span class="s2">&#34;C:\Program Files\Windows Media Player\wmpnetwk.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">3352</span>    svchost.exe     C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\s</span>vchost.exe -k LocalServiceAndNoImpersonation
+</span></span><span class="line"><span class="cl"><span class="m">3452</span>    swriter.exe     -
+</span></span><span class="line"><span class="cl"><span class="m">3512</span>    soffice.exe     -
+</span></span><span class="line"><span class="cl"><span class="m">3556</span>    soffice.bin     -
+</span></span><span class="line"><span class="cl"><span class="m">3564</span>    soffice.bin     <span class="s2">&#34;C:\Program Files\LibreOffice 3.6\program\swriter.exe&#34;</span> <span class="s2">&#34;-o&#34;</span> <span class="s2">&#34;C:\Users\John Doe\Documents\Procedure Winpmemdump.odt&#34;</span> <span class="s2">&#34;--writer&#34;</span> <span class="s2">&#34;-env:OOO_CWD=2C:\\Users\\John Doe\\Documents&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">3624</span>    svchost.exe     C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\s</span>vchost.exe -k secsvcs
+</span></span><span class="line"><span class="cl"><span class="m">1232</span>    taskmgr.exe     <span class="s2">&#34;C:\Windows\system32\taskmgr.exe&#34;</span> /4
+</span></span><span class="line"><span class="cl"><span class="m">3152</span>    cmd.exe <span class="s2">&#34;C:\Windows\system32\cmd.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">3228</span>    conhost.exe     -
+</span></span><span class="line"><span class="cl"><span class="m">1616</span>    cmd.exe cmd.exe
+</span></span><span class="line"><span class="cl"><span class="m">2168</span>    conhost.exe     <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\c</span>onhost.exe
+</span></span><span class="line"><span class="cl"><span class="m">1136</span>    iexplore.exe    <span class="s2">&#34;C:\Program Files\Internet Explorer\iexplore.exe&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">3044</span>    iexplore.exe    <span class="s2">&#34;C:\Program Files\Internet Explorer\iexplore.exe&#34;</span> SCODEF:1136 CREDAT:71937
+</span></span><span class="line"><span class="cl"><span class="m">1720</span>    audiodg.exe     C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\A</span>UDIODG.EXE 0x298
+</span></span><span class="line"><span class="cl"><span class="m">3144</span>    winpmem-1.3.1.  winpmem-1.3.1.exe  ram.dmp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ici une commande m&rsquo;interpele :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">C:\Users\John Doe\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\iexplore.exe
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>En effet, ce n&rsquo;est pas un chemin &ldquo;normal&rdquo; pour un programme.</p>
+<p>Pour être sur nous pouvons regarder les connexions réseau de ce programme :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -f ch2.dmp windows.netscan.NetScan <span class="p">|</span> grep iexplore
+</span></span><span class="line"><span class="cl">0x1dedb4f8 100.0TCPv4   127.0.0.1DB scan49178fin127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">2772</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fa21008      TCPv4   127.0.0.1       <span class="m">58785</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fa3ea48      TCPv4   127.0.0.1       <span class="m">58808</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fa41008      TCPv4   127.0.0.1       <span class="m">58797</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fa468b0      TCPv4   127.0.0.1       <span class="m">58747</span>   127.0.0.1       <span class="m">12080</span>   CLOSED  <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fa5f3d8      TCPv4   127.0.0.1       <span class="m">58823</span>   127.0.0.1       <span class="m">12080</span>   CLOSED  <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fa78ac0      TCPv4   127.0.0.1       <span class="m">58806</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fa80880      TCPv4   127.0.0.1       <span class="m">58781</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fa83c98      TCPv4   127.0.0.1       <span class="m">58727</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fa859c0      TCPv4   127.0.0.1       <span class="m">58740</span>   127.0.0.1       <span class="m">12080</span>   CLOSED  <span class="m">3044</span>    iexplore.exe    N/A
+</span></span><span class="line"><span class="cl">0x1fa9a678      TCPv4   127.0.0.1       <span class="m">58787</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1faa97f8      TCPv4   127.0.0.1       <span class="m">58742</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fab2008      TCPv4   127.0.0.1       <span class="m">58791</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fad2988      TCPv4   127.0.0.1       <span class="m">58749</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fada310      TCPv4   127.0.0.1       <span class="m">58733</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fae1ba0      TCPv4   127.0.0.1       <span class="m">58815</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1faeddf8      TCPv4   127.0.0.1       <span class="m">58811</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1faf7c58      TCPv4   127.0.0.1       <span class="m">58783</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fafe208      TCPv4   127.0.0.1       <span class="m">58738</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fb80df8      TCPv4   127.0.0.1       <span class="m">58792</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fbca1a0      UDPv4   127.0.0.1       <span class="m">60151</span>   *       <span class="m">0</span>               <span class="m">3044</span>    iexplore.exe    2013-01-12 16:57:47.000000 UTC
+</span></span><span class="line"><span class="cl">0x1fca0820      TCPv4   127.0.0.1       <span class="m">58729</span>   127.0.0.1       <span class="m">12080</span>   CLOSED  <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fd57da0      TCPv4   127.0.0.1       <span class="m">58795</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fd92378      TCPv4   127.0.0.1       <span class="m">58817</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fd9b580      TCPv4   127.0.0.1       <span class="m">58731</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span><span class="line"><span class="cl">0x1fd9f838      TCPv4   127.0.0.1       <span class="m">58758</span>   127.0.0.1       <span class="m">12080</span>   ESTABLISHED     <span class="m">3044</span>    iexplore.exe    -
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ici nous pouvons être quasiement sur que ce programme est malveillant, car internet explorer n&rsquo;est pas sensé communiqué en localhost et encore moins sur le port 12080.</p>
+<p>Pour avoir le flag, voici la commande qu&rsquo;il faut entrer :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nb">echo</span> -n <span class="s2">&#34;C:\Users\John Doe\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\iexplore.exe&#34;</span> <span class="p">|</span> md5sum
+</span></span><span class="line"><span class="cl">49979149632639432397b3a1df8cb43d
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="niveau-5">Niveau 5
+</h3><p>Berthier, manifestement l’attaquant dispose des mots de passe des systèmes. Le programme malveillant semble être maintenu manuellement sur les machines. Le parc de la société ACME semblant à jour, c’est peut être les mots de passe qui sont faibles. John, l’administrateur des systèmes ne vous croit pas. Prouvez-lui.</p>
+<p>Retrouvez le mot de passe de l’utilisateur.</p>
+<h4 id="recherche-2">Recherche
+</h4><p>Grâce au cours de Christopher Thiefin (Processus Thief sur Youtube) je connais un argument dans volatility <code>windows.hashdump.Hashdumps</code>. Nous allons donc utiliser cet argument pour récupérer le mot de passe de John :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -f ch2.dmp windows.hashdump.Hashdump
+</span></span><span class="line"><span class="cl">Volatility <span class="m">3</span> Framework 2.27.0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">User    rid     lmhash  nthash
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Administrator   <span class="m">500</span>     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+</span></span><span class="line"><span class="cl">Guest   <span class="m">501</span>     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+</span></span><span class="line"><span class="cl">John Doe        <span class="m">1000</span>    aad3b435b51404eeaad3b435b51404ee        b9f917853e3dbf6e6831ecce60725930
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ici, nous avons le hash du mot de passe de l&rsquo;utilisateur John Doe.</p>
+<p>Nous allons le passer dans <code>CrackStation</code> pour l&rsquo;avoir en clair.</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Hash</th>
+          <th style="text-align: center">Type</th>
+          <th style="text-align: right">Result</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">b9f917853e3dbf6e6831ecce60725930</td>
+          <td style="text-align: center">NTLM</td>
+          <td style="text-align: right">passw0rd</td>
+      </tr>
+  </tbody>
+</table></div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/windows/">Windows</a>
+        
+            <a href="/tags/forensic/">Forensic</a>
+        
+            <a href="/tags/ctf/">CTF</a>
+        
+            <a href="/tags/chall/">Chall</a>
+        
+            <a href="/tags/volatility/">Volatility</a>
+        
+            <a href="/tags/root-me/">Root-Me</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Contenus liés</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/chall-cobalt-strike/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Chall - Cobalt Strike</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/macos-artefects/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MacOS - Artefects</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/macos-les-bases/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MacOS - Les Bases</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-investigation-des-logs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Investigation des Logs</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-surface-dincident/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Surface d&#39;Incident</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Enzo Ribeiro
+    </section>
+    
+    <section class="powerby">
+        Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e4dd2d7a791b3794ae9889b21f5598875c8169002592e3d7b6a9ed269f54068.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

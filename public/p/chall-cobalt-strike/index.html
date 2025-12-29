@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introdution Je suis alternant à l&rsquo;ESGI et en intervenant j&rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensic Digital, nous avons donc eu ce challenge à résoudre.\nLe but est de retrouver certaines informations sur une capture mémoire d&rsquo;un poste infecté.\nConsigne Identifier le binaire malveillant téléchargé dans un répertoire temporaire, Identifier le hash NT de l&rsquo;administrateur, Identifier l&rsquo;adresse IP probable de l&rsquo;attaquant Recherche Tout d&rsquo;abord nous devons installer volatility. Il y a pas mal de tutos sur internet pour ça, je vous laisse checker tout ça.\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introdution Je suis alternant à l&rsquo;ESGI et en intervenant j&rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensique Numérique, nous avons donc eu ce challenge à résoudre.\nLe but est de retrouver certaines informations sur une capture mémoire d&rsquo;un poste infecté.\nConsigne Identifier le binaire malveillant téléchargé dans un répertoire temporaire, Identifier le hash NT de l&rsquo;administrateur, Identifier l&rsquo;adresse IP probable de l&rsquo;attaquant Recherche Tout d&rsquo;abord nous devons installer volatility. Il y a pas mal de tutos sur internet pour ça, je vous laisse checker tout ça.\n">
 <title>Chall - Cobalt Strike</title>
 
 <link rel='canonical' href='http://localhost:1313/p/chall-cobalt-strike/'>
 
 <link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Chall - Cobalt Strike">
-<meta property='og:description' content="Introdution Je suis alternant à l&rsquo;ESGI et en intervenant j&rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensic Digital, nous avons donc eu ce challenge à résoudre.\nLe but est de retrouver certaines informations sur une capture mémoire d&rsquo;un poste infecté.\nConsigne Identifier le binaire malveillant téléchargé dans un répertoire temporaire, Identifier le hash NT de l&rsquo;administrateur, Identifier l&rsquo;adresse IP probable de l&rsquo;attaquant Recherche Tout d&rsquo;abord nous devons installer volatility. Il y a pas mal de tutos sur internet pour ça, je vous laisse checker tout ça.\n">
+<meta property='og:description' content="Introdution Je suis alternant à l&rsquo;ESGI et en intervenant j&rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensique Numérique, nous avons donc eu ce challenge à résoudre.\nLe but est de retrouver certaines informations sur une capture mémoire d&rsquo;un poste infecté.\nConsigne Identifier le binaire malveillant téléchargé dans un répertoire temporaire, Identifier le hash NT de l&rsquo;administrateur, Identifier l&rsquo;adresse IP probable de l&rsquo;attaquant Recherche Tout d&rsquo;abord nous devons installer volatility. Il y a pas mal de tutos sur internet pour ça, je vous laisse checker tout ça.\n">
 <meta property='og:url' content='http://localhost:1313/p/chall-cobalt-strike/'>
 <meta property='og:site_name' content='KIRÔN'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Windows' /><meta property='article:tag' content='Forensic' /><meta property='article:tag' content='CTF' /><meta property='article:tag' content='Chall' /><meta property='article:tag' content='Volatility' /><meta property='article:published_time' content='2025-12-28T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-28T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="Chall - Cobalt Strike">
-<meta name="twitter:description" content="Introdution Je suis alternant à l&rsquo;ESGI et en intervenant j&rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensic Digital, nous avons donc eu ce challenge à résoudre.\nLe but est de retrouver certaines informations sur une capture mémoire d&rsquo;un poste infecté.\nConsigne Identifier le binaire malveillant téléchargé dans un répertoire temporaire, Identifier le hash NT de l&rsquo;administrateur, Identifier l&rsquo;adresse IP probable de l&rsquo;attaquant Recherche Tout d&rsquo;abord nous devons installer volatility. Il y a pas mal de tutos sur internet pour ça, je vous laisse checker tout ça.\n">
+<meta name="twitter:description" content="Introdution Je suis alternant à l&rsquo;ESGI et en intervenant j&rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensique Numérique, nous avons donc eu ce challenge à résoudre.\nLe but est de retrouver certaines informations sur une capture mémoire d&rsquo;un poste infecté.\nConsigne Identifier le binaire malveillant téléchargé dans un répertoire temporaire, Identifier le hash NT de l&rsquo;administrateur, Identifier l&rsquo;adresse IP probable de l&rsquo;attaquant Recherche Tout d&rsquo;abord nous devons installer volatility. Il y a pas mal de tutos sur internet pour ça, je vous laisse checker tout ça.\n">
 
 
     </head>
@@ -341,7 +341,7 @@
     
     
     <h2 id="introdution">Introdution
-</h2><p>Je suis alternant à l&rsquo;ESGI et en intervenant j&rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensic Digital, nous avons donc eu ce challenge à résoudre.</p>
+</h2><p>Je suis alternant à l&rsquo;ESGI et en intervenant j&rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensique Numérique, nous avons donc eu ce challenge à résoudre.</p>
 <p>Le but est de retrouver certaines informations sur une capture mémoire d&rsquo;un poste infecté.</p>
 <h2 id="consigne">Consigne
 </h2><ul>
@@ -424,7 +424,7 @@
       <tr>
           <th style="text-align: left">Hash</th>
           <th style="text-align: center">Type</th>
-          <th style="text-align: right">Cracked</th>
+          <th style="text-align: right">Result</th>
       </tr>
   </thead>
   <tbody>
@@ -516,6 +516,19 @@ Voici ce que donne le plugin sur la capture mémoire.</p>
             
                 
 <article class="">
+    <a href="/p/chall-command-control/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Chall - Command &amp; Control</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
     <a href="/p/macos-artefects/">
         
         
@@ -561,19 +574,6 @@ Voici ce que donne le plugin sur la capture mémoire.</p>
 
         <div class="article-details">
             <h2 class="article-title">Linux - Surface d&#39;Incident</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/p/mobile-acquisition/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Mobile - Acquisition</h2>
         </div>
     </a>
 </article>

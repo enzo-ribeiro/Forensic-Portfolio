@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
-    <head>
-	<meta name="generator" content="Hugo 0.152.2"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Mes notes en forensic">
-<title>Pager 2 - KIRÔN</title>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introduction Berthier, grâce à vous la machine a été identifiée, vous avez demandé un dump de la mémoire vive de la machine et vous aimeriez bien jeter un coup d’œil aux logs de l’antivirus. Malheureusement, vous n’avez pas pensé à noter le nom de cette machine. Heureusement ce n’est pas un problème, vous disposez du dump de memoire.\nLe mot de passe de validation est le nom de la machine.\n">
+<title>Chall - Command &amp; Control niveau 2</title>
 
-<link rel='canonical' href='http://localhost:1313/'>
+<link rel='canonical' href='http://localhost:1313/p/chall-command-control-niveau-2/'>
 
-<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="KIRÔN">
-<meta property='og:description' content="Mes notes en forensic">
-<meta property='og:url' content='http://localhost:1313/'>
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Chall - Command & Control niveau 2">
+<meta property='og:description' content="Introduction Berthier, grâce à vous la machine a été identifiée, vous avez demandé un dump de la mémoire vive de la machine et vous aimeriez bien jeter un coup d’œil aux logs de l’antivirus. Malheureusement, vous n’avez pas pensé à noter le nom de cette machine. Heureusement ce n’est pas un problème, vous disposez du dump de memoire.\nLe mot de passe de validation est le nom de la machine.\n">
+<meta property='og:url' content='http://localhost:1313/p/chall-command-control-niveau-2/'>
 <meta property='og:site_name' content='KIRÔN'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2025-12-28T00:00:00&#43;00:00 '/>
-<meta name="twitter:title" content="KIRÔN">
-<meta name="twitter:description" content="Mes notes en forensic"><link rel="alternate" type="application/rss&#43;xml" href="http://localhost:1313/index.xml">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Windows' /><meta property='article:tag' content='Forensic' /><meta property='article:tag' content='CTF' /><meta property='article:tag' content='Chall' /><meta property='article:tag' content='Volatility' /><meta property='article:tag' content='Root-Me' /><meta property='article:published_time' content='2025-12-28T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-28T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Chall - Command & Control niveau 2">
+<meta name="twitter:description" content="Introduction Berthier, grâce à vous la machine a été identifiée, vous avez demandé un dump de la mémoire vive de la machine et vous aimeriez bien jeter un coup d’œil aux logs de l’antivirus. Malheureusement, vous n’avez pas pensé à noter le nom de cette machine. Heureusement ce n’est pas un problème, vous disposez du dump de memoire.\nLe mot de passe de validation est le nom de la machine.\n">
 
 
     </head>
-    <body class="">
+    <body class="
+    article-page
+    ">
     <script>
         (function() {
             const colorSchemeKey = 'StackColorScheme';
@@ -114,7 +115,7 @@
         
         
         
-        <li  class='current' >
+        <li >
             <a href='/' >
                 
                 
@@ -228,33 +229,10 @@
     <aside class="sidebar right-sidebar sticky">
         
             
-                <form action="/search/" class="search-form widget" >
-        <p>
-            <label>Rechercher</label>
-            <input name="keyword" required placeholder="Cherchez un article, une publication, etc." />
-        
-            <button title="Rechercher">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-            </button>
-        </p>
-    </form>
-            
-        
-            
                 
-            
-        
-            
-                <section class="widget tagCloud">
-    <div class="widget-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <line x1="5" y1="9" x2="19" y2="9" />
   <line x1="5" y1="15" x2="19" y2="15" />
@@ -264,78 +242,18 @@
 
 
 
-    </div>
-    <h2 class="widget-title section-title">Catégories</h2>
-
-    <div class="tagCloud-tags">
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
         
-            <a href="/categories/blue-team/" class="font_size_11">
-                Blue Team
-            </a>
-        
-    </div>
-</section>
-
-            
-        
-            
-                <section class="widget tagCloud">
-    <div class="widget-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
-  <circle cx="9" cy="9" r="2" />
-</svg>
-
-
-
-    </div>
-    <h2 class="widget-title section-title">Mots clés</h2>
-
-    <div class="tagCloud-tags">
-        
-            <a href="/tags/forensic/">
-                Forensic
-            </a>
-        
-            <a href="/tags/analyse/">
-                Analyse
-            </a>
-        
-            <a href="/tags/linux/">
-                Linux
-            </a>
-        
-            <a href="/tags/mobile/">
-                Mobile
-            </a>
-        
-            <a href="/tags/chall/">
-                Chall
-            </a>
-        
-            <a href="/tags/ctf/">
-                CTF
-            </a>
-        
-            <a href="/tags/macos/">
-                MacOS
-            </a>
-        
-            <a href="/tags/volatility/">
-                Volatility
-            </a>
-        
-            <a href="/tags/windows/">
-                Windows
-            </a>
-        
-            <a href="/tags/acquisition/">
-                Acquisition
-            </a>
-        
-    </div>
-</section>
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#recherche">Recherche</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
 
             
         
@@ -343,15 +261,7 @@
 
 
             <main class="main full-width">
-    
-    
-    
-    
-
-    <section class="article-list">
-        
-            
-<article class="">
+    <article class="main-article">
     <header class="article-header">
 
     <div class="article-details">
@@ -367,7 +277,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/macos-les-bases/">MacOS - Les Bases</a>
+            <a href="/p/chall-command-control-niveau-2/">Chall - Command &amp; Control niveau 2</a>
         </h2>
     
         
@@ -389,7 +299,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published" datetime='2025-12-10T00:00:00Z'>déc. 10, 2025</time>
+                <time class="article-time--published" datetime='2025-12-28T00:00:00Z'>déc. 28, 2025</time>
             </div>
         
 
@@ -404,7 +314,7 @@
 
 
                 <time class="article-time--reading">
-                    11 minutes de lecture
+                    1 minute de lecture
                 </time>
             </div>
         
@@ -415,167 +325,142 @@
 </div>
 
 </header>
-</article>
-        
-            
-<article class="">
-    <header class="article-header">
 
-    <div class="article-details">
-    
-    <header class="article-category">
-        
-            <a href="/categories/blue-team/" >
-                Blue Team
-            </a>
-        
-    </header>
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/p/linux-investigation-des-logs/">Linux - Investigation des Logs</a>
-        </h2>
-    
-        
-    </div>
-
+    <section class="article-content">
     
     
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published" datetime='2025-12-09T00:00:00Z'>déc. 09, 2025</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    9 minutes de lecture
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
+    <h2 id="introduction">Introduction
+</h2><p>Berthier, grâce à vous la machine a été identifiée, vous avez demandé un dump de la mémoire vive de la machine et vous aimeriez bien jeter un coup d’œil aux logs de l’antivirus. Malheureusement, vous n’avez pas pensé à noter le nom de cette machine. Heureusement ce n’est pas un problème, vous disposez du dump de memoire.</p>
+<p>Le mot de passe de validation est le nom de la machine.</p>
+<p>(Challenge Root-Me)</p>
+<h2 id="recherche">Recherche
+</h2><p>Nous avons donc un fichier, <code>ch2.dmp</code>. Je lance un <code>vol -h</code> pour voir quel argument je peux utiliser pour avoir le nom du poste.</p>
+<p>J&rsquo;ai un argument intéressant :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">vol</span> <span class="o">-</span><span class="n">h</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">windows</span><span class="o">.</span><span class="n">envars</span><span class="o">.</span><span class="n">Envars</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">Display</span> <span class="n">process</span> <span class="n">environment</span> <span class="n">variables</span>
+</span></span></code></pre></td></tr></table>
 </div>
-
-</header>
-</article>
-        
-            
-<article class="">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-    <header class="article-category">
-        
-            <a href="/categories/blue-team/" >
-                Blue Team
-            </a>
-        
-    </header>
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/p/linux-surface-dincident/">Linux - Surface d&#39;Incident</a>
-        </h2>
-    
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published" datetime='2025-12-09T00:00:00Z'>déc. 09, 2025</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    10 minutes de lecture
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
 </div>
+</section>
 
-</header>
-</article>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/windows/">Windows</a>
+        
+            <a href="/tags/forensic/">Forensic</a>
+        
+            <a href="/tags/ctf/">CTF</a>
+        
+            <a href="/tags/chall/">Chall</a>
+        
+            <a href="/tags/volatility/">Volatility</a>
+        
+            <a href="/tags/root-me/">Root-Me</a>
         
     </section>
-    <nav class='pagination'>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Contenus liés</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/chall-cobalt-strike/">
         
         
 
-        
-            
-                    <a class='page-link' href='/'>1</a>
-                
-            
-            
-                <span class='page-link current'>2</span>
-                
-            
-            
-                    <a class='page-link' href='/page/3/'>3</a>
-                
-            
-            
-                    <a class='page-link' href='/page/4/'>4</a>
-                
-            
-    </nav>
+        <div class="article-details">
+            <h2 class="article-title">Chall - Cobalt Strike</h2>
+        </div>
+    </a>
+</article>
 
-<footer class="site-footer">
+            
+                
+<article class="">
+    <a href="/p/macos-artefects/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MacOS - Artefects</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/macos-les-bases/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MacOS - Les Bases</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-investigation-des-logs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Investigation des Logs</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-surface-dincident/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Surface d&#39;Incident</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
     <section class="copyright">
         &copy; 
         
@@ -587,6 +472,85 @@
         Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
 </footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
 
             </main>
         </div>

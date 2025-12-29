@@ -15,7 +15,7 @@ tags = [
 +++
 
 ## Introdution
-Je suis alternant à l'ESGI et en intervenant j'ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensic Digital, nous avons donc eu ce challenge à résoudre. 
+Je suis alternant à l'ESGI et en intervenant j'ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensique Numérique, nous avons donc eu ce challenge à résoudre. 
 
 Le but est de retrouver certaines informations sur une capture mémoire d'un poste infecté. 
 
@@ -67,7 +67,7 @@ Nous avons maintenant les hash NT des utilisateurs du poste infecté.
 #### Pour le fun
 Nous pouvons nous rendre sur CrackStation pour avoir le hash en claire : 
 
-| Hash | Type | Cracked|
+| Hash | Type | Result|
 |:-------- |:--------:| --------:|
 | 8758304b6af01bb8ce1691495d29cb61     | NTLM   | spiderman    |
 
