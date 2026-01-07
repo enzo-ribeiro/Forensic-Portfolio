@@ -1,7 +1,7 @@
 +++
 author = "Enzo"
 title = "Chall - Command & Control"
-date = "2025-12-28"
+date = "2025-12-29"
 categories = [
     "Blue Team"
 ]

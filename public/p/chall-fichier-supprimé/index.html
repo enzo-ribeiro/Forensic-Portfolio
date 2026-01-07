@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introduction Votre cousin a trouvé une clé USB à la bibliothèque ce matin. Il n’est pas très doué avec les ordinateurs, alors il compte sur vous pour retrouver le propriétaire de cette clé !\nLe flag est l’identité du propriétaire sous la forme prénom_nom\nRecherche Quand nous téléchargeons le challenge, nous avons un fichier usb.images.\n1 2 3 4 5 6 ll total 2160512 -rw-r--r--@ 1 enzo staff 512M Jan 29 2013 ch2.dmp -rw-r--r--@ 1 enzo staff 512M Dec 28 20:02 cobalt_strike_hta.raw -rw-rw----@ 1 enzo staff 31M Sep 12 2021 usb.image Nous commençons par un file pour savoir à quel type de dump nous affrontons.\n">
+<title>Chall - Fichier supprimé</title>
+
+<link rel='canonical' href='http://localhost:1313/p/chall-fichier-supprim%C3%A9/'>
+
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Chall - Fichier supprimé">
+<meta property='og:description' content="Introduction Votre cousin a trouvé une clé USB à la bibliothèque ce matin. Il n’est pas très doué avec les ordinateurs, alors il compte sur vous pour retrouver le propriétaire de cette clé !\nLe flag est l’identité du propriétaire sous la forme prénom_nom\nRecherche Quand nous téléchargeons le challenge, nous avons un fichier usb.images.\n1 2 3 4 5 6 ll total 2160512 -rw-r--r--@ 1 enzo staff 512M Jan 29 2013 ch2.dmp -rw-r--r--@ 1 enzo staff 512M Dec 28 20:02 cobalt_strike_hta.raw -rw-rw----@ 1 enzo staff 31M Sep 12 2021 usb.image Nous commençons par un file pour savoir à quel type de dump nous affrontons.\n">
+<meta property='og:url' content='http://localhost:1313/p/chall-fichier-supprim%C3%A9/'>
+<meta property='og:site_name' content='KIRÔN'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='USB' /><meta property='article:tag' content='Forensic' /><meta property='article:tag' content='CTF' /><meta property='article:tag' content='Chall' /><meta property='article:tag' content='Root-Me' /><meta property='article:published_time' content='2026-01-05T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-01-05T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Chall - Fichier supprimé">
+<meta name="twitter:description" content="Introduction Votre cousin a trouvé une clé USB à la bibliothèque ce matin. Il n’est pas très doué avec les ordinateurs, alors il compte sur vous pour retrouver le propriétaire de cette clé !\nLe flag est l’identité du propriétaire sous la forme prénom_nom\nRecherche Quand nous téléchargeons le challenge, nous avons un fichier usb.images.\n1 2 3 4 5 6 ll total 2160512 -rw-r--r--@ 1 enzo staff 512M Jan 29 2013 ch2.dmp -rw-r--r--@ 1 enzo staff 512M Dec 28 20:02 cobalt_strike_hta.raw -rw-rw----@ 1 enzo staff 31M Sep 12 2021 usb.image Nous commençons par un file pour savoir à quel type de dump nous affrontons.\n">
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/enzo-anime_hu_6e79a1c3b52c56b8.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">KIRÔN</a></h1>
+            <h2 class="site-description">Mes notes en forensic</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/enzo-ribeiro'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.linkedin.com/in/enzo-ribeiro-bb8794209/'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.975,20.667H3.117V9.059H6.975ZM5.072,3.462a2.011,2.011,0,1,0-.051,4.012h.026a2.012,2.012,0,1,0,.025-4.012ZM9.111,20.667h3.858V14.185a2.639,2.639,0,0,1,.127-.941,2.111,2.111,0,0,1,1.98-1.411c1.4,0,1.955,1.064,1.955,2.625v6.209h3.858V14.011c0-3.565-1.9-5.225-4.442-5.225A3.828,3.828,0,0,0,12.97,10.7V9.059H9.111c.051,1.089,0,11.609,0,11.609Z"/></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="http://localhost:1313/" selected>Français</option>
+                                
+                                    <option value="http://localhost:1313/zh-cn/" >中文</option>
+                                
+                                    <option value="http://localhost:1313/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Mode sombre</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#recherche">Recherche</a>
+      <ol>
+        <li><a href="#première-méthode">Première méthode</a></li>
+        <li><a href="#deuxième-méthode">Deuxième méthode</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/blue-team/" >
+                Blue Team
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/chall-fichier-supprim%C3%A9/">Chall - Fichier supprimé</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2026-01-05T00:00:00Z'>janv. 05, 2026</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minutes de lecture
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="introduction">Introduction
+</h2><p>Votre cousin a trouvé une clé USB à la bibliothèque ce matin. Il n’est pas très doué avec les ordinateurs, alors il compte sur vous pour retrouver le propriétaire de cette clé !</p>
+<p>Le flag est l’identité du propriétaire sous la forme <code>prénom_nom</code></p>
+<h2 id="recherche">Recherche
+</h2><p>Quand nous téléchargeons le challenge, nous avons un fichier <code>usb.images</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">ll
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">total <span class="m">2160512</span>
+</span></span><span class="line"><span class="cl">-rw-r--r--@ <span class="m">1</span> enzo  staff   512M Jan <span class="m">29</span>  <span class="m">2013</span> ch2.dmp
+</span></span><span class="line"><span class="cl">-rw-r--r--@ <span class="m">1</span> enzo  staff   512M Dec <span class="m">28</span> 20:02 cobalt_strike_hta.raw
+</span></span><span class="line"><span class="cl">-rw-rw----@ <span class="m">1</span> enzo  staff    31M Sep <span class="m">12</span>  <span class="m">2021</span> usb.image
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Nous commençons par un <code>file</code> pour savoir à quel type de dump nous affrontons.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">file usb.image
+</span></span><span class="line"><span class="cl">usb.image: DOS/MBR boot sector, code offset 0x3c+2, OEM-ID <span class="s2">&#34;mkfs.fat&#34;</span>, sectors/cluster 4, reserved sectors 4, root entries 512, sectors <span class="m">63488</span> <span class="o">(</span>volumes &lt;<span class="o">=</span><span class="m">32</span> MB<span class="o">)</span>, Media descriptor 0xf8, sectors/FAT 64, sectors/track 62, heads 124, hidden sectors 2048, reserved 0x1, serial number 0xc7ecde5b, label: <span class="s2">&#34;USB        &#34;</span>, FAT <span class="o">(</span><span class="m">16</span> bit<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Pour finir le chall nous avons plusieurs méthodes, nous allons en voir 2.</p>
+<h3 id="première-méthode">Première méthode
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">strings usb.image
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mkfs.fat
+</span></span><span class="line"><span class="cl">USB        FAT16
+</span></span><span class="line"><span class="cl">This is not a bootable disk.  Please insert a bootable floppy and
+</span></span><span class="line"><span class="cl">press any key to try again ...
+</span></span><span class="line"><span class="cl">USB
+</span></span><span class="line"><span class="cl">my,S,S
+</span></span><span class="line"><span class="cl">my,S
+</span></span><span class="line"><span class="cl">NONYME PNG
+</span></span><span class="line"><span class="cl">zy,S,S
+</span></span><span class="line"><span class="cl">IHDR
+</span></span><span class="line"><span class="cl">gAMA
+</span></span><span class="line"><span class="cl"> cHRM
+</span></span><span class="line"><span class="cl">bKGD
+</span></span><span class="line"><span class="cl">iTXtXML:com.adobe.xmp
+</span></span><span class="line"><span class="cl">&lt;?xpacket <span class="nv">begin</span><span class="o">=</span><span class="s1">&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;</span> <span class="nv">id</span><span class="o">=</span><span class="s1">&#39;W5M0MpCehiHzreSzNTczkc9d&#39;</span>?&gt;
+</span></span><span class="line"><span class="cl">&lt;x:xmpmeta xmlns:x<span class="o">=</span><span class="s1">&#39;adobe:ns:meta/&#39;</span> x:xmptk<span class="o">=</span><span class="s1">&#39;Image::ExifTool 11.88&#39;</span>&gt;
+</span></span><span class="line"><span class="cl">&lt;rdf:RDF xmlns:rdf<span class="o">=</span><span class="s1">&#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#39;</span>&gt;
+</span></span><span class="line"><span class="cl"> &lt;rdf:Description rdf:about<span class="o">=</span><span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">  xmlns:dc<span class="o">=</span><span class="s1">&#39;http://purl.org/dc/elements/1.1/&#39;</span>&gt;
+</span></span><span class="line"><span class="cl">  &lt;dc:creator&gt;
+</span></span><span class="line"><span class="cl">   &lt;rdf:Seq&gt;
+</span></span><span class="line"><span class="cl">    &lt;rdf:li&gt;Javier Turcot&lt;/rdf:li&gt;
+</span></span><span class="line"><span class="cl">   &lt;/rdf:Seq&gt;
+</span></span><span class="line"><span class="cl">  &lt;/dc:creator&gt;
+</span></span><span class="line"><span class="cl"> &lt;/rdf:Description&gt;
+</span></span><span class="line"><span class="cl">&lt;/rdf:RDF&gt;
+</span></span><span class="line"><span class="cl">&lt;/x:xmpmeta&gt;
+</span></span><span class="line"><span class="cl">&lt;?xpacket <span class="nv">end</span><span class="o">=</span><span class="s1">&#39;r&#39;</span>?&gt;<span class="err">&#39;</span>
+</span></span><span class="line"><span class="cl">IDATx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ici nous voyons le début d&rsquo;un secteur de fichier et à la ligne <code>&lt;rdf:li&gt;</code> nous pouvons voir le prénom et le nom.</p>
+<h3 id="deuxième-méthode">Deuxième méthode
+</h3><p>Extration des docs avec <code>foremost</code> :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">foremost usb.image
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">foremost: /opt/homebrew/etc/foremost.conf: No such file or directory
+</span></span><span class="line"><span class="cl">Processing: usb.image
+</span></span><span class="line"><span class="cl"><span class="p">|</span>*<span class="p">|</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Une fois terminé nous avons un dossier output :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">ll
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">total <span class="m">2160512</span>
+</span></span><span class="line"><span class="cl">-rw-r--r--@ <span class="m">1</span> enzo  staff   512M Jan <span class="m">29</span>  <span class="m">2013</span> ch2.dmp
+</span></span><span class="line"><span class="cl">-rw-r--r--@ <span class="m">1</span> enzo  staff   512M Dec <span class="m">28</span> 20:02 cobalt_strike_hta.raw
+</span></span><span class="line"><span class="cl">drwxr-xr--@ <span class="m">4</span> enzo  staff   128B Jan  <span class="m">5</span> 11:17 output
+</span></span><span class="line"><span class="cl">-rw-rw----@ <span class="m">1</span> enzo  staff    31M Sep <span class="m">12</span>  <span class="m">2021</span> usb.image
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Nous nous rendons dedans :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nb">cd</span> output/png
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ll
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">total <span class="m">488</span>
+</span></span><span class="line"><span class="cl">-rw-r--r--@ <span class="m">1</span> enzo  staff   240K Jan  <span class="m">5</span> 11:17 00000168.png
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">exiftool 00000168.png
+</span></span><span class="line"><span class="cl">ExifTool Version Number         : 13.44
+</span></span><span class="line"><span class="cl">File Name                       : 00000168.png
+</span></span><span class="line"><span class="cl">Directory                       : .
+</span></span><span class="line"><span class="cl">File Size                       : <span class="m">246</span> kB
+</span></span><span class="line"><span class="cl">File Modification Date/Time     : 2026:01:05 11:17:34+01:00
+</span></span><span class="line"><span class="cl">File Access Date/Time           : 2026:01:05 11:17:36+01:00
+</span></span><span class="line"><span class="cl">File Inode Change Date/Time     : 2026:01:05 11:17:34+01:00
+</span></span><span class="line"><span class="cl">File Permissions                : -rw-r--r--
+</span></span><span class="line"><span class="cl">File Type                       : PNG
+</span></span><span class="line"><span class="cl">File Type Extension             : png
+</span></span><span class="line"><span class="cl">MIME Type                       : image/png
+</span></span><span class="line"><span class="cl">Image Width                     : <span class="m">400</span>
+</span></span><span class="line"><span class="cl">Image Height                    : <span class="m">300</span>
+</span></span><span class="line"><span class="cl">Bit Depth                       : <span class="m">8</span>
+</span></span><span class="line"><span class="cl">Color Type                      : RGB
+</span></span><span class="line"><span class="cl">Compression                     : Deflate/Inflate
+</span></span><span class="line"><span class="cl">Filter                          : Adaptive
+</span></span><span class="line"><span class="cl">Interlace                       : Noninterlaced
+</span></span><span class="line"><span class="cl">Gamma                           : 2.2
+</span></span><span class="line"><span class="cl">White Point X                   : 0.3127
+</span></span><span class="line"><span class="cl">White Point Y                   : 0.329
+</span></span><span class="line"><span class="cl">Red X                           : 0.64
+</span></span><span class="line"><span class="cl">Red Y                           : 0.33
+</span></span><span class="line"><span class="cl">Green X                         : 0.3
+</span></span><span class="line"><span class="cl">Green Y                         : 0.6
+</span></span><span class="line"><span class="cl">Blue X                          : 0.15
+</span></span><span class="line"><span class="cl">Blue Y                          : 0.06
+</span></span><span class="line"><span class="cl">Background Color                : <span class="m">255</span> <span class="m">255</span> <span class="m">255</span>
+</span></span><span class="line"><span class="cl">XMP Toolkit                     : Image::ExifTool 11.88
+</span></span><span class="line"><span class="cl">Creator                         : Javier Turcot
+</span></span><span class="line"><span class="cl">Image Size                      : 400x300
+</span></span><span class="line"><span class="cl">Megapixels                      : 0.120
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ici nous voyons le nom du &ldquo;Creator&rdquo; qui est le flag du challenge.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/usb/">USB</a>
+        
+            <a href="/tags/forensic/">Forensic</a>
+        
+            <a href="/tags/ctf/">CTF</a>
+        
+            <a href="/tags/chall/">Chall</a>
+        
+            <a href="/tags/root-me/">Root-Me</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Contenus liés</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/chall-command-control/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Chall - Command &amp; Control</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/chall-cobalt-strike/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Chall - Cobalt Strike</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/macos-artefects/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MacOS - Artefects</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/macos-les-bases/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MacOS - Les Bases</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/linux-investigation-des-logs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux - Investigation des Logs</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 Enzo Ribeiro
+    </section>
+    
+    <section class="powerby">
+        Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e4dd2d7a791b3794ae9889b21f5598875c8169002592e3d7b6a9ed269f54068.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

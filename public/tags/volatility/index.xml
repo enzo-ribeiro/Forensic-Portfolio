@@ -7,13 +7,456 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>fr</language>
         <copyright>Enzo Ribeiro</copyright>
-        <lastBuildDate>Sun, 28 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/volatility/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 29 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/volatility/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Chall - Cobalt Strike</title>
         <link>http://localhost:1313/p/chall-cobalt-strike/</link>
-        <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate>
+        <pubDate>Mon, 29 Dec 2025 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/p/chall-cobalt-strike/</guid>
-        <description></description>
+        <description>&lt;h2 id=&#34;introdution&#34;&gt;Introdution
+&lt;/h2&gt;&lt;p&gt;Je suis alternant à l&amp;rsquo;ESGI et en intervenant j&amp;rsquo;ai Christopher THIEFIN (Processus Thief) qui a donné plusieurs cours à ma promo. Un des cours donnés est la Forensique Numérique, nous avons donc eu ce challenge à résoudre.&lt;/p&gt;
+&lt;p&gt;Le but est de retrouver certaines informations sur une capture mémoire d&amp;rsquo;un poste infecté.&lt;/p&gt;
+&lt;h2 id=&#34;consigne&#34;&gt;Consigne
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Identifier le binaire malveillant téléchargé dans un répertoire temporaire,&lt;/li&gt;
+&lt;li&gt;Identifier le hash NT de l&amp;rsquo;administrateur,&lt;/li&gt;
+&lt;li&gt;Identifier l&amp;rsquo;adresse IP probable de l&amp;rsquo;attaquant&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;recherche&#34;&gt;Recherche
+&lt;/h2&gt;&lt;p&gt;Tout d&amp;rsquo;abord nous devons installer volatility. Il y a pas mal de tutos sur internet pour ça, je vous laisse checker tout ça.&lt;/p&gt;
+&lt;p&gt;De mon côté, à l&amp;rsquo;installation j&amp;rsquo;ai préféré faire un alias pour m&amp;rsquo;éviter les commandes à rallonge avec les chemins absolut.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# VOLATILITY&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;alias&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;vol&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;python3 /Users/enzo/volatility3/vol.py&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;La capture mémoire est au nom de &lt;code&gt;cobalt_strike_hta.raw&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;binaire-malveillant&#34;&gt;Binaire Malveillant
+&lt;/h3&gt;&lt;p&gt;Pour trouver le binaire malveillant nous devons scanner les différents processus en cours durant la capture :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -f cobalt_strike_hta.raw windows.psscan.PsScan   
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Cette commande nous renvoie tout les processus mais un seul nous inrtéresse :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2232    988     evil.exe        0x1f65fb30      10      248     1       True    2023-01-01 19:21:58.000000 UTC  N/A     Disabled
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Nous avons donc la première étape.&lt;/p&gt;
+&lt;h3 id=&#34;nt-hash&#34;&gt;NT Hash
+&lt;/h3&gt;&lt;p&gt;Pour récupérer les hash NT des utilisateurs nous avons un plugins intégré :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -h
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    windows.hashdump.Hashdump
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                        Dumps user hashes from memory
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;En applications ça nous donne ça :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -f cobalt_strike_hta.raw windows.hashdump.Hashdump 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Volatility &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; Framework 2.27.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Administrateur  &lt;span class=&#34;m&#34;&gt;500&lt;/span&gt;     aad3b435b51404eeaad3b435b51404ee        8758304b6af01bb8ce1691495d29cb61
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Invité  &lt;span class=&#34;m&#34;&gt;501&lt;/span&gt;     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;POC-USER        &lt;span class=&#34;m&#34;&gt;1000&lt;/span&gt;    aad3b435b51404eeaad3b435b51404ee        8758304b6af01bb8ce1691495d29cb61
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Nous avons maintenant les hash NT des utilisateurs du poste infecté.&lt;/p&gt;
+&lt;h4 id=&#34;pour-le-fun&#34;&gt;Pour le fun
+&lt;/h4&gt;&lt;p&gt;Nous pouvons nous rendre sur CrackStation pour avoir le hash en claire :&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;Hash&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;Type&lt;/th&gt;
+          &lt;th style=&#34;text-align: right&#34;&gt;Result&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;8758304b6af01bb8ce1691495d29cb61&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;NTLM&lt;/td&gt;
+          &lt;td style=&#34;text-align: right&#34;&gt;spiderman&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;ip-de-lattanquant&#34;&gt;IP de l&amp;rsquo;attanquant
+&lt;/h3&gt;&lt;p&gt;Pour trouver les connexions réseau nous avons un autre plugin &lt;code&gt;windows.netscan.NetScan&lt;/code&gt;.
+Voici ce que donne le plugin sur la capture mémoire.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -f cobalt_strike_hta.raw windows.netscan.NetScan
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Volatility &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; Framework 2.27.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Progress:  100.00               PDB scanning finished
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Offset  Proto   LocalAddr       LocalPort       ForeignAddr     ForeignPort     State   PID     Owner   Created
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x47f8010       TCPv4   -       &lt;span class=&#34;m&#34;&gt;49172&lt;/span&gt;   172.19.63.255   &lt;span class=&#34;m&#34;&gt;1337&lt;/span&gt;    CLOSED  &lt;span class=&#34;m&#34;&gt;324&lt;/span&gt;     taskmgr.exe     N/A
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa8d0010       TCPv4   -       &lt;span class=&#34;m&#34;&gt;49172&lt;/span&gt;   172.19.63.255   &lt;span class=&#34;m&#34;&gt;1337&lt;/span&gt;    CLOSED  &lt;span class=&#34;m&#34;&gt;324&lt;/span&gt;     taskmgr.exe     N/A
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1e4372c0      UDPv6   fe80::8dfc:d689:b527:b151       &lt;span class=&#34;m&#34;&gt;49726&lt;/span&gt;   *       &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;               &lt;span class=&#34;m&#34;&gt;1308&lt;/span&gt;    svchost.exe     2023-01-01 17:29:12.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1e4430e0      TCPv4   0.0.0.0 &lt;span class=&#34;m&#34;&gt;49158&lt;/span&gt;   0.0.0.0 &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       LISTENING       &lt;span class=&#34;m&#34;&gt;512&lt;/span&gt;     lsass.exe       -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1e463010      UDPv6   ::1     &lt;span class=&#34;m&#34;&gt;49727&lt;/span&gt;   *       &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;               &lt;span class=&#34;m&#34;&gt;1308&lt;/span&gt;    svchost.exe     2023-01-01 17:29:12.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Pour éviter de faire tout les processus qui ont une connexion externe nous pouvons filtrer la sortie avec un grep :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -f cobalt_strike_hta.raw windows.netscan.NetScan &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep evil
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fc92a80 100.0TCPv4   172.19.59.55scan49239fin51.38.35.62     &lt;span class=&#34;m&#34;&gt;8182&lt;/span&gt;    CLOSED  &lt;span class=&#34;m&#34;&gt;2232&lt;/span&gt;    evil.exe        -
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Et voilà nous avons le dernier &lt;code&gt;flag&lt;/code&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Chall - Command &amp; Control</title>
+        <link>http://localhost:1313/p/chall-command-control/</link>
+        <pubDate>Mon, 29 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/chall-command-control/</guid>
+        <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
+&lt;/h2&gt;&lt;p&gt;Challenge Root-Me&lt;/p&gt;
+&lt;h3 id=&#34;niveau-2&#34;&gt;Niveau 2
+&lt;/h3&gt;&lt;p&gt;Berthier, grâce à vous la machine a été identifiée, vous avez demandé un dump de la mémoire vive de la machine et vous aimeriez bien jeter un coup d’œil aux logs de l’antivirus. Malheureusement, vous n’avez pas pensé à noter le nom de cette machine. Heureusement ce n’est pas un problème, vous disposez du dump de memoire.&lt;/p&gt;
+&lt;p&gt;Le mot de passe de validation est le nom de la machine.&lt;/p&gt;
+&lt;h4 id=&#34;recherche&#34;&gt;Recherche
+&lt;/h4&gt;&lt;p&gt;Nous avons donc un fichier, &lt;code&gt;ch2.dmp&lt;/code&gt;. Je lance un &lt;code&gt;vol -h&lt;/code&gt; pour voir quel argument je peux utiliser pour avoir le nom du poste.&lt;/p&gt;
+&lt;p&gt;J&amp;rsquo;ai un argument intéressant :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -h 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    windows.envars.Envars
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                        Display process environment variables
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;En effet, les noms des ordinateurs/postes se trouve toujours dans les variables d&amp;rsquo;environnement.
+Nous lançons donc la commande suivante :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -f ch2.dmp windows.envars.Envars
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Volatility &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; Framework 2.27.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Progress:  100.00               PDB scanning finished
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PID     Process Block   Variable        Value
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;560&lt;/span&gt;     services.exe    0x120ea8        COMPUTERNAME    WIN-ETSA91RKCFP
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Nous avons maintenant récupérer le nom du poste, et donc, le flag du challenge.&lt;/p&gt;
+&lt;h3 id=&#34;niveau-3&#34;&gt;Niveau 3
+&lt;/h3&gt;&lt;p&gt;Berthier, l’antivirus n’a rien trouvé. A vous d’essayer de trouver le programme malveillant dans le dump de la mémoire vive. Le mot de passe de validation est le hash MD5 (en minuscules) du chemin d’accès absolu vers l’exécutable.&lt;/p&gt;
+&lt;h4 id=&#34;recherche-1&#34;&gt;Recherche
+&lt;/h4&gt;&lt;p&gt;Les programmes/processus sont lancé grâce à une commande. Pour connaître le programme malveillant nous pouvons utiliser l&amp;rsquo;argument &lt;code&gt;windows.cmdline.CmdLine&lt;/code&gt; :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;56
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -f ch2.dmp windows.cmdline.CmdLine
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Volatility &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; Framework 2.27.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Progress:  100.00               PDB scanning finished
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PID     Process Args
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;       System  -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;308&lt;/span&gt;     smss.exe        &lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;ystemRoot&lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;mss.exe
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;404&lt;/span&gt;     csrss.exe       %SystemRoot%&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\c&lt;/span&gt;srss.exe &lt;span class=&#34;nv&#34;&gt;ObjectDirectory&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows &lt;span class=&#34;nv&#34;&gt;SharedSection&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1024,12288,512 &lt;span class=&#34;nv&#34;&gt;Windows&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;On &lt;span class=&#34;nv&#34;&gt;SubSystemType&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Windows &lt;span class=&#34;nv&#34;&gt;ServerDll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;basesrv,1 &lt;span class=&#34;nv&#34;&gt;ServerDll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;winsrv:UserServerDllInitialization,3 &lt;span class=&#34;nv&#34;&gt;ServerDll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;winsrv:ConServerDllInitialization,2 &lt;span class=&#34;nv&#34;&gt;ServerDll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;sxssrv,4 &lt;span class=&#34;nv&#34;&gt;ProfileControl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Off &lt;span class=&#34;nv&#34;&gt;MaxRequestThreads&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;16&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;456&lt;/span&gt;     wininit.exe     -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;468&lt;/span&gt;     csrss.exe       %SystemRoot%&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\c&lt;/span&gt;srss.exe &lt;span class=&#34;nv&#34;&gt;ObjectDirectory&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows &lt;span class=&#34;nv&#34;&gt;SharedSection&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1024,12288,512 &lt;span class=&#34;nv&#34;&gt;Windows&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;On &lt;span class=&#34;nv&#34;&gt;SubSystemType&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Windows &lt;span class=&#34;nv&#34;&gt;ServerDll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;basesrv,1 &lt;span class=&#34;nv&#34;&gt;ServerDll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;winsrv:UserServerDllInitialization,3 &lt;span class=&#34;nv&#34;&gt;ServerDll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;winsrv:ConServerDllInitialization,2 &lt;span class=&#34;nv&#34;&gt;ServerDll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;sxssrv,4 &lt;span class=&#34;nv&#34;&gt;ProfileControl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Off &lt;span class=&#34;nv&#34;&gt;MaxRequestThreads&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;16&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;500&lt;/span&gt;     winlogon.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;560&lt;/span&gt;     services.exe    C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ervices.exe
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;576&lt;/span&gt;     lsass.exe       C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\l&lt;/span&gt;sass.exe
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;584&lt;/span&gt;     lsm.exe C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\l&lt;/span&gt;sm.exe
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;692&lt;/span&gt;     svchost.exe     C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;vchost.exe -k DcomLaunch
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;764&lt;/span&gt;     svchost.exe     C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;vchost.exe -k RPCSS
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;832&lt;/span&gt;     svchost.exe     C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;vchost.exe -k LocalServiceNetworkRestricted
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;904&lt;/span&gt;     svchost.exe     C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;vchost.exe -k LocalSystemNetworkRestricted
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;928&lt;/span&gt;     svchost.exe     C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;vchost.exe -k netsvcs
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;1084&lt;/span&gt;    svchost.exe     C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;vchost.exe -k LocalService
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;1172&lt;/span&gt;    svchost.exe     C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;vchost.exe -k NetworkService
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;1220&lt;/span&gt;    AvastSvc.exe    &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Program Files\AVAST Software\Avast\AvastSvc.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;1712&lt;/span&gt;    spoolsv.exe     C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;poolsv.exe
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;1748&lt;/span&gt;    svchost.exe     C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;vchost.exe -k LocalServiceNoNetwork
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;1872&lt;/span&gt;    sppsvc.exe      -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;1968&lt;/span&gt;    vmtoolsd.exe    &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Program Files\VMware\VMware Tools\vmtoolsd.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;336&lt;/span&gt;     wlms.exe        -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;448&lt;/span&gt;     VMUpgradeHelpe  -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;1612&lt;/span&gt;    TPAutoConnSvc.  &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Program Files\VMware\VMware Tools\TPAutoConnSvc.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2352&lt;/span&gt;    taskhost.exe    &lt;span class=&#34;s2&#34;&gt;&amp;#34;taskhost.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2496&lt;/span&gt;    dwm.exe &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Windows\system32\Dwm.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2548&lt;/span&gt;    explorer.exe    C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\E&lt;/span&gt;xplorer.EXE
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2568&lt;/span&gt;    TPAutoConnect.  TPAutoConnect.exe -q -i vmware -a COM1 -F &lt;span class=&#34;m&#34;&gt;30&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2600&lt;/span&gt;    conhost.exe     -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2660&lt;/span&gt;    VMwareTray.exe  &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Program Files\VMware\VMware Tools\VMwareTray.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2676&lt;/span&gt;    VMwareUser.exe  &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Program Files\VMware\VMware Tools\VMwareUser.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2720&lt;/span&gt;    AvastUI.exe     &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Program Files\AVAST Software\Avast\AvastUI.exe&amp;#34;&lt;/span&gt; /nogui
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2744&lt;/span&gt;    StikyNot.exe    &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Windows\System32\StikyNot.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2772&lt;/span&gt;    iexplore.exe    &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Users\John Doe\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\iexplore.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2900&lt;/span&gt;    SearchIndexer.  C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;earchIndexer.exe /Embedding
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;3176&lt;/span&gt;    wmpnetwk.exe    &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Program Files\Windows Media Player\wmpnetwk.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;3352&lt;/span&gt;    svchost.exe     C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;vchost.exe -k LocalServiceAndNoImpersonation
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;3452&lt;/span&gt;    swriter.exe     -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;3512&lt;/span&gt;    soffice.exe     -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;3556&lt;/span&gt;    soffice.bin     -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;3564&lt;/span&gt;    soffice.bin     &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Program Files\LibreOffice 3.6\program\swriter.exe&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;-o&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Users\John Doe\Documents\Procedure Winpmemdump.odt&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;--writer&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;-env:OOO_CWD=2C:\\Users\\John Doe\\Documents&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;3624&lt;/span&gt;    svchost.exe     C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;vchost.exe -k secsvcs
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;1232&lt;/span&gt;    taskmgr.exe     &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Windows\system32\taskmgr.exe&amp;#34;&lt;/span&gt; /4
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;3152&lt;/span&gt;    cmd.exe &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Windows\system32\cmd.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;3228&lt;/span&gt;    conhost.exe     -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;1616&lt;/span&gt;    cmd.exe cmd.exe
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;2168&lt;/span&gt;    conhost.exe     &lt;span class=&#34;se&#34;&gt;\?&lt;/span&gt;?&lt;span class=&#34;se&#34;&gt;\C&lt;/span&gt;:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\c&lt;/span&gt;onhost.exe
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;1136&lt;/span&gt;    iexplore.exe    &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Program Files\Internet Explorer\iexplore.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Program Files\Internet Explorer\iexplore.exe&amp;#34;&lt;/span&gt; SCODEF:1136 CREDAT:71937
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;1720&lt;/span&gt;    audiodg.exe     C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\A&lt;/span&gt;UDIODG.EXE 0x298
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;3144&lt;/span&gt;    winpmem-1.3.1.  winpmem-1.3.1.exe  ram.dmp
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Ici une commande m&amp;rsquo;interpele :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;C:\Users\John Doe\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\iexplore.exe
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;En effet, ce n&amp;rsquo;est pas un chemin &amp;ldquo;normal&amp;rdquo; pour un programme.&lt;/p&gt;
+&lt;p&gt;Pour être sur nous pouvons regarder les connexions réseau de ce programme :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -f ch2.dmp windows.netscan.NetScan &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep iexplore
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1dedb4f8 100.0TCPv4   127.0.0.1DB scan49178fin127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;2772&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fa21008      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58785&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fa3ea48      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58808&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fa41008      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58797&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fa468b0      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58747&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   CLOSED  &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fa5f3d8      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58823&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   CLOSED  &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fa78ac0      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58806&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fa80880      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58781&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fa83c98      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58727&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fa859c0      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58740&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   CLOSED  &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    N/A
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fa9a678      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58787&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1faa97f8      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58742&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fab2008      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58791&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fad2988      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58749&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fada310      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58733&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fae1ba0      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58815&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1faeddf8      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58811&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1faf7c58      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58783&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fafe208      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58738&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fb80df8      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58792&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fbca1a0      UDPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;60151&lt;/span&gt;   *       &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;               &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    2013-01-12 16:57:47.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fca0820      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58729&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   CLOSED  &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fd57da0      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58795&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fd92378      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58817&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fd9b580      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58731&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x1fd9f838      TCPv4   127.0.0.1       &lt;span class=&#34;m&#34;&gt;58758&lt;/span&gt;   127.0.0.1       &lt;span class=&#34;m&#34;&gt;12080&lt;/span&gt;   ESTABLISHED     &lt;span class=&#34;m&#34;&gt;3044&lt;/span&gt;    iexplore.exe    -
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Ici nous pouvons être quasiement sur que ce programme est malveillant, car internet explorer n&amp;rsquo;est pas sensé communiqué en localhost et encore moins sur le port 12080.&lt;/p&gt;
+&lt;p&gt;Pour avoir le flag, voici la commande qu&amp;rsquo;il faut entrer :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; -n &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Users\John Doe\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\iexplore.exe&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; md5sum
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;49979149632639432397b3a1df8cb43d
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;niveau-5&#34;&gt;Niveau 5
+&lt;/h3&gt;&lt;p&gt;Berthier, manifestement l’attaquant dispose des mots de passe des systèmes. Le programme malveillant semble être maintenu manuellement sur les machines. Le parc de la société ACME semblant à jour, c’est peut être les mots de passe qui sont faibles. John, l’administrateur des systèmes ne vous croit pas. Prouvez-lui.&lt;/p&gt;
+&lt;p&gt;Retrouvez le mot de passe de l’utilisateur.&lt;/p&gt;
+&lt;h4 id=&#34;recherche-2&#34;&gt;Recherche
+&lt;/h4&gt;&lt;p&gt;Grâce au cours de Christopher Thiefin (Processus Thief sur Youtube) je connais un argument dans volatility &lt;code&gt;windows.hashdump.Hashdumps&lt;/code&gt;. Nous allons donc utiliser cet argument pour récupérer le mot de passe de John :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -f ch2.dmp windows.hashdump.Hashdump
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Volatility &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; Framework 2.27.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;User    rid     lmhash  nthash
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Administrator   &lt;span class=&#34;m&#34;&gt;500&lt;/span&gt;     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Guest   &lt;span class=&#34;m&#34;&gt;501&lt;/span&gt;     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;John Doe        &lt;span class=&#34;m&#34;&gt;1000&lt;/span&gt;    aad3b435b51404eeaad3b435b51404ee        b9f917853e3dbf6e6831ecce60725930
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Ici, nous avons le hash du mot de passe de l&amp;rsquo;utilisateur John Doe.&lt;/p&gt;
+&lt;p&gt;Nous allons le passer dans &lt;code&gt;CrackStation&lt;/code&gt; pour l&amp;rsquo;avoir en clair.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;Hash&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;Type&lt;/th&gt;
+          &lt;th style=&#34;text-align: right&#34;&gt;Result&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;b9f917853e3dbf6e6831ecce60725930&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;NTLM&lt;/td&gt;
+          &lt;td style=&#34;text-align: right&#34;&gt;passw0rd&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+</description>
         </item>
         
     </channel>
