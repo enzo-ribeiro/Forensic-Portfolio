@@ -126,8 +126,8 @@ python3 examples/secretsdump.py -system examples/regbackup/registry/SYSTEM -ntds
 krbtgt:aes256-cts-hmac-sha1-96:85c422e6d4f4e340b445c6a3f16d8d7b25bfdf290d956134bc0d5b6ab272b475
 ````
 Voici l'explication de cette commande : 
-    * ``-system`` : Déclare la "ruche" SYSTEM du dump. 
-    * ``-ntds`` : Décalre le fichier NTDS.dit qui nous intéresse
+* ``-system`` : Déclare la "ruche" SYSTEM du dump. 
+* ``-ntds`` : Décalre le fichier NTDS.dit qui nous intéresse
 Le grep n'est pas nécessaire mais il est très utile car il y a beaucoup d'utilisateur. 
 
 Nous avons donc trouvé le flag de ce challenge. 
