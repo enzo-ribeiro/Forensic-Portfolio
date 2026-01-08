@@ -1,7 +1,7 @@
 +++
 author = "Enzo"
 title = "Chall - Cobalt Strike"
-date = "2025-12-29"
+date = "2025-12-28"
 categories = [
     "Blue Team"
 ]
