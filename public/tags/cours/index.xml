@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Cours on KIRÔN</title>
+        <link>http://localhost:1313/tags/cours/</link>
+        <description>Recent content in Cours on KIRÔN</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>fr</language>
+        <copyright>Enzo Ribeiro</copyright>
+        <lastBuildDate>Tue, 03 Feb 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/cours/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Cours - SoC</title>
+        <link>http://localhost:1313/p/cours-soc/</link>
+        <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/cours-soc/</guid>
+        <description>&lt;h2 id=&#34;cest-quoi-&#34;&gt;C&amp;rsquo;est quoi ?
+&lt;/h2&gt;&lt;p&gt;On parle souvent de SOC (Security Operation Center), mais qu&amp;rsquo;est ce que c&amp;rsquo;est ?&lt;/p&gt;
+&lt;p&gt;Un SOC est considéré comme la première ligne de défense, il possède de nombreuses fonctions :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;l’identification, caractérisation et traitement des incidents&lt;/li&gt;
+&lt;li&gt;la fourniture d’une assistance à la gestion des incidents&lt;/li&gt;
+&lt;li&gt;la diffusion des informations relatives aux incidents&lt;/li&gt;
+&lt;li&gt;la coordination des incidents&lt;/li&gt;
+&lt;li&gt;la détection de comportements caractéristiques à un mode opératoire donné&lt;/li&gt;
+&lt;li&gt;threat hunting&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;À cela, ajoutons des actions d’évaluations de vulnérabilités ou la réalisation de simulations d’attaques telles que les tests d’intrusions. Une liste complète des fonctions proposées par le SOC est disponible aux pages 14-16 de l’ouvrage 11 Strategies of a World-Class Cybersecurity Operations Center, que vous retrouverez à l’adresse suivante : &lt;a class=&#34;link&#34; href=&#34;https://www.mitre.org/sites/default/files/2022-04/11-strategies-of-a-world-class-cybersecurity-operations-center.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.mitre.org/sites/default/files/2022-04/11-strategies-of-a-world-class-cybersecurity-operations-center.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;L’identification et la caractérisation d’une menace apportent un contexte induisant la conduite à tenir. Si la menace est considérée comme valide, le CSIRT prendra le relais.&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

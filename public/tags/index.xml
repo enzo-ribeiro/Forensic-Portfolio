@@ -7,10 +7,26 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>fr</language>
         <copyright>Enzo Ribeiro</copyright>
-        <lastBuildDate>Mon, 05 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 03 Feb 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Cours</title>
+        <link>http://localhost:1313/tags/cours/</link>
+        <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/cours/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>SOC</title>
+        <link>http://localhost:1313/tags/soc/</link>
+        <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/soc/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Chall</title>
         <link>http://localhost:1313/tags/chall/</link>
-        <pubDate>Mon, 05 Jan 2026 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 07 Jan 2026 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/tags/chall/</guid>
         <description></description>
@@ -18,7 +34,7 @@
         <item>
         <title>CTF</title>
         <link>http://localhost:1313/tags/ctf/</link>
-        <pubDate>Mon, 05 Jan 2026 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 07 Jan 2026 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/tags/ctf/</guid>
         <description></description>
@@ -26,15 +42,31 @@
         <item>
         <title>Forensic</title>
         <link>http://localhost:1313/tags/forensic/</link>
-        <pubDate>Mon, 05 Jan 2026 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 07 Jan 2026 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/tags/forensic/</guid>
         <description></description>
         </item>
         <item>
+        <title>LDAP</title>
+        <link>http://localhost:1313/tags/ldap/</link>
+        <pubDate>Wed, 07 Jan 2026 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/ldap/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>NTDS</title>
+        <link>http://localhost:1313/tags/ntds/</link>
+        <pubDate>Wed, 07 Jan 2026 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/ntds/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Root-Me</title>
         <link>http://localhost:1313/tags/root-me/</link>
-        <pubDate>Mon, 05 Jan 2026 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 07 Jan 2026 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/tags/root-me/</guid>
         <description></description>
