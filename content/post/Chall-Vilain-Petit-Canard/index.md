@@ -1,7 +1,7 @@
 +++
 author = "Enzo"
 title = "Chall - Vilian Petit Canard"
-date = "2026-02-0'"
+date = "2026-02-04"
 categories = [
     "Blue Team"
 ]
