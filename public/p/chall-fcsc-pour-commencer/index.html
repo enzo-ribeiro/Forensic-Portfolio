@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Introduction 1 Vous vous préparez à analyser une capture mémoire et vous notez quelques informations sur la machine avant de plonger dans l’analyse :\nnom d’utilisateur, nom de la machine, adresse IPv4, non locale, de la machine. Le flag est au format FCSC{&lt;nom d'utilisateur&gt;:&lt;nom de la machine&gt;:&lt;adresse IPv4&gt;} où :\n&lt;nom d'utilisateur&gt; est le nom de l’utilisateur qui utilise la machine, &lt;nom de la machine&gt; est le nom de la machine analysée et &lt;adresse IPv4&gt; est l’adresse IPv4, non locale, de la machine. Par exemple : FCSC{Arthur:Ordinateur-de-rct:192.168.1.150}.\n">
+<title>Chall - FCSC Pour commencer</title>
+
+<link rel='canonical' href='http://localhost:1313/p/chall-fcsc-pour-commencer/'>
+
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Chall - FCSC Pour commencer">
+<meta property='og:description' content="Introduction 1 Vous vous préparez à analyser une capture mémoire et vous notez quelques informations sur la machine avant de plonger dans l’analyse :\nnom d’utilisateur, nom de la machine, adresse IPv4, non locale, de la machine. Le flag est au format FCSC{&lt;nom d'utilisateur&gt;:&lt;nom de la machine&gt;:&lt;adresse IPv4&gt;} où :\n&lt;nom d'utilisateur&gt; est le nom de l’utilisateur qui utilise la machine, &lt;nom de la machine&gt; est le nom de la machine analysée et &lt;adresse IPv4&gt; est l’adresse IPv4, non locale, de la machine. Par exemple : FCSC{Arthur:Ordinateur-de-rct:192.168.1.150}.\n">
+<meta property='og:url' content='http://localhost:1313/p/chall-fcsc-pour-commencer/'>
+<meta property='og:site_name' content='KIRÔN'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Forensic' /><meta property='article:tag' content='CTF' /><meta property='article:tag' content='Chall' /><meta property='article:tag' content='FCSC' /><meta property='article:tag' content='Mémoire' /><meta property='article:tag' content='Volatilit' /><meta property='article:tag' content='Windows' /><meta property='article:published_time' content='2026-02-05T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-02-05T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Chall - FCSC Pour commencer">
+<meta name="twitter:description" content="Introduction 1 Vous vous préparez à analyser une capture mémoire et vous notez quelques informations sur la machine avant de plonger dans l’analyse :\nnom d’utilisateur, nom de la machine, adresse IPv4, non locale, de la machine. Le flag est au format FCSC{&lt;nom d'utilisateur&gt;:&lt;nom de la machine&gt;:&lt;adresse IPv4&gt;} où :\n&lt;nom d'utilisateur&gt; est le nom de l’utilisateur qui utilise la machine, &lt;nom de la machine&gt; est le nom de la machine analysée et &lt;adresse IPv4&gt; est l’adresse IPv4, non locale, de la machine. Par exemple : FCSC{Arthur:Ordinateur-de-rct:192.168.1.150}.\n">
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/enzo-anime_hu_6e79a1c3b52c56b8.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">KIRÔN</a></h1>
+            <h2 class="site-description">Mes notes en forensic</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/enzo-ribeiro'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.linkedin.com/in/enzo-ribeiro-bb8794209/'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.975,20.667H3.117V9.059H6.975ZM5.072,3.462a2.011,2.011,0,1,0-.051,4.012h.026a2.012,2.012,0,1,0,.025-4.012ZM9.111,20.667h3.858V14.185a2.639,2.639,0,0,1,.127-.941,2.111,2.111,0,0,1,1.98-1.411c1.4,0,1.955,1.064,1.955,2.625v6.209h3.858V14.011c0-3.565-1.9-5.225-4.442-5.225A3.828,3.828,0,0,0,12.97,10.7V9.059H9.111c.051,1.089,0,11.609,0,11.609Z"/></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="http://localhost:1313/" selected>Français</option>
+                                
+                                    <option value="http://localhost:1313/zh-cn/" >中文</option>
+                                
+                                    <option value="http://localhost:1313/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Mode sombre</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#introduction-1">Introduction 1</a></li>
+    <li><a href="#recherche">Recherche</a>
+      <ol>
+        <li><a href="#utilisateurs">Utilisateurs</a></li>
+        <li><a href="#nom-du-poste">Nom du poste</a></li>
+        <li><a href="#ip-du-poste">IP du poste</a></li>
+      </ol>
+    </li>
+    <li><a href="#introduction-2">Introduction 2</a>
+      <ol>
+        <li><a href="#binaire--documents">Binaire &amp; Documents</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/blue-team/" >
+                Blue Team
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/chall-fcsc-pour-commencer/">Chall - FCSC Pour commencer</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2026-02-05T00:00:00Z'>févr. 05, 2026</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minutes de lecture
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="introduction-1">Introduction 1
+</h2><p>Vous vous préparez à analyser une capture mémoire et vous notez quelques informations sur la machine avant de plonger dans l’analyse :</p>
+<pre><code>nom d’utilisateur,
+nom de la machine,
+adresse IPv4, non locale, de la machine.
+</code></pre>
+<p>Le flag est au format <code>FCSC{&lt;nom d'utilisateur&gt;:&lt;nom de la machine&gt;:&lt;adresse IPv4&gt;}</code> où :</p>
+<pre><code>&lt;nom d'utilisateur&gt; est le nom de l’utilisateur qui utilise la machine,
+&lt;nom de la machine&gt; est le nom de la machine analysée et
+&lt;adresse IPv4&gt; est l’adresse IPv4, non locale, de la machine.
+</code></pre>
+<p>Par exemple : FCSC{Arthur:Ordinateur-de-rct:192.168.1.150}.</p>
+<h2 id="recherche">Recherche
+</h2><p>Pour réaliser ce chall nous utiliserons volatility3.
+Une fois de <code>.tar.gz</code> téléchargé et extrait, nous pouvons commencer la recherche.</p>
+<h3 id="utilisateurs">Utilisateurs
+</h3><p>Pour connaître les noms d&rsquo;utilisateur présents sur la machine nous pouvons utiliser le plugin <code>hashdump</code> de vol.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -f analyse-memoire.dmp windows.hashdump.Hashdump
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Volatility <span class="m">3</span> Framework 2.27.0
+</span></span><span class="line"><span class="cl">/Users/enzo/volatility3/volatility3/framework/deprecation.py:28: FutureWarning: This API <span class="o">(</span>volatility3.plugins.windows.registry.hashdump.Hashdump.run<span class="o">)</span> will be removed in the first release after 2026-09-25. This plugin has been renamed, please call volatility3.plugins.windows.registry.hashdump.Hashdump rather than volatility3.plugins.windows.hashdump.Hashdump.
+</span></span><span class="line"><span class="cl">  warnings.warn<span class="o">(</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">User    rid     lmhash  nthash
+</span></span><span class="line"><span class="cl">/Users/enzo/volatility3/volatility3/framework/deprecation.py:105: FutureWarning: This plugin <span class="o">(</span>volatility3.plugins.windows.hashdump.Hashdump<span class="o">)</span> has been renamed and will be removed in the first release after 2026-09-25. Please ensure all method calls to this plugin are replaced with calls to volatility3.plugins.windows.registry.hashdump.Hashdump
+</span></span><span class="line"><span class="cl">  warnings.warn<span class="o">(</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Administrateur  <span class="m">500</span>     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+</span></span><span class="line"><span class="cl">Invité  <span class="m">501</span>     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+</span></span><span class="line"><span class="cl">DefaultAccount  <span class="m">503</span>     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+</span></span><span class="line"><span class="cl">WDAGUtilityAccount      <span class="m">504</span>     aad3b435b51404eeaad3b435b51404ee        f3ae0fa4a6f8774079f9316acc07eaee
+</span></span><span class="line"><span class="cl">userfcsc-10     <span class="m">1001</span>    aad3b435b51404eeaad3b435b51404ee        3f2360db87910bf0120f8de2b2a0807b
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ici on voit un nom d&rsquo;utilisateur qui paraît plus logique, on devine que c&rsquo;est cet utilisateur qui utilise le poste.
+On a le début du flag <code>FCSC{userfcsc-10:xx:xx}</code>.</p>
+<h3 id="nom-du-poste">Nom du poste
+</h3><p>Pour obtenir le nom du poste, nous pouvons utiliser le plugin <code>sessions</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -f analyse-memoire.dmp windows.sessions.Sessions
+</span></span><span class="line"><span class="cl">Volatility <span class="m">3</span> Framework 2.27.0
+</span></span><span class="line"><span class="cl">Progress:  100.00               PDB scanning finished
+</span></span><span class="line"><span class="cl">Session ID      Session Type    Process ID      Process User Name       Create Time
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">N/A     -       <span class="m">4</span>       System  -       2025-04-01 22:10:38.000000 UTC
+</span></span><span class="line"><span class="cl">N/A     -       <span class="m">124</span>     Registry        -       2025-04-01 22:10:34.000000 UTC
+</span></span><span class="line"><span class="cl">N/A     -       <span class="m">452</span>     smss.exe        -       2025-04-01 22:10:38.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">556</span>     csrss.exe       /SYSTEM 2025-04-01 22:10:43.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">656</span>     wininit.exe     /SYSTEM 2025-04-01 22:10:43.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">800</span>     services.exe    /SYSTEM 2025-04-01 22:10:43.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">824</span>     lsass.exe       /SYSTEM 2025-04-01 22:10:43.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">936</span>     svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:44.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">960</span>     fontdrvhost.ex  Font Driver Host/UMFD-0 2025-04-01 22:10:44.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">508</span>     svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:44.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">648</span>     svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:44.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">1040</span>    svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:44.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">1060</span>    svchost.exe     AUTORITE NT/SERVICE LOCAL       2025-04-01 22:10:44.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">1168</span>    svchost.exe     AUTORITE NT/SERVICE LOCAL       2025-04-01 22:10:44.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">1196</span>    svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:45.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">1220</span>    svchost.exe     AUTORITE NT/SERVICE LOCAL       2025-04-01 22:10:45.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">1348</span>    svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:45.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">1356</span>    svchost.exe     AUTORITE NT/SERVICE LOCAL       2025-04-01 22:10:45.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">1404</span>    svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:45.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">1484</span>    svchost.exe     AUTORITE NT/SERVICE LOCAL       2025-04-01 22:10:45.000000 UTC
+</span></span><span class="line"><span class="cl"><span class="m">0</span>       -       <span class="m">1516</span>    svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:45.000000 UTC
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Donc, nous pouvons plusieurs fois, le workgroup suivi du nom du PC. Ici c&rsquo;est <code>DESKTOP-JV996VQ</code>.</p>
+<p>On a la suite du flag <code>FCSC{userfcsc-10:DESKTOP-JV996VQ:xx}</code>.</p>
+<h3 id="ip-du-poste">IP du poste
+</h3><p>Pour trouver l&rsquo;IP de la machine nous pouvons utiliser le plugin <code>netscan</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -f analyse-memoire.dmp windows.netscan.NetScan
+</span></span><span class="line"><span class="cl">Volatility <span class="m">3</span> Framework 2.27.0
+</span></span><span class="line"><span class="cl">Progress:  100.00               PDB scanning finished
+</span></span><span class="line"><span class="cl">Offset  Proto   LocalAddr       LocalPort       ForeignAddr     ForeignPort     State   PID     Owner   Created
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">0xa50a206ba8a0  TCPv4   10.0.2.15       <span class="m">65480</span>   185.231.164.136 <span class="m">443</span>     CLOSED  <span class="m">7232</span>    msedge.exe      2025-04-01 22:14:07.000000 UTC
+</span></span><span class="line"><span class="cl">0xa50a20a31910  TCPv4   0.0.0.0 <span class="m">7680</span>    0.0.0.0 <span class="m">0</span>       LISTENING       <span class="m">9112</span>    svchost.exe     2025-04-01 22:12:52.000000 UTC
+</span></span><span class="line"><span class="cl">0xa50a20a31910  TCPv6   ::      <span class="m">7680</span>    ::      <span class="m">0</span>       LISTENING       <span class="m">9112</span>    svchost.exe     2025-04-01 22:12:52.000000 UTC
+</span></span><span class="line"><span class="cl">0xa50a20b39010  TCPv4   10.0.2.15       <span class="m">49701</span>   13.107.246.254  <span class="m">443</span>     CLOSE_WAIT      <span class="m">6720</span>    SearchApp.exe   2025-04-01 22:11:02.000000 UTC
+</span></span><span class="line"><span class="cl">0xa50a20e66a20  TCPv4   10.0.2.15       <span class="m">51497</span>   150.171.28.12   <span class="m">443</span>     CLOSED  <span class="m">7232</span>    msedge.exe      2025-04-01 22:13:43.000000 UTC
+</span></span><span class="line"><span class="cl">0xa50a20ef5a90  TCPv4   10.0.2.15       <span class="m">59260</span>   13.107.138.254  <span class="m">443</span>     CLOSED  <span class="m">6720</span>    SearchApp.exe   2025-04-01 22:15:17.000000 UTC
+</span></span><span class="line"><span class="cl">0xa50a240688a0  TCPv4   10.0.2.15       <span class="m">62866</span>   204.79.197.219  <span class="m">443</span>     CLOSED  <span class="m">7232</span>    msedge.exe      2025-04-01 22:13:52.000000 UTC
+</span></span><span class="line"><span class="cl">0xa50a25b5e310  TCPv4   0.0.0.0 <span class="m">49665</span>   0.0.0.0 <span class="m">0</span>       LISTENING       <span class="m">656</span>     wininit.exe     2025-04-01 22:10:44.000000 UTC
+</span></span><span class="line"><span class="cl">0xa50a25b5e310  TCPv6   ::      <span class="m">49665</span>   ::      <span class="m">0</span>       LISTENING       <span class="m">656</span>     wininit.exe     2025-04-01 22:10:44.000000 UTC
+</span></span><span class="line"><span class="cl">0xa50a25b5e5d0  TCPv4   10.0.2.15       <span class="m">139</span>     0.0.0.0 <span class="m">0</span>       LISTENING       <span class="m">4</span>       System  2025-04-01 22:10:45.000000 UTC
+</span></span><span class="line"><span class="cl">0xa50a25b5e890  TCPv4   0.0.0.0 <span class="m">49664</span>   0.0.0.0 <span class="m">0</span>       LISTENING       <span class="m">824</span>     lsass.exe       2025-04-01 22:10:44.000000 UTC
+</span></span><span class="line"><span class="cl">0xa50a25b5e890  TCPv6   ::      <span class="m">49664</span>   ::      <span class="m">0</span>       LISTENING       <span class="m">824</span>     lsass.exe       2025-04-01 22:10:44.000000 UTC
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Dans la colonne <code>LocalAddr</code> nous pour voir l&rsquo;IP du poste (celle qui nous intéresse), <code>10.0.2.15</code>.</p>
+<p>Nous avons donc tout le flag <code>FCSC{userfcsc-10:DESKTOP-JV996VQ:10.0.2.15}</code>.</p>
+<h2 id="introduction-2">Introduction 2
+</h2><p>La capture mémoire a été réalisée pendant qu’un utilisateur était en train de travailler sur un document hautement sensible. Si une compromission du poste a eu lieu, ce document a peut-être été volé. Pouvez-vous retrouver :</p>
+<pre><code>le nom du logiciel d’édition du document,
+le nom du document.
+</code></pre>
+<p>Le flag est au format <code>FCSC{&lt;nom du logiciel&gt;:&lt;nom du document&gt;}</code> où :</p>
+<pre><code>&lt;nom du logiciel&gt; est le nom de l’exécutable du logiciel d’édition et
+&lt;nom du document&gt; est le nom du document en cours d’édition par l’utilisateur (sans le chemin du fichier).
+</code></pre>
+<p>Par exemple : <code>FCSC{calc.exe:Mes comptes 2025.txt}</code>.</p>
+<h3 id="binaire--documents">Binaire &amp; Documents
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">vol -f analyse-memoire.dmp windows.pstree.PsTree                                                                                                                                 ─╯
+</span></span><span class="line"><span class="cl">Volatility <span class="m">3</span> Framework 2.27.0
+</span></span><span class="line"><span class="cl">Progress:  100.00               PDB scanning finished
+</span></span><span class="line"><span class="cl">PID     PPID    ImageFileName   Offset<span class="o">(</span>V<span class="o">)</span>       Threads Handles SessionId       Wow64   CreateTime      ExitTime        Audit   Cmd     Path
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">4</span>       <span class="m">0</span>       System  0xa50a1f85d080  <span class="m">178</span>     -       N/A     False   2025-04-01 22:10:38.000000 UTC  N/A     -       -       -
+</span></span><span class="line"><span class="cl">.* <span class="m">452</span>   <span class="m">4</span>       smss.exe        0xa50a20adc040  <span class="m">2</span>       -       N/A     False   2025-04-01 22:10:38.000000 UTC  N/A     <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume3<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\s</span>mss.exe       <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\s</span>mss.exe  <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\s</span>mss.exe
+</span></span><span class="line"><span class="cl">.* <span class="m">124</span>   <span class="m">4</span>       Registry        0xa50a1f8e1080  <span class="m">4</span>       -       N/A     False   2025-04-01 22:10:34.000000 UTC  N/A     Registry        -       -
+</span></span><span class="line"><span class="cl">.* <span class="m">1868</span>  <span class="m">4</span>       MemCompression  0xa50a270f1040  <span class="m">58</span>      -       N/A     False   2025-04-01 22:10:45.000000 UTC  N/A     MemCompression  -       -
+</span></span><span class="line"><span class="cl"><span class="m">556</span>     <span class="m">544</span>     csrss.exe       0xa50a20adf080  <span class="m">11</span>      -       <span class="m">0</span>       False   2025-04-01 22:10:43.000000 UTC  N/A     <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume3<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>srss.exe      %SystemRoot%<span class="se">\s</span>ystem32<span class="se">\c</span>srss.exe <span class="nv">ObjectDirectory</span><span class="o">=</span><span class="se">\W</span>indows <span class="nv">SharedSection</span><span class="o">=</span>1024,20480,768 <span class="nv">Windows</span><span class="o">=</span>On <span class="nv">SubSystemType</span><span class="o">=</span>Windows <span class="nv">ServerDll</span><span class="o">=</span>basesrv,1 <span class="nv">ServerDll</span><span class="o">=</span>winsrv:UserServerDllInitialization,3 <span class="nv">ServerDll</span><span class="o">=</span>sxssrv,4 <span class="nv">ProfileControl</span><span class="o">=</span>Off <span class="nv">MaxRequestThreads</span><span class="o">=</span><span class="m">16</span>  C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\c</span>srss.exe
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">### ... </span>
+</span></span><span class="line"><span class="cl"><span class="c1">### ...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">.******* <span class="m">9048</span>    <span class="m">8968</span>    soffice.bin     0xa50a297e7240  <span class="m">13</span>      -       <span class="m">1</span>       False   2025-04-01 22:11:34.000000 UTC  N/A     <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume3<span class="se">\P</span>rogram Files<span class="se">\L</span>ibreOffice<span class="se">\p</span>rogram<span class="se">\s</span>office.bin  <span class="s2">&#34;C:\Program Files\LibreOffice\program\soffice.exe&#34;</span> <span class="s2">&#34;-o&#34;</span> <span class="s2">&#34;C:\Users\userfcsc-10\Desktop\[SECRET-SF][TLP-RED]Plan FCSC 2026.odt&#34;</span> <span class="s2">&#34;-env:OOO_CWD=2C:\\Users\\userfcsc-10\\Desktop&#34;</span>  C:<span class="se">\P</span>rogram Files<span class="se">\L</span>ibreOffice<span class="se">\p</span>rogram<span class="se">\s</span>office.bin
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Sur la dernière ligne nous pouvons voir que le chemin de l&rsquo;exe <code>soffice.exe</code> n&rsquo;est pas celui officiel, on peut donc en conclure que c&rsquo;est un logiciel malveillant.</p>
+<p>Le fichier qui a été ouverte est <code>[SECRET-SF][TLP-RED]Plan FCSC 2026.odt</code>.</p>
+<p>Le flag est donc : <code>FCSC{soffice.exe:SECRET-SF][TLP-RED]Plan FCSC 2026.odt}</code>.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/forensic/">Forensic</a>
+        
+            <a href="/tags/ctf/">CTF</a>
+        
+            <a href="/tags/chall/">Chall</a>
+        
+            <a href="/tags/fcsc/">FCSC</a>
+        
+            <a href="/tags/m%C3%A9moire/">Mémoire</a>
+        
+            <a href="/tags/volatilit/">Volatilit</a>
+        
+            <a href="/tags/windows/">Windows</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Contenus liés</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/chall-command-control/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Chall - Command &amp; Control</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/chall-cobalt-strike/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Chall - Cobalt Strike</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/chall-vilan-petit-canard/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Chall - Vilan Petit Canard</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/chall-active-directory/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Chall - Active Directory</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/chall-fichier-supprim%C3%A9/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Chall - Fichier supprimé</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 Enzo Ribeiro
+    </section>
+    
+    <section class="powerby">
+        Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e4dd2d7a791b3794ae9889b21f5598875c8169002592e3d7b6a9ed269f54068.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

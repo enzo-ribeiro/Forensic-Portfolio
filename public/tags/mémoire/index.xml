@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Mémoire on KIRÔN</title>
+        <link>http://localhost:1313/tags/m%C3%A9moire/</link>
+        <description>Recent content in Mémoire on KIRÔN</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>fr</language>
+        <copyright>Enzo Ribeiro</copyright>
+        <lastBuildDate>Thu, 05 Feb 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/m%C3%A9moire/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Chall - FCSC Pour commencer</title>
+        <link>http://localhost:1313/p/chall-fcsc-pour-commencer/</link>
+        <pubDate>Thu, 05 Feb 2026 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/chall-fcsc-pour-commencer/</guid>
+        <description>&lt;h2 id=&#34;introduction-1&#34;&gt;Introduction 1
+&lt;/h2&gt;&lt;p&gt;Vous vous préparez à analyser une capture mémoire et vous notez quelques informations sur la machine avant de plonger dans l’analyse :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;nom d’utilisateur,
+nom de la machine,
+adresse IPv4, non locale, de la machine.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Le flag est au format &lt;code&gt;FCSC{&amp;lt;nom d&#39;utilisateur&amp;gt;:&amp;lt;nom de la machine&amp;gt;:&amp;lt;adresse IPv4&amp;gt;}&lt;/code&gt; où :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;nom d&#39;utilisateur&amp;gt; est le nom de l’utilisateur qui utilise la machine,
+&amp;lt;nom de la machine&amp;gt; est le nom de la machine analysée et
+&amp;lt;adresse IPv4&amp;gt; est l’adresse IPv4, non locale, de la machine.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Par exemple : FCSC{Arthur:Ordinateur-de-rct:192.168.1.150}.&lt;/p&gt;
+&lt;h2 id=&#34;recherche&#34;&gt;Recherche
+&lt;/h2&gt;&lt;p&gt;Pour réaliser ce chall nous utiliserons volatility3.
+Une fois de &lt;code&gt;.tar.gz&lt;/code&gt; téléchargé et extrait, nous pouvons commencer la recherche.&lt;/p&gt;
+&lt;h3 id=&#34;utilisateurs&#34;&gt;Utilisateurs
+&lt;/h3&gt;&lt;p&gt;Pour connaître les noms d&amp;rsquo;utilisateur présents sur la machine nous pouvons utiliser le plugin &lt;code&gt;hashdump&lt;/code&gt; de vol.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -f analyse-memoire.dmp windows.hashdump.Hashdump
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Volatility &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; Framework 2.27.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/Users/enzo/volatility3/volatility3/framework/deprecation.py:28: FutureWarning: This API &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;volatility3.plugins.windows.registry.hashdump.Hashdump.run&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; will be removed in the first release after 2026-09-25. This plugin has been renamed, please call volatility3.plugins.windows.registry.hashdump.Hashdump rather than volatility3.plugins.windows.hashdump.Hashdump.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  warnings.warn&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;User    rid     lmhash  nthash
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/Users/enzo/volatility3/volatility3/framework/deprecation.py:105: FutureWarning: This plugin &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;volatility3.plugins.windows.hashdump.Hashdump&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; has been renamed and will be removed in the first release after 2026-09-25. Please ensure all method calls to this plugin are replaced with calls to volatility3.plugins.windows.registry.hashdump.Hashdump
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  warnings.warn&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Administrateur  &lt;span class=&#34;m&#34;&gt;500&lt;/span&gt;     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Invité  &lt;span class=&#34;m&#34;&gt;501&lt;/span&gt;     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;DefaultAccount  &lt;span class=&#34;m&#34;&gt;503&lt;/span&gt;     aad3b435b51404eeaad3b435b51404ee        31d6cfe0d16ae931b73c59d7e0c089c0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;WDAGUtilityAccount      &lt;span class=&#34;m&#34;&gt;504&lt;/span&gt;     aad3b435b51404eeaad3b435b51404ee        f3ae0fa4a6f8774079f9316acc07eaee
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;userfcsc-10     &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;    aad3b435b51404eeaad3b435b51404ee        3f2360db87910bf0120f8de2b2a0807b
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Ici on voit un nom d&amp;rsquo;utilisateur qui paraît plus logique, on devine que c&amp;rsquo;est cet utilisateur qui utilise le poste.
+On a le début du flag &lt;code&gt;FCSC{userfcsc-10:xx:xx}&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;nom-du-poste&#34;&gt;Nom du poste
+&lt;/h3&gt;&lt;p&gt;Pour obtenir le nom du poste, nous pouvons utiliser le plugin &lt;code&gt;sessions&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -f analyse-memoire.dmp windows.sessions.Sessions
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Volatility &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; Framework 2.27.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Progress:  100.00               PDB scanning finished
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Session ID      Session Type    Process ID      Process User Name       Create Time
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;N/A     -       &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;       System  -       2025-04-01 22:10:38.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;N/A     -       &lt;span class=&#34;m&#34;&gt;124&lt;/span&gt;     Registry        -       2025-04-01 22:10:34.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;N/A     -       &lt;span class=&#34;m&#34;&gt;452&lt;/span&gt;     smss.exe        -       2025-04-01 22:10:38.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;556&lt;/span&gt;     csrss.exe       /SYSTEM 2025-04-01 22:10:43.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;656&lt;/span&gt;     wininit.exe     /SYSTEM 2025-04-01 22:10:43.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;800&lt;/span&gt;     services.exe    /SYSTEM 2025-04-01 22:10:43.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;824&lt;/span&gt;     lsass.exe       /SYSTEM 2025-04-01 22:10:43.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;936&lt;/span&gt;     svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:44.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;960&lt;/span&gt;     fontdrvhost.ex  Font Driver Host/UMFD-0 2025-04-01 22:10:44.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;508&lt;/span&gt;     svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:44.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;648&lt;/span&gt;     svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:44.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;1040&lt;/span&gt;    svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:44.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;1060&lt;/span&gt;    svchost.exe     AUTORITE NT/SERVICE LOCAL       2025-04-01 22:10:44.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;1168&lt;/span&gt;    svchost.exe     AUTORITE NT/SERVICE LOCAL       2025-04-01 22:10:44.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;1196&lt;/span&gt;    svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:45.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;1220&lt;/span&gt;    svchost.exe     AUTORITE NT/SERVICE LOCAL       2025-04-01 22:10:45.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;1348&lt;/span&gt;    svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:45.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;1356&lt;/span&gt;    svchost.exe     AUTORITE NT/SERVICE LOCAL       2025-04-01 22:10:45.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;1404&lt;/span&gt;    svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:45.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;1484&lt;/span&gt;    svchost.exe     AUTORITE NT/SERVICE LOCAL       2025-04-01 22:10:45.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       -       &lt;span class=&#34;m&#34;&gt;1516&lt;/span&gt;    svchost.exe     WORKGROUP/DESKTOP-JV996VQ$      2025-04-01 22:10:45.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Donc, nous pouvons plusieurs fois, le workgroup suivi du nom du PC. Ici c&amp;rsquo;est &lt;code&gt;DESKTOP-JV996VQ&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;On a la suite du flag &lt;code&gt;FCSC{userfcsc-10:DESKTOP-JV996VQ:xx}&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;ip-du-poste&#34;&gt;IP du poste
+&lt;/h3&gt;&lt;p&gt;Pour trouver l&amp;rsquo;IP de la machine nous pouvons utiliser le plugin &lt;code&gt;netscan&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -f analyse-memoire.dmp windows.netscan.NetScan
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Volatility &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; Framework 2.27.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Progress:  100.00               PDB scanning finished
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Offset  Proto   LocalAddr       LocalPort       ForeignAddr     ForeignPort     State   PID     Owner   Created
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa50a206ba8a0  TCPv4   10.0.2.15       &lt;span class=&#34;m&#34;&gt;65480&lt;/span&gt;   185.231.164.136 &lt;span class=&#34;m&#34;&gt;443&lt;/span&gt;     CLOSED  &lt;span class=&#34;m&#34;&gt;7232&lt;/span&gt;    msedge.exe      2025-04-01 22:14:07.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa50a20a31910  TCPv4   0.0.0.0 &lt;span class=&#34;m&#34;&gt;7680&lt;/span&gt;    0.0.0.0 &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       LISTENING       &lt;span class=&#34;m&#34;&gt;9112&lt;/span&gt;    svchost.exe     2025-04-01 22:12:52.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa50a20a31910  TCPv6   ::      &lt;span class=&#34;m&#34;&gt;7680&lt;/span&gt;    ::      &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       LISTENING       &lt;span class=&#34;m&#34;&gt;9112&lt;/span&gt;    svchost.exe     2025-04-01 22:12:52.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa50a20b39010  TCPv4   10.0.2.15       &lt;span class=&#34;m&#34;&gt;49701&lt;/span&gt;   13.107.246.254  &lt;span class=&#34;m&#34;&gt;443&lt;/span&gt;     CLOSE_WAIT      &lt;span class=&#34;m&#34;&gt;6720&lt;/span&gt;    SearchApp.exe   2025-04-01 22:11:02.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa50a20e66a20  TCPv4   10.0.2.15       &lt;span class=&#34;m&#34;&gt;51497&lt;/span&gt;   150.171.28.12   &lt;span class=&#34;m&#34;&gt;443&lt;/span&gt;     CLOSED  &lt;span class=&#34;m&#34;&gt;7232&lt;/span&gt;    msedge.exe      2025-04-01 22:13:43.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa50a20ef5a90  TCPv4   10.0.2.15       &lt;span class=&#34;m&#34;&gt;59260&lt;/span&gt;   13.107.138.254  &lt;span class=&#34;m&#34;&gt;443&lt;/span&gt;     CLOSED  &lt;span class=&#34;m&#34;&gt;6720&lt;/span&gt;    SearchApp.exe   2025-04-01 22:15:17.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa50a240688a0  TCPv4   10.0.2.15       &lt;span class=&#34;m&#34;&gt;62866&lt;/span&gt;   204.79.197.219  &lt;span class=&#34;m&#34;&gt;443&lt;/span&gt;     CLOSED  &lt;span class=&#34;m&#34;&gt;7232&lt;/span&gt;    msedge.exe      2025-04-01 22:13:52.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa50a25b5e310  TCPv4   0.0.0.0 &lt;span class=&#34;m&#34;&gt;49665&lt;/span&gt;   0.0.0.0 &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       LISTENING       &lt;span class=&#34;m&#34;&gt;656&lt;/span&gt;     wininit.exe     2025-04-01 22:10:44.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa50a25b5e310  TCPv6   ::      &lt;span class=&#34;m&#34;&gt;49665&lt;/span&gt;   ::      &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       LISTENING       &lt;span class=&#34;m&#34;&gt;656&lt;/span&gt;     wininit.exe     2025-04-01 22:10:44.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa50a25b5e5d0  TCPv4   10.0.2.15       &lt;span class=&#34;m&#34;&gt;139&lt;/span&gt;     0.0.0.0 &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       LISTENING       &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;       System  2025-04-01 22:10:45.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa50a25b5e890  TCPv4   0.0.0.0 &lt;span class=&#34;m&#34;&gt;49664&lt;/span&gt;   0.0.0.0 &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       LISTENING       &lt;span class=&#34;m&#34;&gt;824&lt;/span&gt;     lsass.exe       2025-04-01 22:10:44.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0xa50a25b5e890  TCPv6   ::      &lt;span class=&#34;m&#34;&gt;49664&lt;/span&gt;   ::      &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       LISTENING       &lt;span class=&#34;m&#34;&gt;824&lt;/span&gt;     lsass.exe       2025-04-01 22:10:44.000000 UTC
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Dans la colonne &lt;code&gt;LocalAddr&lt;/code&gt; nous pour voir l&amp;rsquo;IP du poste (celle qui nous intéresse), &lt;code&gt;10.0.2.15&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Nous avons donc tout le flag &lt;code&gt;FCSC{userfcsc-10:DESKTOP-JV996VQ:10.0.2.15}&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;introduction-2&#34;&gt;Introduction 2
+&lt;/h2&gt;&lt;p&gt;La capture mémoire a été réalisée pendant qu’un utilisateur était en train de travailler sur un document hautement sensible. Si une compromission du poste a eu lieu, ce document a peut-être été volé. Pouvez-vous retrouver :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;le nom du logiciel d’édition du document,
+le nom du document.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Le flag est au format &lt;code&gt;FCSC{&amp;lt;nom du logiciel&amp;gt;:&amp;lt;nom du document&amp;gt;}&lt;/code&gt; où :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;nom du logiciel&amp;gt; est le nom de l’exécutable du logiciel d’édition et
+&amp;lt;nom du document&amp;gt; est le nom du document en cours d’édition par l’utilisateur (sans le chemin du fichier).
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Par exemple : &lt;code&gt;FCSC{calc.exe:Mes comptes 2025.txt}&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;binaire--documents&#34;&gt;Binaire &amp;amp; Documents
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vol -f analyse-memoire.dmp windows.pstree.PsTree                                                                                                                                 ─╯
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Volatility &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; Framework 2.27.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Progress:  100.00               PDB scanning finished
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PID     PPID    ImageFileName   Offset&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;V&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;       Threads Handles SessionId       Wow64   CreateTime      ExitTime        Audit   Cmd     Path
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       System  0xa50a1f85d080  &lt;span class=&#34;m&#34;&gt;178&lt;/span&gt;     -       N/A     False   2025-04-01 22:10:38.000000 UTC  N/A     -       -       -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;.* &lt;span class=&#34;m&#34;&gt;452&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;       smss.exe        0xa50a20adc040  &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;       -       N/A     False   2025-04-01 22:10:38.000000 UTC  N/A     &lt;span class=&#34;se&#34;&gt;\D&lt;/span&gt;evice&lt;span class=&#34;se&#34;&gt;\H&lt;/span&gt;arddiskVolume3&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;mss.exe       &lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;ystemRoot&lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;mss.exe  &lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;ystemRoot&lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;mss.exe
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;.* &lt;span class=&#34;m&#34;&gt;124&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;       Registry        0xa50a1f8e1080  &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;       -       N/A     False   2025-04-01 22:10:34.000000 UTC  N/A     Registry        -       -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;.* &lt;span class=&#34;m&#34;&gt;1868&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;       MemCompression  0xa50a270f1040  &lt;span class=&#34;m&#34;&gt;58&lt;/span&gt;      -       N/A     False   2025-04-01 22:10:45.000000 UTC  N/A     MemCompression  -       -
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;556&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;544&lt;/span&gt;     csrss.exe       0xa50a20adf080  &lt;span class=&#34;m&#34;&gt;11&lt;/span&gt;      -       &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       False   2025-04-01 22:10:43.000000 UTC  N/A     &lt;span class=&#34;se&#34;&gt;\D&lt;/span&gt;evice&lt;span class=&#34;se&#34;&gt;\H&lt;/span&gt;arddiskVolume3&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\S&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\c&lt;/span&gt;srss.exe      %SystemRoot%&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\c&lt;/span&gt;srss.exe &lt;span class=&#34;nv&#34;&gt;ObjectDirectory&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows &lt;span class=&#34;nv&#34;&gt;SharedSection&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1024,20480,768 &lt;span class=&#34;nv&#34;&gt;Windows&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;On &lt;span class=&#34;nv&#34;&gt;SubSystemType&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Windows &lt;span class=&#34;nv&#34;&gt;ServerDll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;basesrv,1 &lt;span class=&#34;nv&#34;&gt;ServerDll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;winsrv:UserServerDllInitialization,3 &lt;span class=&#34;nv&#34;&gt;ServerDll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;sxssrv,4 &lt;span class=&#34;nv&#34;&gt;ProfileControl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Off &lt;span class=&#34;nv&#34;&gt;MaxRequestThreads&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;16&lt;/span&gt;  C:&lt;span class=&#34;se&#34;&gt;\W&lt;/span&gt;indows&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;ystem32&lt;span class=&#34;se&#34;&gt;\c&lt;/span&gt;srss.exe
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;### ... &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;### ...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;.******* &lt;span class=&#34;m&#34;&gt;9048&lt;/span&gt;    &lt;span class=&#34;m&#34;&gt;8968&lt;/span&gt;    soffice.bin     0xa50a297e7240  &lt;span class=&#34;m&#34;&gt;13&lt;/span&gt;      -       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;       False   2025-04-01 22:11:34.000000 UTC  N/A     &lt;span class=&#34;se&#34;&gt;\D&lt;/span&gt;evice&lt;span class=&#34;se&#34;&gt;\H&lt;/span&gt;arddiskVolume3&lt;span class=&#34;se&#34;&gt;\P&lt;/span&gt;rogram Files&lt;span class=&#34;se&#34;&gt;\L&lt;/span&gt;ibreOffice&lt;span class=&#34;se&#34;&gt;\p&lt;/span&gt;rogram&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;office.bin  &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Program Files\LibreOffice\program\soffice.exe&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;-o&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Users\userfcsc-10\Desktop\[SECRET-SF][TLP-RED]Plan FCSC 2026.odt&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;-env:OOO_CWD=2C:\\Users\\userfcsc-10\\Desktop&amp;#34;&lt;/span&gt;  C:&lt;span class=&#34;se&#34;&gt;\P&lt;/span&gt;rogram Files&lt;span class=&#34;se&#34;&gt;\L&lt;/span&gt;ibreOffice&lt;span class=&#34;se&#34;&gt;\p&lt;/span&gt;rogram&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;office.bin
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Sur la dernière ligne nous pouvons voir que le chemin de l&amp;rsquo;exe &lt;code&gt;soffice.exe&lt;/code&gt; n&amp;rsquo;est pas celui officiel, on peut donc en conclure que c&amp;rsquo;est un logiciel malveillant.&lt;/p&gt;
+&lt;p&gt;Le fichier qui a été ouverte est &lt;code&gt;[SECRET-SF][TLP-RED]Plan FCSC 2026.odt&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Le flag est donc : &lt;code&gt;FCSC{soffice.exe:SECRET-SF][TLP-RED]Plan FCSC 2026.odt}&lt;/code&gt;.&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

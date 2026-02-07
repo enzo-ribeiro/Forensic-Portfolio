@@ -1,7 +1,7 @@
 +++
 author = "Enzo"
 title = "Chall - FCSC Pour commencer"
-date = "2026-01-05"
+date = "2026-02-05"
 categories = [
     "Blue Team"
 ]
@@ -11,7 +11,8 @@ tags = [
     "Chall",
     "FCSC",
     "Mémoire",
-    "Volatilit"
+    "Volatilit",
+    "Windows"
 ]
 +++
 
@@ -137,7 +138,7 @@ Le flag est au format ``FCSC{<nom du logiciel>:<nom du document>}`` où :
 
 Par exemple : ``FCSC{calc.exe:Mes comptes 2025.txt}``.
 
-## Recherche
+### Binaire & Documents
 
 ````Bash
 vol -f analyse-memoire.dmp windows.pstree.PsTree                                                                                                                                 ─╯
