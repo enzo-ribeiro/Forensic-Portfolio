@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/post/Rubber-Ducky-a-2e/index.md",
+                "file": "content/post/Dump-Base-SAM/index.md",
                 "mode": "source",
                 "source": false
               },
@@ -44,7 +44,7 @@
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
-              "title": "Files"
+              "title": "Explorateur de fichiers"
             }
           },
           {
@@ -171,20 +171,38 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Open quick switcher": false,
-      "graph:Open graph view": false,
-      "canvas:Create new canvas": false,
-      "daily-notes:Open today's daily note": false,
-      "templates:Insert template": false,
-      "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "switcher:Ouvrir le sélecteur rapide": false,
+      "graph:Ouvrir la vue graphique": false,
+      "canvas:Créer une nouvelle toile": false,
+      "daily-notes:Ouvrir la note quotidienne": false,
+      "templates:Insérer le modèle": false,
+      "command-palette:Ouvrir la palette de commandes": false,
+      "bases:Créer une nouvelle base": false
     }
   },
-  "active": "a19195f0208947ca",
+  "active": "13b2466d536cc985",
   "lastOpenFiles": [
-    "content/post/Android-Analyse/index.md",
+    "public/post/page/7/index.html",
+    "public/post/page/7",
+    "public/page/7/index.html",
+    "public/page/7",
+    "public/tags/windows/page/2/index.html",
+    "public/tags/windows/page/2",
+    "public/tags/registre/page/1/index.html",
+    "public/tags/registre/page/1",
+    "public/tags/registre/page",
+    "public/tags/registre/index.xml",
+    "public/tags/registre/index.html",
+    "public/p/dump-base-sam/Pasted image 20260305145659.png",
+    "content/post/Dump-Base-SAM/Pasted image 20260305145659.png",
+    "content/post/Fonctionnement-Mail/index.md",
+    "content/post/Dump-Base-SAM/index.md",
+    "content/post/Chall-Fichier-supprime/index.md",
+    "Sans titre.md",
+    "content/post/Chall-FCSC-Pour-commencer/index.md",
+    "content/post/Chall-FCSC-cap-ou-pcap/index.md",
     "content/post/Rubber-Ducky-a-2e/index.md",
-    "content/post/Rubber-Ducky-a-2e",
+    "content/post/Android-Analyse/index.md",
     "content/_index.md"
   ]
 }

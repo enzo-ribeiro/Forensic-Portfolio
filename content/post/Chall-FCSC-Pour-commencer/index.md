@@ -11,7 +11,7 @@ tags = [
     "Chall",
     "FCSC",
     "Mémoire",
-    "Volatilit",
+    "Volatility",
     "Windows"
 ]
 +++

