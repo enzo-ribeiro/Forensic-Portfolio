@@ -7,7 +7,151 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>fr</language>
         <copyright>Enzo Ribeiro</copyright>
-        <lastBuildDate>Sat, 07 Feb 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/ctf/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 06 Mar 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/ctf/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Tuto - Profil personnalisé pour vol 3</title>
+        <link>http://localhost:1313/p/tuto-profil-personnalis%C3%A9-pour-vol-3/</link>
+        <pubDate>Fri, 06 Mar 2026 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/tuto-profil-personnalis%C3%A9-pour-vol-3/</guid>
+        <description>&lt;h1 id=&#34;créer-un-profil-linux-personnalisé-pour-volatility-3&#34;&gt;Créer un profil Linux personnalisé pour Volatility 3
+&lt;/h1&gt;&lt;p&gt;Ce guide explique comment générer soi-même un fichier ISF (Intermediate Symbol Format) au format JSON, requis par Volatility 3 pour analyser un dump mémoire Linux.&lt;/p&gt;
+&lt;h2 id=&#34;la-théorie--pourquoi-on-fait-ça-&#34;&gt;La théorie : Pourquoi on fait ça ?
+&lt;/h2&gt;&lt;p&gt;Quand un système d&amp;rsquo;exploitation est compilé (en C), le compilateur transforme toutes les structures de données (comme &lt;code&gt;task_struct&lt;/code&gt; qui décrit un processus) en simples adresses mémoire et décalages (offsets).
+Pour que Volatility puisse lire le dump, il doit faire le chemin inverse : savoir à quel offset de la mémoire se trouve le nom du processus, son PID, etc.&lt;/p&gt;
+&lt;p&gt;Pour cela, il lui faut le fichier &lt;strong&gt;ISF&lt;/strong&gt; (Intermediate Symbol Format, un fichier JSON), qui est généré à partir des &lt;strong&gt;symboles de débogage (DWARF)&lt;/strong&gt; du noyau exact qui tournait sur la machine.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;étape-1--installer-dwarf2json&#34;&gt;Étape 1 : Installer &lt;code&gt;dwarf2json&lt;/code&gt;
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;dwarf2json&lt;/code&gt; est l&amp;rsquo;outil officiel de la fondation Volatility, écrit en Go, qui lit les fichiers de débogage Linux et génère le fichier ISF JSON.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Installez le langage Go si vous ne l&amp;rsquo;avez pas (via Homebrew sur macOS) :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;brew install go
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Clonez et compilez &lt;code&gt;dwarf2json&lt;/code&gt; :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git clone https://github.com/volatilityfoundation/dwarf2json.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; dwarf2json
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;go build
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Vous avez maintenant un exécutable &lt;code&gt;./dwarf2json&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;étape-2--récupérer-le-bon-noyau-le-plus-difficile&#34;&gt;Étape 2 : Récupérer le bon noyau (Le plus difficile)
+&lt;/h2&gt;&lt;p&gt;Dans notre exemple (le challenge &lt;em&gt;Academie&lt;/em&gt;), la version exacte du noyau trouvée dans le dump est &lt;strong&gt;&lt;code&gt;5.4.0-4-amd64&lt;/code&gt;&lt;/strong&gt; (version Debian &lt;code&gt;5.4.19-1&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;Comme c&amp;rsquo;est un ancien noyau (début 2020), il n&amp;rsquo;est plus sur les dépôts classiques, il faut aller dans les archives (Snapshots) de Debian. Il nous faut :&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Le &lt;strong&gt;paquet de débogage&lt;/strong&gt; (qui contient le gros fichier &lt;code&gt;vmlinux&lt;/code&gt; avec les symboles DWARF).&lt;/li&gt;
+&lt;li&gt;Le &lt;strong&gt;paquet standard&lt;/strong&gt; (qui contient le fichier &lt;code&gt;System.map&lt;/code&gt;).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Téléchargez les paquets depuis &lt;code&gt;snapshot.debian.org&lt;/code&gt; en utilisant leur identifiant de fichier unique pour éviter les liens brisés :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;brew instal wget
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wget -O linux-image-5.4.0-4-amd64-dbg_5.4.19-1_amd64.deb http://snapshot.debian.org/file/9db55758ffb0c41d231243987f0d90df06ccdfab
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wget -O linux-image-5.4.0-4-amd64_5.4.19-1_amd64.deb http://snapshot.debian.org/file/1cc1cbf519fc4a26aa470936a44ec1f2d1b19615
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;étape-3--extraire-les-fichiers-façon-macos&#34;&gt;Étape 3 : Extraire les fichiers (façon macOS)
+&lt;/h2&gt;&lt;p&gt;Un fichier &lt;code&gt;.deb&lt;/code&gt; est en fait une archive &lt;code&gt;ar&lt;/code&gt; qui contient des fichiers &lt;code&gt;tar&lt;/code&gt;. Sous macOS, comme on ne peut pas toujours utiliser &lt;code&gt;dpkg -x&lt;/code&gt; nativement, on le fait manuellement.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Créez des dossiers pour extraire le contenu :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mkdir pkg_dbg pkg_std
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Extrayez le paquet de débogage (pour récupérer &lt;code&gt;vmlinux&lt;/code&gt;) :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; pkg_dbg
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ar x ../linux-image-5.4.0-4-amd64-dbg_5.4.19-1_amd64.deb
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;tar -xf data.tar.xz
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ..
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Extrayez le paquet standard (pour récupérer &lt;code&gt;System.map&lt;/code&gt;) :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; pkg_std
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ar x ../linux-image-5.4.0-4-amd64_5.4.19-1_amd64.deb
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;tar -xf data.tar.xz
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ..
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;À ce stade, vos deux fichiers vitaux sont extraits :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Le &lt;code&gt;vmlinux&lt;/code&gt; est dans : &lt;code&gt;pkg_dbg/usr/lib/debug/boot/vmlinux-5.4.0-4-amd64&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Le &lt;code&gt;System.map&lt;/code&gt; est dans : &lt;code&gt;pkg_std/boot/System.map-5.4.0-4-amd64&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;étape-4--générer-le-fichier-json&#34;&gt;Étape 4 : Générer le fichier JSON
+&lt;/h2&gt;&lt;p&gt;Retournez dans le dossier où se trouve l&amp;rsquo;exécutable &lt;code&gt;dwarf2json&lt;/code&gt; et lancez la génération en lui fournissant les deux fichiers :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./dwarf2json linux --elf pkg_dbg/usr/lib/debug/boot/vmlinux-5.4.0-4-amd64 --system-map pkg_std/boot/System.map-5.4.0-4-amd64 &amp;gt; debian-5.4.0-4-amd64.json
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;em&gt;Note : Cette commande prend quelques minutes et va consommer pas mal de mémoire RAM, c&amp;rsquo;est normal, l&amp;rsquo;outil décode tout l&amp;rsquo;arbre du noyau Linux !&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;étape-5--installer-le-profil-dans-volatility-3&#34;&gt;Étape 5 : Installer le profil dans Volatility 3
+&lt;/h2&gt;&lt;p&gt;Maintenant que vous avez votre fichier ISF (&lt;code&gt;debian-5.4.0-4-amd64.json&lt;/code&gt;), il suffit de le mettre à la disposition de Volatility.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Allez dans le répertoire de votre installation de Volatility 3.&lt;/li&gt;
+&lt;li&gt;Repérez le dossier des symboles Linux, généralement : &lt;code&gt;volatility3/symbols/linux/&lt;/code&gt; (ou &lt;code&gt;volatility3/volatility3/symbols/linux/&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Placez-y votre fichier &lt;code&gt;debian-5.4.0-4-amd64.json&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;(Astuce : Volatility gère les fichiers compressés pour gagner de la place, vous pouvez compresser le fichier avec &lt;code&gt;xz debian-5.4.0-4-amd64.json&lt;/code&gt; pour obtenir un &lt;code&gt;.json.xz&lt;/code&gt;)&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Relancez votre commande &lt;code&gt;volatility3 -f dmp.mem linux.pslist.PsList&lt;/code&gt;. Volatility va scanner le dossier &lt;code&gt;symbols/linux/&lt;/code&gt;, lire l&amp;rsquo;en-tête de votre dump mémoire, trouver que la signature correspond à votre fichier JSON, et vous afficher la liste des processus sans erreur !&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>Chall - FCSC Cap ou Pcap</title>
         <link>http://localhost:1313/p/chall-fcsc-cap-ou-pcap/</link>
         <pubDate>Sat, 07 Feb 2026 00:00:00 +0000</pubDate>
