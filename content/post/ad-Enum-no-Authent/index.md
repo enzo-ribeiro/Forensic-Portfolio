@@ -1,3 +1,18 @@
++++
+author = "Enzo"
+title = "AD - Enumération sans authentification"
+date = "2025-03-26"
+categories = [
+    "Red Team"
+]
+tags = [
+    "Windows",
+    "AD",
+    "Enumeration",
+    "CTF",
+    "Cours"
+]
++++
 # AD : Enumération sans identifiant
 
 ## Host Discovery

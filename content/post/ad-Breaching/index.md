@@ -1,3 +1,17 @@
++++
+author = "Enzo"
+title = "AD - Comprimission"
+date = "2025-03-26"
+categories = [
+    "Red Team"
+]
+tags = [
+    "Windows",
+    "AD",
+    "CTF",
+    "Cours"
+]
++++
 # AD : Trouver la faille
 ## OSINT
 OSINT pour Open-Source INTelligence (ou renseignement en source ouvert en français) c'est le fais de rechercher des informations présent sur le web. Cela permet d'avoir des informations plus ou moins privé que la personne aurait pu faire "fuité". Dans le cas d'un AD, on peut penser à des forums où l'admin aurait pu laisser fuité des creds sans faire exprès, pareil pour tout ce qui est GitHub. Ensuite on peut aller voir dans des leaks de BDD 
