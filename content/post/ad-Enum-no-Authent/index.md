@@ -1,7 +1,7 @@
 +++
 author = "Enzo"
 title = "AD - Enumération sans authentification"
-date = "2025-03-26"
+date = "2026-03-26"
 categories = [
     "Red Team"
 ]
