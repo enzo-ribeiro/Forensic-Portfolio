@@ -16,9 +16,9 @@ tags = [
 # AD : Attaquer Kerberos
 
 ## C'est quoi Kerberos ? 
-Kerberos est un service d'authentification propre à Windows, il est sensé être le remplaçant de NTLM car mieux sécurisé. Il utilise un chiffrement à clé sysmétrique et demande une authentification externe pour vérifier l'identité d'un utilisateur. Il à besoin de 3 entités (d'où son nom). Bien qu'il soit propre à Windows nous pouvons trouver des implémentations dans les sytèmes Linux, FreeBSD, MacOS etc. 
+Kerberos est un service d'authentification propre à Windows, il est sensé être le remplaçant de NTLM car mieux sécurisé. Il utilise un chiffrement à clé symétrique et demande une authentification externe pour vérifier l'identité d'un utilisateur. Il à besoin de 3 entités (d'où son nom). Bien qu'il soit propre à Windows nous pouvons trouver des implémentations dans les sytèmes Linux, FreeBSD, MacOS etc. 
 
-Kerberos nous offre une amélioration significative comparé au autres service d'authentification antérieur (type NTLM), un chiffrement renfocé et un acteur externe compliquent la tâche en Red Teaming. 
+Kerberos nous offre une amélioration significative comparé aux autres services d'authentification antérieur (type NTLM), un chiffrement renfocé et un acteur externe compliquent la tâche en Red Teaming. 
 
 Bien qu'il soit plus sécurisé que ses prédécesseurs il n'est pas infaillible, nous allons voir ça dans ce poste. 
 
@@ -33,7 +33,7 @@ Tout d'abord voici les acronymes nécessaire pour comprendre le fonctionnement d
 | Service Principal Name       | SPN       | Un Service Principal Name est un identifiant donné à une instance de service pour associer cette instance à un compte de service de domaine. Windows exige que les services aient un compte de service de domaine, d'où la nécessité de définir un SPN. |
 | KDC Long Term Secret Key     | KDC LT Key| La clé KDC est basée sur le compte de service KRBTGT. Elle est utilisée pour chiffrer le TGT et signer le PAC.                                                                                       |
 | Client Long Term Secret Key  | Client LT Key | La clé client est basée sur le compte de l'ordinateur ou du service. Elle est utilisée pour vérifier l'horodatage chiffré et chiffrer la clé de session.                                              |
-| Service Long Term Secret Key | Service LT Key | La clé de service est basée sur le compte de service. Elle est utilisée pour chiffrer la partie service du ticket de service et signer le PAC.                                                       |
+| Service Long Term Secret Key | Service LT Key | La clé de service est basée sur le compte de service. Elle est utilisée pour chiffrer la partie service du ticket de service.                                                       |
 | Session Key                  | SK        | Émise par le KDC lorsqu'un TGT est délivré. L'utilisateur fournira la clé de session au KDC avec le TGT lors de la demande d'un ticket de service.                                                   |
 | Privilege Attribute Certificate | PAC     | Le PAC contient toutes les informations pertinentes de l'utilisateur. Il est envoyé avec le TGT au KDC pour être signé par la Clé LT Cible et la Clé LT KDC afin de valider l'utilisateur.          |
 
@@ -43,7 +43,7 @@ Le fonctionnement de kerberos est plutôt simple, nous allons décortiquer les �
 1. [AS-REQ] Le client envoie une requête de TGT au KDC.
 2. [AS-REP] si la requête est complète le KDC envoi le TGT au client avec une SK.
 3. [TGS-REQ] avec ce TGT le client envoi une requête de TGS avec le SPN que le client veut joindre.
-4. [TGS-REP] Le KDC verifie le TGT de l'utilisateur et si cet utilisateur doit avoir accès à la ressource demandé, si tout est "OK" le KDC envoie le TGS avec une SK pour la ressource.
+4. [TGS-REP] Le KDC verifie le TGT de l'utilisateur, si c'est "OK" le KDC envoie le TGS avec une SK pour la ressource.
 5. [AP-REQ] Le client envoi une requête au serveur voulu avec sa SK.
 6. [AP-REP] Le serveur authentifie le client.
 ![alt text](image.png)
@@ -60,7 +60,7 @@ Le fonctionnement de kerberos est plutôt simple, nous allons décortiquer les �
 | Skeleton Key              | Compromission complète du domaine (administrateur de domaine) requise           |
 
 ## Kerbrute Enumeration
-En réalisant un brute-force sur la pré-authentification kerberos, on active pas d'échec de connexion ou d'erreur, ce qui laisse la blue team d'en face dans l'ignorance. 
+En réalisant un brute-force sur l'annuaire ldap avec kerbrute nous pouvons retrouver énormément d'utilisateurs de l'AD, ce qui est intéressants car avec ce genre de brute-force aucune alerte ne sera envoyer au SOC, sauf si la pré-authentification est activé. 
 
 ### Installation de kerbrute 
 1. Télécharger le binaire https://github.com/ropnop/kerbrute/releases
@@ -209,7 +209,7 @@ Voici le retour de cette commande :
 ````
 
 ## Kerberoasting
-Cette attaque permet à un utilisateur de demander un TGS pour n'importe quel service disposant d'un SPN, pour ensuite utiliser ce TGS pour cracker le mot de passe du service. Cette attaque est possible à partir du moment qu'un service possède un SPN, le seul moyen de s'en protéger est d'avoir des mots de passe robuste. 
+Cette attaque permet à un utilisateur de demander un TGS pour n'importe quel service disposant d'un SPN (et vu que TOUT les services utilisant Kerberos doit avoir un SPN pour chiffrer le TGS nous pouvons demander un TGS à tous les services, à condition d'avoir un compte valide), pour ensuite utiliser ce TGS pour cracker le mot de passe du service. Cette attaque est possible à partir du moment qu'un service possède un SPN, le seul moyen de s'en protéger est d'avoir des mots de passe robuste. 
 
 Dans ce poste nous allons utiliser 2 outils pour réaliser cette attaque, Rubeus (oui, encore), et Impacket. Il existe évidemment d'autres outils pour réaliser cette attaque on peu cité Kekeo ou encore Invoke-Kerberoast. 
 
@@ -303,7 +303,7 @@ Ensuite nous mettons le hash qui nous intéresse dans un fichier txt puis nous l
 ## AS-REP Roasting
 Lors de la pré-authentification, le hash de l'utilisateur sera utilisé pour chiffrer un timestamp que le DC tentera de déchiffrer afin de valider que le bon hash est utilisé et qu'il ne s'agit pas d'une réutilisation d'une requête précédente. Après validation de l'horodatage, le KDC émettra alors un ticket pour l'utilisateur.
 
-Si la pré-authentification est désactivée, il est possible de demander des données d'authentification pour n'importe quel utilisateur, et le KDC renverra un ticket chiffré qui pourra être craqué hors ligne, car le KDC passe l'étape de vérification que l'utilisateur est bien celui qu'il prétend être.
+Si la pré-authentification est désactivée, il est possible de demander des données d'authentification pour n'importe quel utilisateur, et le KDC renverra un ticket chiffré (avec le mot de passe de l'utilisateur) qui pourra être craqué hors ligne, car le KDC passe l'étape de vérification que l'utilisateur est bien celui qu'il prétend être.
 
 Pour réaliser cette attaque nous allons utiliser ... Rubeus : 
 ````Powershell 
@@ -363,7 +363,7 @@ hashcat -m 18200 hashasrep.txt Pass.txt
 ````
 
 ## Pass The Ticket
-L'attaque Pass The Ticket consiste à extraire les Tickets de la mémoire LSASS (Local Security Authority Subsystem Service) de la machine. LSASS est un processus en mémoire qui stocke les informations d'identification sur un serveur Active Directory et peut conserver des tickets. Il agit comme un gardien en acceptant ou en rejetant les identifiants fournis.
+L'attaque Pass The Ticket consiste à extraire les Tickets de la mémoire LSASS (Local Security Authority Subsystem Service) de la machine. LSASS est un processus en mémoire qui stocke les informations d'identification sur un serveur Active Directory et peut conserver des tickets. Il agit comme un coffre fort.
 
 L'attaque Pass The Ticket est particulièrement efficace pour l'élévation de privilèges et le mouvement latéral si des tickets de comptes de service du domaine non sécurisés sont disponibles.
 
@@ -419,7 +419,7 @@ Cached Tickets: (1)
 Avec la commande ``klist`` nous pouvons voir que nous avons "voler" l'identité du compte ``krbtgt``.
 
 ## Golden/Silver Ticket 
-Un Golden Ticket est l'extraction du TGT du compte krbtgt, un Silver Ticket est la même chose mais pour un compte de service ou d'admin du domaine. 
+Un Golden Ticket est un ticket forgé et signé avec le Hash NT que nous aurons dump au préalable, un Silver Ticket est la même chose mais pour un compte de service ou d'admin du domaine. 
 
 Cette extraction permet d'obtenir : 
 - SID de l'utilisateur cible
@@ -459,7 +459,6 @@ Maintenant nous avons les infos dont nous avons besoin, nous pouvons donc forger
 
 > 2. hash NTLM : 72cd714611b64cd4d5550cd2759db3f6
 
-Pour la suite il nous faudra l'ID de l'utilisateur concerné pour forger le Ticket : 
 ````Powershell 
 Kerberos::golden /user:Administrator /domain:controller.local /sid:S-1-5-21-432953485-3795405108-1502158860 /krbtgt:72cd714611b64cd4d5550cd2759db3f6 /id:1103
 
