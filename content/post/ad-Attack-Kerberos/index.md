@@ -472,3 +472,6 @@ L'attaque Skeleton Key exploite le mécanisme de pre-authentification de kerbero
 Une fois qu'une Skeleton Key est implantée sur le contrôleur de domaine, celui-ci essaie de déchiffrer l'horodatage à la fois avec le hachage NT de l'utilisateur et avec le hachage NT de la Skeleton Key. Cela permet à un attaquant d'accéder à l'ensemble du domaine sans connaître le mot de passe réel des utilisateurs, car le contrôleur de domaine accepte désormais deux clés de déchiffrement.
 
 
+
+--- 
+Merci à Christopher THIEFIN (ProcessusThief) d'avoir relu cette article afin de corriger quelques fautes. 
