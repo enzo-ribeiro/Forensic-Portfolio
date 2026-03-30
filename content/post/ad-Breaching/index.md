@@ -1,6 +1,6 @@
 +++
 author = "Enzo"
-title = "AD - Comprimission"
+title = "AD - Compromission"
 date = "2026-03-26"
 categories = [
     "Red Team"

@@ -12,7 +12,7 @@ tags = [
     "FCSC",
     "Root-Me",
     "Tuto",
-	"Mémoire"
+	 "Mémoire"
 ]
 +++
 # Créer un profil Linux personnalisé pour Volatility 3
@@ -49,7 +49,7 @@ Pour cela, il lui faut le fichier **ISF** (Intermediate Symbol Format, un fichie
 
 ## Étape 2 : Récupérer le bon noyau (Le plus difficile)
 
-Dans notre exemple (le challenge *Academie*), la version exacte du noyau trouvée dans le dump est **`5.4.0-4-amd64`** (version Debian `5.4.19-1`). 
+Dans notre cas, la version exacte du noyau trouvée dans le dump est **`5.4.0-4-amd64`** (version Debian `5.4.19-1`). 
 
 Comme c'est un ancien noyau (début 2020), il n'est plus sur les dépôts classiques, il faut aller dans les archives (Snapshots) de Debian. Il nous faut :
 1. Le **paquet de débogage** (qui contient le gros fichier `vmlinux` avec les symboles DWARF).
@@ -117,4 +117,4 @@ Maintenant que vous avez votre fichier ISF (`debian-5.4.0-4-amd64.json`), il suf
 
 *(Astuce : Volatility gère les fichiers compressés pour gagner de la place, vous pouvez compresser le fichier avec `xz debian-5.4.0-4-amd64.json` pour obtenir un `.json.xz`)*.
 
-Relancez votre commande `volatility3 -f dmp.mem linux.pslist.PsList`. Volatility va scanner le dossier `symbols/linux/`, lire l'en-tête de votre dump mémoire, trouver que la signature correspond à votre fichier JSON, et vous afficher la liste des processus sans erreur !
+Maintenant vous pouvez lancez vos commandes avec le bon profil. Volatility va scanner le dossier `symbols/linux/`, lire l'en-tête de votre dump mémoire, trouver que la signature correspond à votre fichier JSON, et vous afficher la liste des processus sans erreur !

@@ -13,7 +13,7 @@ tags = [
     "Cours"
 ]
 +++
-# AD : Enumération sans identifiant
+# AD : Enumération sans authentification
 
 ## Host Discovery
 Vu que nous n'avons pas d'information concernant le réseau nous devons le scanner afin de découvrir ce que nous avons à notre disposition, pour cela, nous pouvons utiliser ``Nmap`` : 
