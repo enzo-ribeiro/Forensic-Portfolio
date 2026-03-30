@@ -24,7 +24,7 @@ Nous allons voir ces 2 outils. Puis une partie brute-force avec ``hashcat``.
 ### Enumération
 Avec cette partie de l'exploitation, nous allons voir comment recupérer les mots de passe hashé des comptes qui ont la pré-authéntification de désactivé.
 #### Rubeus
-Comme vu dans le poste [Attaquer Kerberos](../ad-Attack-Kerberos/index.md) nous devons avoir accès à une machine et y avoir le binaire de ``Rubeus`` dessus. 
+Comme vu dans le poste [Attaquer Kerberos](../ad-Attack-Kerberos/) nous devons avoir accès à une machine et y avoir le binaire de ``Rubeus`` dessus. 
 ````Bash
 Rubeus.exe asrepsoasting
 ````
@@ -206,6 +206,6 @@ Get-DomainComputer
 Get-DomainUser -AdminCount
 
 # Avoir les comptes contenant un SPN
-Get-DomainUser -SPN
+Get-DomainUser
 `````
 

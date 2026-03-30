@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2026-03-07T00:00:00+00:00</lastmod>
+    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -20,14 +20,14 @@
                 href="http://localhost:1313/"
                 />
   </url><url>
-    <loc>http://localhost:1313/post/</loc>
-    <lastmod>2026-03-07T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/tags/ad/</loc>
+    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/blue-team/</loc>
-    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/p/ad-enum%C3%A9ration-avec-authentification/</loc>
+    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/categories/</loc>
-    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -44,26 +44,23 @@
                 href="http://localhost:1313/categories/"
                 />
   </url><url>
-    <loc>http://localhost:1313/tags/chall/</loc>
-    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/tags/cours/</loc>
+    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/ctf/</loc>
-    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/fcsc/</loc>
-    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/tags/enumeration/</loc>
+    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/forensic/</loc>
-    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/post/</loc>
+    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/m%C3%A9moire/</loc>
-    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/root-me/</loc>
-    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+    <loc>http://localhost:1313/categories/red-team/</loc>
+    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -80,6 +77,45 @@
                 href="http://localhost:1313/tags/"
                 />
   </url><url>
+    <loc>http://localhost:1313/tags/windows/</loc>
+    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/p/ad-attaquer-kerberos/</loc>
+    <lastmod>2026-03-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/kerberos/</loc>
+    <lastmod>2026-03-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/p/ad-compromission/</loc>
+    <lastmod>2026-03-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/p/ad-enum%C3%A9ration-sans-authentification/</loc>
+    <lastmod>2026-03-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/blue-team/</loc>
+    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/chall/</loc>
+    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/p/chall-fcsc-acad%C3%A9mie-de-linvestigation/</loc>
+    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/fcsc/</loc>
+    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/forensic/</loc>
+    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/linux/</loc>
+    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/m%C3%A9moire/</loc>
+    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/root-me/</loc>
+    <lastmod>2026-03-06T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tags/tuto/</loc>
     <lastmod>2026-03-06T00:00:00+00:00</lastmod>
   </url><url>
@@ -92,9 +128,6 @@
     <loc>http://localhost:1313/tags/python/</loc>
     <lastmod>2026-03-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/red-team/</loc>
-    <lastmod>2026-03-05T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/tags/registre/</loc>
     <lastmod>2026-03-05T00:00:00+00:00</lastmod>
   </url><url>
@@ -102,9 +135,6 @@
     <lastmod>2026-03-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/secretsdump/</loc>
-    <lastmod>2026-03-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/windows/</loc>
     <lastmod>2026-03-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/dkim/</loc>
@@ -161,9 +191,6 @@
     <loc>http://localhost:1313/tags/usb/</loc>
     <lastmod>2026-02-04T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/cours/</loc>
-    <lastmod>2026-02-03T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/p/cours-soc/</loc>
     <lastmod>2026-02-03T00:00:00+00:00</lastmod>
   </url><url>
@@ -207,9 +234,6 @@
     <lastmod>2025-12-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/ios/</loc>
-    <lastmod>2025-12-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/linux/</loc>
     <lastmod>2025-12-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/p/linux-investigation-des-logs/</loc>

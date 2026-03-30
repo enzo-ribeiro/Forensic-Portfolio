@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Red Team on KIRÔN</title>
-    <link>http://localhost:1313/categories/red-team/</link>
-    <description>Recent content in Red Team on KIRÔN</description>
+    <title>Enumeration on KIRÔN</title>
+    <link>http://localhost:1313/tags/enumeration/</link>
+    <description>Recent content in Enumeration on KIRÔN</description>
     <generator>Hugo</generator>
     <language>fr</language>
     <copyright>Enzo Ribeiro</copyright>
     <lastBuildDate>Mon, 30 Mar 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/red-team/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/enumeration/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AD - Enumération avec authentification</title>
       <link>http://localhost:1313/p/ad-enum%C3%A9ration-avec-authentification/</link>
@@ -17,39 +17,11 @@
       <description>&lt;h1 id=&#34;ad--enumération-avec-authentification&#34;&gt;AD : Enumération avec authentification&lt;/h1&gt;&#xA;&lt;h2 id=&#34;as-rep-roasting&#34;&gt;AS-REP Roasting&lt;/h2&gt;&#xA;&lt;p&gt;Pour faire de l&amp;rsquo;AS-REP Roasting nous pouvons utiliser 2 outils :&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;Rubeus&lt;/code&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;Impacket&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Nous allons voir ces 2 outils. Puis une partie brute-force avec &lt;code&gt;hashcat&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;h3 id=&#34;enumération&#34;&gt;Enumération&lt;/h3&gt;&#xA;&lt;p&gt;Avec cette partie de l&amp;rsquo;exploitation, nous allons voir comment recupérer les mots de passe hashé des comptes qui ont la pré-authéntification de désactivé.&lt;/p&gt;&#xA;&lt;h4 id=&#34;rubeus&#34;&gt;Rubeus&lt;/h4&gt;&#xA;&lt;p&gt;Comme vu dans le poste &lt;a href=&#34;../ad-Attack-Kerberos/&#34;&gt;Attaquer Kerberos&lt;/a&gt; nous devons avoir accès à une machine et y avoir le binaire de &lt;code&gt;Rubeus&lt;/code&gt; dessus.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>AD - Attaquer Kerberos</title>
-      <link>http://localhost:1313/p/ad-attaquer-kerberos/</link>
-      <pubDate>Fri, 27 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/p/ad-attaquer-kerberos/</guid>
-      <description>&lt;h1 id=&#34;ad--attaquer-kerberos&#34;&gt;AD : Attaquer Kerberos&lt;/h1&gt;&#xA;&lt;h2 id=&#34;cest-quoi-kerberos-&#34;&gt;C&amp;rsquo;est quoi Kerberos ?&lt;/h2&gt;&#xA;&lt;p&gt;Kerberos est un service d&amp;rsquo;authentification propre à Windows, il est sensé être le remplaçant de NTLM car mieux sécurisé. Il utilise un chiffrement à clé symétrique et demande une authentification externe pour vérifier l&amp;rsquo;identité d&amp;rsquo;un utilisateur. Il à besoin de 3 entités (d&amp;rsquo;où son nom). Bien qu&amp;rsquo;il soit propre à Windows nous pouvons trouver des implémentations dans les sytèmes Linux, FreeBSD, MacOS etc.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>AD - Compromission</title>
-      <link>http://localhost:1313/p/ad-compromission/</link>
-      <pubDate>Thu, 26 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/p/ad-compromission/</guid>
-      <description>&lt;h1 id=&#34;ad--trouver-la-faille&#34;&gt;AD : Trouver la faille&lt;/h1&gt;&#xA;&lt;h2 id=&#34;osint&#34;&gt;OSINT&lt;/h2&gt;&#xA;&lt;p&gt;OSINT pour Open-Source INTelligence (ou renseignement en source ouvert en français) c&amp;rsquo;est le fais de rechercher des informations présent sur le web. Cela permet d&amp;rsquo;avoir des informations plus ou moins privé que la personne aurait pu faire &amp;ldquo;fuité&amp;rdquo;. Dans le cas d&amp;rsquo;un AD, on peut penser à des forums où l&amp;rsquo;admin aurait pu laisser fuité des creds sans faire exprès, pareil pour tout ce qui est GitHub. Ensuite on peut aller voir dans des leaks de BDD&lt;/p&gt;</description>
-    </item>
-    <item>
       <title>AD - Enumération sans authentification</title>
       <link>http://localhost:1313/p/ad-enum%C3%A9ration-sans-authentification/</link>
       <pubDate>Thu, 26 Mar 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/p/ad-enum%C3%A9ration-sans-authentification/</guid>
       <description>&lt;h1 id=&#34;ad--enumération-sans-authentification&#34;&gt;AD : Enumération sans authentification&lt;/h1&gt;&#xA;&lt;h2 id=&#34;host-discovery&#34;&gt;Host Discovery&lt;/h2&gt;&#xA;&lt;p&gt;Vu que nous n&amp;rsquo;avons pas d&amp;rsquo;information concernant le réseau nous devons le scanner afin de découvrir ce que nous avons à notre disposition, pour cela, nous pouvons utiliser &lt;code&gt;Nmap&lt;/code&gt; :&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;&#xA;&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nmap -sn 10.211.11.0/24&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap scan report &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; 10.211.11.10&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Host is up &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0.019s latency&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap scan report &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; 10.211.11.20&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Host is up &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0.018s latency&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap scan report &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; 10.211.11.250&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Host is up &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0.020s latency&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;-sn&lt;/code&gt; : simple ping pour savoir quel host est &lt;code&gt;up&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;port-ad&#34;&gt;Port AD&lt;/h2&gt;&#xA;&lt;p&gt;Pour détecter un AD sur le réseau nous pouvons tester les port suivants :&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Dump base SAM</title>
-      <link>http://localhost:1313/p/dump-base-sam/</link>
-      <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/p/dump-base-sam/</guid>
-      <description>&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;La &lt;strong&gt;base SAM&lt;/strong&gt; (Security Account Manager) est la base de données locale de Windows, stockée dans le registre sous &lt;code&gt;HKEY_LOCAL_MACHINE\SAM&lt;/code&gt;, qui gère les comptes utilisateurs locaux, groupes et &lt;strong&gt;hashs NTLM&lt;/strong&gt; des mots de passe. Au démarrage, elle est chargée en arrière-plan et interrogée par le processus &lt;strong&gt;LSASS&lt;/strong&gt; (&lt;code&gt;lsass.exe&lt;/code&gt;) pour authentifier les sessions locales.&lt;/p&gt;&#xA;&lt;p&gt;Malgré son rôle critique, sa &lt;strong&gt;sécurité est faible&lt;/strong&gt; : accessible uniquement en privilèges &lt;strong&gt;SYSTEM&lt;/strong&gt; ou admin, elle s&amp;rsquo;extrait facilement via &lt;code&gt;reg save hklm\sam&lt;/code&gt; après élévation (PsExec, Mimikatz), puis les hashs NT se craquent offline par brute force ou dictionnaire (Impacket, samdump2). Sans protections avancées comme Credential Guard, un attaquant admin compromet tout en quelques commandes.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Rubber Ducky pour 2€</title>
-      <link>http://localhost:1313/p/rubber-ducky-pour-2/</link>
-      <pubDate>Wed, 18 Feb 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/p/rubber-ducky-pour-2/</guid>
-      <description>&lt;h2 id=&#34;cest-quoi-&#34;&gt;C&amp;rsquo;est quoi ?&lt;/h2&gt;&#xA;&lt;p&gt;Une Rubber Ducky est une clef USB un peu spécial, en effet, elle est détecté par l&amp;rsquo;ordinateur comme un clavier, ce qui peut nous permettre d&amp;rsquo;y introduire des scripts qui exécute des frappes de clavier.&lt;/p&gt;&#xA;&lt;h2 id=&#34;installation&#34;&gt;Installation&lt;/h2&gt;&#xA;&lt;p&gt;Tout d&amp;rsquo;abord il faut se rendre sur le site d&amp;rsquo;Arduino dans la section &lt;code&gt;software&lt;/code&gt; :&#xA;&lt;a href=&#34;https://www.arduino.cc/en/software/#ide&#34;&gt;https://www.arduino.cc/en/software/#ide&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;Une fois installer, nous pouvons lancer le logiciel et passer à la configuration.&lt;/p&gt;&#xA;&lt;h2 id=&#34;configuration&#34;&gt;Configuration&lt;/h2&gt;&#xA;&lt;p&gt;Pour configurer notre digispark il faut d&amp;rsquo;abord ajouter le bon packages sur le logiciel.&#xA;Pour faire ça il nous suffit de suivre les étapes ci-dessous :&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

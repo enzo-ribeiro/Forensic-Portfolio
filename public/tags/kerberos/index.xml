@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kerberos on KIRÔN</title>
+    <link>http://localhost:1313/tags/kerberos/</link>
+    <description>Recent content in Kerberos on KIRÔN</description>
+    <generator>Hugo</generator>
+    <language>fr</language>
+    <copyright>Enzo Ribeiro</copyright>
+    <lastBuildDate>Fri, 27 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/kerberos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AD - Attaquer Kerberos</title>
+      <link>http://localhost:1313/p/ad-attaquer-kerberos/</link>
+      <pubDate>Fri, 27 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/p/ad-attaquer-kerberos/</guid>
+      <description>&lt;h1 id=&#34;ad--attaquer-kerberos&#34;&gt;AD : Attaquer Kerberos&lt;/h1&gt;&#xA;&lt;h2 id=&#34;cest-quoi-kerberos-&#34;&gt;C&amp;rsquo;est quoi Kerberos ?&lt;/h2&gt;&#xA;&lt;p&gt;Kerberos est un service d&amp;rsquo;authentification propre à Windows, il est sensé être le remplaçant de NTLM car mieux sécurisé. Il utilise un chiffrement à clé symétrique et demande une authentification externe pour vérifier l&amp;rsquo;identité d&amp;rsquo;un utilisateur. Il à besoin de 3 entités (d&amp;rsquo;où son nom). Bien qu&amp;rsquo;il soit propre à Windows nous pouvons trouver des implémentations dans les sytèmes Linux, FreeBSD, MacOS etc.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

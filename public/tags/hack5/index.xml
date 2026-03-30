@@ -1,46 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>Hack5 on KIRÔN</title>
-        <link>http://localhost:1313/tags/hack5/</link>
-        <description>Recent content in Hack5 on KIRÔN</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>fr</language>
-        <copyright>Enzo Ribeiro</copyright>
-        <lastBuildDate>Wed, 18 Feb 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/hack5/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Rubber Ducky pour 2€</title>
-        <link>http://localhost:1313/p/rubber-ducky-pour-2/</link>
-        <pubDate>Wed, 18 Feb 2026 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/p/rubber-ducky-pour-2/</guid>
-        <description>&lt;h2 id=&#34;cest-quoi-&#34;&gt;C&amp;rsquo;est quoi ?
-&lt;/h2&gt;&lt;p&gt;Une Rubber Ducky est une clef USB un peu spécial, en effet, elle est détecté par l&amp;rsquo;ordinateur comme un clavier, ce qui peut nous permettre d&amp;rsquo;y introduire des scripts qui exécute des frappes de clavier.&lt;/p&gt;
-&lt;h2 id=&#34;installation&#34;&gt;Installation
-&lt;/h2&gt;&lt;p&gt;Tout d&amp;rsquo;abord il faut se rendre sur le site d&amp;rsquo;Arduino dans la section &lt;code&gt;software&lt;/code&gt; :
-&lt;a class=&#34;link&#34; href=&#34;https://www.arduino.cc/en/software/#ide&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://www.arduino.cc/en/software/#ide&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Une fois installer, nous pouvons lancer le logiciel et passer à la configuration.&lt;/p&gt;
-&lt;h2 id=&#34;configuration&#34;&gt;Configuration
-&lt;/h2&gt;&lt;p&gt;Pour configurer notre digispark il faut d&amp;rsquo;abord ajouter le bon packages sur le logiciel.
-Pour faire ça il nous suffit de suivre les étapes ci-dessous :&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Aller dans &lt;code&gt;Arduino IDE&lt;/code&gt; en haut à droite (Je suis sur Mac, je vous met un tuto plutôt bien détaillé pour Linux et Windows)&lt;/li&gt;
-&lt;li&gt;Cliquer sur &lt;code&gt;Préférences&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Dans &lt;code&gt;Additional boards manager URLs&lt;/code&gt; on ajoute ce lien &lt;code&gt;https://raw.githubusercontent.com/ArminJo/DigistumpArduino/master/package_digistump_index.json&lt;/code&gt; (c&amp;rsquo;est un lien mirroir de l&amp;rsquo;officiel, de mon côté impossible de joindre le lien officiel)&lt;/li&gt;
-&lt;li&gt;Puis cliquer sur &lt;code&gt;OK&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Une fois le packages &lt;code&gt;Digistump&lt;/code&gt; installé, il le faut télécharger dans &lt;code&gt;Board Manager&lt;/code&gt;, pour ça il faut :&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Aller dans &lt;code&gt;Tools&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Puis dans &lt;code&gt;Board: &lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Sélectionner &lt;code&gt;Board Manager&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Un menu à gauche va s&amp;rsquo;ouvrir, il faut rechercher &lt;code&gt;Digistump AVR Board&lt;/code&gt; et le télécharger.&lt;/li&gt;
-&lt;li&gt;Une ça fait nous devons aller sélectionner notre digispark, nous suivrons le même chemin, donc &lt;code&gt;Tools &amp;gt; Board:&lt;/code&gt; mais ici nous allons aller dans : &lt;code&gt;Digistump AVR Boards &amp;gt; Digispark&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Maintenant nous avons notre &amp;ldquo;Rubber Ducky&amp;rdquo;. Nous pouvons y mettre nos script personnalisé ou prendre ceux des personnes de la communauté.&lt;/p&gt;
-&lt;p&gt;Pour faire vos scripts, je vous conseil ce site &lt;code&gt;https://cedarctic.github.io/digiQuack/&lt;/code&gt; il permet d&amp;rsquo;écrire les scripts en &lt;code&gt;Duckyscript&lt;/code&gt; (bien plus simple) et il les convertiras en script Digispark.&lt;/p&gt;
-</description>
-        </item>
-        
-    </channel>
+  <channel>
+    <title>Hack5 on KIRÔN</title>
+    <link>http://localhost:1313/tags/hack5/</link>
+    <description>Recent content in Hack5 on KIRÔN</description>
+    <generator>Hugo</generator>
+    <language>fr</language>
+    <copyright>Enzo Ribeiro</copyright>
+    <lastBuildDate>Wed, 18 Feb 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/hack5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rubber Ducky pour 2€</title>
+      <link>http://localhost:1313/p/rubber-ducky-pour-2/</link>
+      <pubDate>Wed, 18 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/p/rubber-ducky-pour-2/</guid>
+      <description>&lt;h2 id=&#34;cest-quoi-&#34;&gt;C&amp;rsquo;est quoi ?&lt;/h2&gt;&#xA;&lt;p&gt;Une Rubber Ducky est une clef USB un peu spécial, en effet, elle est détecté par l&amp;rsquo;ordinateur comme un clavier, ce qui peut nous permettre d&amp;rsquo;y introduire des scripts qui exécute des frappes de clavier.&lt;/p&gt;&#xA;&lt;h2 id=&#34;installation&#34;&gt;Installation&lt;/h2&gt;&#xA;&lt;p&gt;Tout d&amp;rsquo;abord il faut se rendre sur le site d&amp;rsquo;Arduino dans la section &lt;code&gt;software&lt;/code&gt; :&#xA;&lt;a href=&#34;https://www.arduino.cc/en/software/#ide&#34;&gt;https://www.arduino.cc/en/software/#ide&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;Une fois installer, nous pouvons lancer le logiciel et passer à la configuration.&lt;/p&gt;&#xA;&lt;h2 id=&#34;configuration&#34;&gt;Configuration&lt;/h2&gt;&#xA;&lt;p&gt;Pour configurer notre digispark il faut d&amp;rsquo;abord ajouter le bon packages sur le logiciel.&#xA;Pour faire ça il nous suffit de suivre les étapes ci-dessous :&lt;/p&gt;</description>
+    </item>
+  </channel>
 </rss>

