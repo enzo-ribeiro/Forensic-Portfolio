@@ -25,7 +25,7 @@ Il transforme les éléments du système en tables virtuelles :
 - packages installés
 - configurations système
 
-Ensuite, tu peux exécuter des requêtes SQL dessus.
+Ensuite, nous pouvons exécuter des requêtes SQL dessus.
 
 ## Installation
 Pour installer `Osquery` il nous suffit de nous rendre sur le site : 

@@ -1,6 +1,6 @@
 +++
 author = "Enzo"
-title = "Faire mieux parler ses logs"
+title = "Sysmon"
 date = "2026-06-11"
 categories = [
     "Blue Team"
@@ -12,7 +12,6 @@ tags = [
     "Cours"
 ]
 +++
-
 
 ## Introduction
 
@@ -157,7 +156,8 @@ Les logs généré par ``Sysmon`` sont visible dans l' ``observateur d'événeme
 ``Journaux des applications > Microsoft > Windows > Sysmon > Operational``  
 
 Pour tester ces règles, j'ai simplement ouvert un ``powershell`` et on voit tout de suite dans les logs de ``Sysmon`` qu'un ``powershell`` a été ouvert :
-![](Pasted image 20260610170628.png)
+
+![](Pasted-image-20260610170628.png)
 
 Nous pouvons également tester avec une requête web : 
 ```Poweshell
@@ -207,7 +207,7 @@ DestinationPortName : https
 ```
 
 Nous pouvons également aller voir dans l'observateur d'événements mais il se peut qu'on voit une erreur (qui ne change rien à la fonctionnalité des logs, juste c'est moins beau) : 
-![](Pasted image 20260610180426.png)
+![](Pasted-image-20260610180426.png)
 
 ## SysmonConfig Communautaire
 Nous avons la possibilité d'utiliser des fichiers de configuration disponible sur GitHub (ou autre), personnellement, j'aime beaucoup celui de Olaf Harton, il nous permet de "trier" les logs par TTP :
@@ -313,8 +313,8 @@ Steps to generate Driver Load event log:
 ``` 
 
 Ici nous pouvons voir que ma règles est bien détecté : 
-![](Pasted image 20260611095310.png)
+![](Pasted-image-20260611095310.png)
 
 Si nous mettons le hash `SHA256` dans VirusTotal, nous pouvons bel et bien voir que ce fichier est un malware de type Trojan : 
-![](Pasted image 20260611095620.png)
+![](Pasted-image-20260611095620.png)
 
