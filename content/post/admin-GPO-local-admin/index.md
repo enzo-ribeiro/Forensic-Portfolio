@@ -1,7 +1,7 @@
 +++
 author = "Enzo"
-title = "Sysmon"
-date = "2026-07-24"
+title = "GPO - Supprimer Admin Local"
+date = "2026-07-27"
 categories = [
     "Blue Team"
 ]
