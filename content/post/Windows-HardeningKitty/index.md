@@ -13,7 +13,7 @@ tags = [
 +++
 # Windows - HardeningKitty
 ## C'est quoi ? 
-HardeningKitty est un module powershell qui va nous servir à auditer et à sécuriser les systèmes windows (Client ou Serveur), en utilisant différents "registres" / normes / standard. 
+HardeningKitty est un module powershell qui va nous servir à auditer et à sécuriser les systèmes windows (Client ou Serveur), en utilisant différents "registres" / normes / standard (ex : CIS Benchmark, MSFT, DOD, BSI ...). 
 
 Il est simple à télécharger, installer et mettre en marche. 
 
