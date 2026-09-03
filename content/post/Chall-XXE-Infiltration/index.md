@@ -12,7 +12,7 @@ tags = [
     "Chall",
     "CyberDefenders",
     "WireShark",
-    "SAST"
+    "DAST"
 ]
 +++
 # Chall - XXE Infiltration
