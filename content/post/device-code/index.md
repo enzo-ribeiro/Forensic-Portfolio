@@ -8,8 +8,9 @@ categories = [
 tags = [
     "Phishing",
     "Office",
-    "Azure",
-    "Cours"
+    "Device Code",
+    "M365",
+    "Azure"    
 ]
 +++
 # Phishing - Device Code
