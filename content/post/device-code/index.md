@@ -148,7 +148,7 @@ pipx install graphspy
 ````
 Voila GraphSpy est installé, voyons comment il fonctionne.
 
-### Créatoin du code
+### Création du code
 Pour créer le code il faut d'abord lancer notre outil avec la commande suivante : 
 ````Shell
 graphspy
